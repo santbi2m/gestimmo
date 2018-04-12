@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xmlns:tx = "http://www.springframework.org/schema/tx"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans     
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/tx 
+   http://www.springframework.org/schema/tx/spring-tx.xsd
+   http://www.springframework.org/schema/cache 
+   http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<context:annotation-config />
+	<cache:annotation-driven cache-manager="cacheManager"/>
+    <context:component-scan base-package = "com.ag2m.gestimmo.metier.dao, 
+    										com.ag2m.gestimmo.metier.daoImpl, 
+    										com.ag2m.gestimmo.metier.service, 
+    										com.ag2m.gestimmo.metier.serviceImpl,
+    										com.ag2m.gestimmo.metier.mapper" />
+    										
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+   <bean id="sessionFactory" class = "org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+      <property name = "dataSource" ref = "dataSource" />
+      <property name = "packagesToScan" value = "com.ag2m.gestimmo.metier" />
+      <property name = "hibernateProperties" >
+	      <props>
+		      <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+		      <prop key="hibernate.show_sql">true</prop>
+		      <prop key="hiernate.enable_lazy_load_no_trans">true</prop>
+		      <prop key="hibernate.default_schema">test</prop>
+		      <prop key="format_sql">true</prop>
+		      <prop key="use_sql_comments">true</prop>
+	      </props>
+      </property>
+   </bean>
+   
+   <bean id="dataSource" class = "org.apache.commons.dbcp2.BasicDataSource">
+      <property name = "driverClassName" value = "com.mysql.jdbc.Driver" />
+       <property name = "url" value = "jdbc:mysql://127.0.0.1:3306/gestimmo?useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+        <property name = "username" value = "root" />
+        <property name = "password" value = "" />
+   </bean>
+   
+   <bean id="transactionManager" class = "org.springframework.orm.hibernate5.HibernateTransactionManager">
+      <property name = "sessionFactory" ref = "sessionFactory" />
+   </bean>
+   
+   <bean id="cacheManager" 
+	      class="org.springframework.cache.ehcache.EhCacheCacheManager">
+	      <property name = "cacheManager" ref="ehcache"/>
+	</bean>
+	
+	<!-- Ehcache library setup -->
+	<bean id="ehcache" 
+	      class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	      <property name = "configLocation" value ="classpath:META-INF/ehcache-test.xml"/>
+	</bean>
+
+</beans>
