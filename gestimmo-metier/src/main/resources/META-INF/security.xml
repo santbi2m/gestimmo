@@ -19,21 +19,11 @@
   <!-- enable use-expressions -->
 	<security:http auto-config="true" use-expressions="true">
 		
-		<security:intercept-url pattern="/**" access="hasRole('ROLE_USER')"  />
-		<security:intercept-url pattern="/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/**" access="hasRole('ROLE_RECEPTIONNISTE')"  />
 		
 		<!-- access denied page -->
-		<security:access-denied-handler error-page="/403" />
+<!-- 		<security:access-denied-handler /> -->
 		
-<!-- 		<form-login  -->
-<!-- 		    login-page="/login"  -->
-<!-- 		    default-target-url="/welcome"  -->
-<!-- 			authentication-failure-url="/login?error"  -->
-<!-- 			username-parameter="username" -->
-<!-- 			password-parameter="password" /> -->
-<!-- 		<logout logout-success-url="/login?logout"  /> -->
-		<!-- enable csrf protection --> 
-<!-- 		<csrf/> -->
 	</security:http>
 	
 		<security:authentication-manager>

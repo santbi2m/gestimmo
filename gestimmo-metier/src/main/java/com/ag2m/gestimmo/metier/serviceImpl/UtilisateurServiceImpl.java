@@ -42,8 +42,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		 UserBuilder userDetailBuilder = User.withUsername(username);
 		 userDetailBuilder.password(utilisateur.getPassword());
 		 userDetailBuilder.disabled(!utilisateur.isEnabled());
-		 List<String> roles = utilisateur.getRoles().stream().map(role -> role.getRole()).collect(Collectors.toList());
-		 userDetailBuilder.roles((String[]) roles.toArray());
+		 
+		 /**
+		  * Un user a forcément un rôle.
+		  * Pas besoin de faire le test de nullité.
+		  * En cas de pb il faut que ça pete.
+		  */
+		 List<String> roles = utilisateur.getRoles()
+				 .stream().map(role -> role.getRole()).collect(Collectors.toList());
+		 userDetailBuilder.roles(roles.toArray(new String[roles.size()]));
 	       
 		 return userDetailBuilder.build();
 	}		
