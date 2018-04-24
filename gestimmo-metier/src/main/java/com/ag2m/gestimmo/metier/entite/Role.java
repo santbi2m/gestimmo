@@ -27,7 +27,7 @@ public class Role extends Identifiant<Long> implements Serializable {
 	
 	
 	@ManyToOne
-	@JoinColumn(name="username", nullable=false)
+	@JoinColumn(name="username", referencedColumnName="username", nullable=false)
 	private Utilisateur utilisateur;
 
 

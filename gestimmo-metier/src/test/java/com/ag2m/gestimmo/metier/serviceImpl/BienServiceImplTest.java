@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
  * @author mombaye
  *
  */
-public class BienServiceImplTest extends AbstractcommonTest{
+public class BienServiceImplTest extends AbstractCommonTest{
 
 	
 

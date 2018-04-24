@@ -23,7 +23,7 @@ import static org.hamcrest.core.Is.*;
  * @author mombaye
  *
  */
-public class ReservationServiceImplTest extends AbstractcommonTest{
+public class ReservationServiceImplTest extends AbstractCommonTest{
 
 	@Test
 	public void testSaveOrUpdate() {

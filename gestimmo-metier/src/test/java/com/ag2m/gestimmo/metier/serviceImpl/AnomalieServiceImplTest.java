@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.*;
  * @author mombaye
  *
  */
-public class AnomalieServiceImplTest extends AbstractcommonTest{
+public class AnomalieServiceImplTest extends AbstractCommonTest{
 
 	
 

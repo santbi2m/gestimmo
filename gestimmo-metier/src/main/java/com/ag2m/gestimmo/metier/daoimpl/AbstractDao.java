@@ -3,6 +3,7 @@ package com.ag2m.gestimmo.metier.daoimpl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -20,25 +21,36 @@ public abstract class AbstractDao<ID extends Serializable, T extends Identifiant
 	SessionFactory session;
 	
 	public T findById(Class<T> clazz, ID id) {
-		return session.getCurrentSession().find(clazz, id);
+		return getCurrentSession().find(clazz, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Cacheable
 	public List<T> findAll(Class<T> clazz) {
-		return session.getCurrentSession().createQuery("from "+ clazz.getName()).list();
+		return getCurrentSession()
+				.createQuery("from "+ clazz.getName()).list();
 	}
 
 	@CachePut
 	public boolean saveOrUpdate(T t) {
-		 session.getCurrentSession().saveOrUpdate(t);
+		getCurrentSession().saveOrUpdate(t);
 		 return true;
 	}
 
 	@CacheEvict
 	public boolean delete(T t) {
-		session.getCurrentSession().delete(t);
+		getCurrentSession().delete(t);
 		return true;
+	}
+	
+	/**
+	 * Retourne la seesion courrante
+	 * 
+	 * @return session
+	 */
+	protected Session getCurrentSession(){
+		
+		return session.getCurrentSession();
 	}
 
 }

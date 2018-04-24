@@ -10,15 +10,88 @@ import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
+import com.ag2m.gestimmo.metier.dto.RoleDto;
+import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
 import com.ag2m.gestimmo.metier.entite.Anomalie;
 import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.entite.Reservation;
+import com.ag2m.gestimmo.metier.entite.Role;
+import com.ag2m.gestimmo.metier.entite.Utilisateur;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface Mapper {
 
 	
+	/**
+	 * Map un Objet Utilisateur en UtilisateurDto
+	 * Ignore le mapping de Utilisateur dans les objets Role afin d'éviter 
+	 * un mapping cyclique.
+	 * Ce mapping sera géré par processRoleForUtilisateurDto
+	 * 
+	 * @param utilisateur
+	 * @return
+	 */
+	@Mapping(target = "roles", ignore = true)
+	public abstract UtilisateurDto utilisateurToUtilisateurDto(Utilisateur utilisateur);
+	
+	/**
+	 * Gère le mapping de l'objet Utilisateur contenu dans Role.
+	 * Elle sera appelée par utilisateurToUtilisateurDto
+	 * 
+	 * @param utilisateurDto
+	 */
+	 @AfterMapping
+	default void processRoleForUtilisateurDto(@MappingTarget UtilisateurDto utilisateurDto) {
+		 	if(utilisateurDto.getRoles() != null) {
+		 		
+		 		utilisateurDto.getRoles().forEach(role -> role.setUtilisateur(utilisateurDto));
+		 		
+		 	}
+	  }
+	
+ 	/**
+	 * Map un Objet UtilisateurDto en Utilisateur
+	 * Ignore le mapping de UtilisateurDto dans les objets RoleDto afin d'éviter 
+	 * un mapping cyclique.
+	 * Ce mapping sera géré par processRoleForUtilisateur
+	 * 
+	 * @param utilisateur
+	 * @return
+	 */
+	@Mapping(target = "roles", ignore = true)
+	Utilisateur utilisateurDtoToUtilisateur(UtilisateurDto utilisateur);
+	
+	/**
+	 * Gère le mapping de l'objet Utilisateur contenu dans Role.
+	 * Elle sera appelée par utilisateurToUtilisateurDto
+	 * 
+	 * @param utilisateur
+	 */
+	 @AfterMapping
+		default void processRoleForUtilisateur(@MappingTarget Utilisateur utilisateur) {
+			 if(utilisateur.getRoles() != null) {
+				 utilisateur.getRoles().forEach(app -> app.setUtilisateur(utilisateur));
+			 }
+			        
+		 }
+
+	 	/**
+		 *  Map un Objet Role en RoleDto
+		 *  
+		 * @param role
+		 * @return
+		 */
+		RoleDto roleToRoleDto(Role role);
+		
+		/**
+		 *  Map un Objet RoleDto en Role
+		 *  
+		 * @param roleDto
+		 * @return
+		 */
+		Role roleDtoToRole(RoleDto roleDto);
+	 
 	/**
 	 * Map un Objet Bien en BienDto
 	 * Ignore le mapping de Bien dans les objets Appartement afin d'éviter 

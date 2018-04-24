@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
  * @author mombaye
  *
  */
-public class AppartementServiceImplTest extends AbstractcommonTest{
+public class AppartementServiceImplTest extends AbstractCommonTest{
 
 	
 

@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ag2m.gestimmo.metier.dao.UtilisateurDao;
+import com.ag2m.gestimmo.metier.dto.RoleDto;
+import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
+import com.ag2m.gestimmo.metier.entite.Role;
 import com.ag2m.gestimmo.metier.entite.Utilisateur;
+import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.UtilisateurService;
 
 /**
@@ -25,8 +29,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Autowired
 	UtilisateurDao utilisateurDao;
 	
-//	@Autowired
-//	Mapper mapper;
+	@Autowired
+	Mapper mapper;
 	
 	
 	@Transactional
@@ -53,5 +57,38 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		 userDetailBuilder.roles(roles.toArray(new String[roles.size()]));
 	       
 		 return userDetailBuilder.build();
-	}		
+	}	
+	
+	
+	@Transactional
+	public UtilisateurDto saveOrUpdate(UtilisateurDto utilisateurDto) {
+		Utilisateur utilisateur = mapper.utilisateurDtoToUtilisateur(utilisateurDto);
+		utilisateurDao.saveOrUpdate(utilisateur);
+		return mapper.utilisateurToUtilisateurDto(utilisateur);
+	}
+
+
+	@Override
+	public UtilisateurDto findById(Long id) {
+		Utilisateur user =  utilisateurDao.findById(Utilisateur.class, id);
+		return mapper.utilisateurToUtilisateurDto(user);
+	}
+
+
+	@Override
+	public List<UtilisateurDto> findAll() {
+		List<Utilisateur> results = utilisateurDao.findAll(Utilisateur.class);
+		return results.stream().map(utilisateur -> 
+				mapper.utilisateurToUtilisateurDto(utilisateur))
+				.collect(Collectors.<UtilisateurDto> toList());
+	}
+
+
+	@Override
+	public boolean delete(UtilisateurDto entite) {
+		Utilisateur user = mapper.utilisateurDtoToUtilisateur(entite);
+		return utilisateurDao.delete(user);
+	}
+	
+
 }
