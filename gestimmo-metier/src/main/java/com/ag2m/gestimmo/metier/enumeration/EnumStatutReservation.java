@@ -3,10 +3,15 @@
  */
 package com.ag2m.gestimmo.metier.enumeration;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * @author mombaye
  *
  */
+@Getter
+@AllArgsConstructor
 public enum EnumStatutReservation {
 
 	ENREGISTREE("Enregistrée"),
@@ -14,19 +19,5 @@ public enum EnumStatutReservation {
 	PAYEE("Payée"),
 	ANNULEE("Annulée");
 	
-	
 	private String statut;
-	
-	EnumStatutReservation(String statut) {
-		this.statut = statut;
-	}
-	
-	
-
-	/**
-	 * @return the type
-	 */
-	public String getStatut() {
-		return statut;
-	}
 }

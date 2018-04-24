@@ -17,11 +17,14 @@ import com.ag2m.gestimmo.metier.entite.Reservation;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 
+import lombok.extern.log4j.Log4j;
+
 /**
  * @author mombaye
  *
  */
 @Service("reservationService")
+@Log4j
 public class ReservationServiceImpl implements ReservationService {
 
 	@Autowired
@@ -32,6 +35,10 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	@Transactional(readOnly = true)
 	public ReservationDto findById(Long id) {
+		
+		//TODO Ajouter les logs
+		// ----------   Exemple d'utilisation du logger avec lombok   ---------- 
+		//
 		Reservation reservation =  reservationDao.findById(Reservation.class, id);
 		return mapper.reservationToReservationDto(reservation);
 	}

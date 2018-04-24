@@ -12,6 +12,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author mombaye
  *
@@ -19,6 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="BIEN")
+@Getter @Setter @ToString(exclude= {"appartements"})
 public class Bien extends Identifiant<Long> implements Serializable{
 
 	private static final long serialVersionUID = -6162562418965591611L;
@@ -44,104 +49,5 @@ public class Bien extends Identifiant<Long> implements Serializable{
 	
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="bien")
 	private List<Appartement> appartements;
-	
-	/**
-	 * @return the libelle
-	 */
-	public String getLibelle() {
-		return libelle;
-	}
-
-	/**
-	 * @param libelle the libelle to set
-	 */
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
-
-	/**
-	 * @return the adresse
-	 */
-	public String getAdresse() {
-		return adresse;
-	}
-
-	/**
-	 * @param adresse the adresse to set
-	 */
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
-	}
-
-	/**
-	 * @return the appartements
-	 */
-	public List<Appartement> getAppartements() {
-		return appartements;
-	}
-
-	/**
-	 * @param appartements the appartements to set
-	 */
-	public void setAppartements(List<Appartement> appartements) {
-		this.appartements = appartements;
-	}
-
-	/**
-	 * @return the complementAdresse
-	 */
-	public String getComplementAdresse() {
-		return complementAdresse;
-	}
-
-	/**
-	 * @param complementAdresse the complementAdresse to set
-	 */
-	public void setComplementAdresse(String complementAdresse) {
-		this.complementAdresse = complementAdresse;
-	}
-
-	/**
-	 * @return the codePostal
-	 */
-	public Integer getCodePostal() {
-		return codePostal;
-	}
-
-	/**
-	 * @param codePostal the codePostal to set
-	 */
-	public void setCodePostal(Integer codePostal) {
-		this.codePostal = codePostal;
-	}
-
-	/**
-	 * @return the ville
-	 */
-	public String getVille() {
-		return ville;
-	}
-
-	/**
-	 * @param ville the ville to set
-	 */
-	public void setVille(String ville) {
-		this.ville = ville;
-	}
-
-	/**
-	 * @return the pays
-	 */
-	public String getPays() {
-		return pays;
-	}
-
-	/**
-	 * @param pays the pays to set
-	 */
-	public void setPays(String pays) {
-		this.pays = pays;
-	}
-
 	
 }

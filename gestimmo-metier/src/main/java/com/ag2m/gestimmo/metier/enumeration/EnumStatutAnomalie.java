@@ -1,10 +1,15 @@
 package com.ag2m.gestimmo.metier.enumeration;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 
  * @author mombaye
  *
  */
+@Getter
+@AllArgsConstructor
 public enum EnumStatutAnomalie {
 
 	DECLAREE("Déclarée"),
@@ -12,19 +17,6 @@ public enum EnumStatutAnomalie {
 	REPAREE("Réparée"),
 	ANNULEE("Annulée");
 	
-	
 	private String statut;
 	
-	EnumStatutAnomalie(String statut) {
-		this.statut = statut;
-	}
-	
-	
-
-	/**
-	 * @return the type
-	 */
-	public String getStatut() {
-		return statut;
-	}
 }

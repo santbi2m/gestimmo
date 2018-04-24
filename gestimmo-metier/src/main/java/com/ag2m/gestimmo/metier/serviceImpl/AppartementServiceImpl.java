@@ -14,11 +14,14 @@ import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 
+import lombok.extern.log4j.Log4j;
+
 /**
  * @author mombaye
  *
  */
 @Service("appartementService")
+@Log4j
 public class AppartementServiceImpl implements AppartementService{
 
 	@Autowired
@@ -29,6 +32,10 @@ public class AppartementServiceImpl implements AppartementService{
 	
 	@Transactional(readOnly = true)
 	public AppartementDto findById(Long id) {
+		
+		//TODO Ajouter les logs
+		// ----------   Exemple d'utilisation du logger avec lombok   ---------- 
+		//
 		Appartement appartement = appartementDao.findById(Appartement.class, id);
 		return mapper.appartementToAppartementDto(appartement);
 	}

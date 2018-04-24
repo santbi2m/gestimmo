@@ -1,10 +1,15 @@
 package com.ag2m.gestimmo.metier.enumeration;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 
  * @author mombaye
  *
  */
+@Getter
+@AllArgsConstructor
 public enum EnumTypeAppartement {
 
 	T1("T1"),
@@ -18,19 +23,4 @@ public enum EnumTypeAppartement {
 	
 	
 	private String type;
-	
-	EnumTypeAppartement(String type) {
-		this.type = type;
-	}
-	
-	
-
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-	
-	
 }

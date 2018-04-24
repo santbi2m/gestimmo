@@ -11,33 +11,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 
 /**
  * @author mombaye
  *
  */
 @MappedSuperclass
+@Getter @Setter @ToString
 public abstract class Identifiant<ID extends Serializable> {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private ID id;
-	
 
-	/**
-	 * @return the id
-	 */
-	public ID getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(ID id) {
-		this.id = id;
-	}
-
-	
 }

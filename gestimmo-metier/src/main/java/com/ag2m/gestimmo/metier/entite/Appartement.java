@@ -17,12 +17,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author mombaye
  *
  */
 @Entity
 @Table(name="APPARTEMENT")
+@Getter @Setter
+@ToString(exclude= {"reservations", "anomalies"})
 public class Appartement extends Identifiant<Long> implements Serializable {
 
 	private static final long serialVersionUID = -4633161879749573165L;
@@ -46,77 +52,5 @@ public class Appartement extends Identifiant<Long> implements Serializable {
 	
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="appartement")
 	private List<Anomalie> anomalies;
-	
-
-	/**
-	 * @return the libelle
-	 */
-	public String getLibelle() {
-		return libelle;
-	}
-
-	/**
-	 * @param libelle the libelle to set
-	 */
-	public void setLibelle(String libelle) {
-		this.libelle = libelle;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the bien
-	 */
-	public Bien getBien() {
-		return bien;
-	}
-
-	/**
-	 * @param bien the bien to set
-	 */
-	public void setBien(Bien bien) {
-		this.bien = bien;
-	}
-
-	/**
-	 * @return the reservations
-	 */
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-
-	/**
-	 * @param reservations the reservations to set
-	 */
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-
-	/**
-	 * @return the anomalies
-	 */
-	public List<Anomalie> getAnomalies() {
-		return anomalies;
-	}
-
-	/**
-	 * @param anomalies the anomalies to set
-	 */
-	public void setAnomalies(List<Anomalie> anomalies) {
-		this.anomalies = anomalies;
-	}
-
 	
 }

@@ -14,6 +14,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 
 /**
  * @author mombaye
@@ -21,6 +25,7 @@ import org.joda.time.LocalDateTime;
  */
 @Entity
 @Table(name="ANOMALIE")
+@Getter @Setter @ToString
 public class Anomalie extends Identifiant<Long> implements Serializable {
 
 	private static final long serialVersionUID = -177201689003582371L;
@@ -49,102 +54,4 @@ public class Anomalie extends Identifiant<Long> implements Serializable {
 	@Column(name="commentaire")
 	private String commentaire;
 
-	/**
-	 * @return the titre
-	 */
-	public String getTitre() {
-		return titre;
-	}
-
-	/**
-	 * @param titre the titre to set
-	 */
-	public void setTitre(String titre) {
-		this.titre = titre;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the statut
-	 */
-	public String getStatut() {
-		return statut;
-	}
-
-	/**
-	 * @param statut the statut to set
-	 */
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
-
-	/**
-	 * @return the dateOuverture
-	 */
-	public LocalDateTime getDateOuverture() {
-		return dateOuverture;
-	}
-
-	/**
-	 * @param dateOuverture the dateOuverture to set
-	 */
-	public void setDateOuverture(LocalDateTime dateOuverture) {
-		this.dateOuverture = dateOuverture;
-	}
-
-	/**
-	 * @return the dateTraitement
-	 */
-	public LocalDateTime getDateTraitement() {
-		return dateTraitement;
-	}
-
-	/**
-	 * @param dateTraitement the dateTraitement to set
-	 */
-	public void setDateTraitement(LocalDateTime dateTraitement) {
-		this.dateTraitement = dateTraitement;
-	}
-
-	/**
-	 * @return the appartement
-	 */
-	public Appartement getAppartement() {
-		return appartement;
-	}
-
-	/**
-	 * @param appartement the appartement to set
-	 */
-	public void setAppartement(Appartement appartement) {
-		this.appartement = appartement;
-	}
-
-	/**
-	 * @return the commentaire
-	 */
-	public String getCommentaire() {
-		return commentaire;
-	}
-
-	/**
-	 * @param commentaire the commentaire to set
-	 */
-	public void setCommentaire(String commentaire) {
-		this.commentaire = commentaire;
-	}
-	
 }

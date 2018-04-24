@@ -14,7 +14,10 @@ import com.ag2m.gestimmo.metier.entite.Anomalie;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.AnomalieService;
 
+import lombok.extern.log4j.Log4j;
+
 @Service("anomalieService")
+@Log4j
 public class AnomalieServiceImpl implements AnomalieService {
 
 	@Autowired
@@ -25,6 +28,11 @@ public class AnomalieServiceImpl implements AnomalieService {
 	
 	@Transactional(readOnly = true)
 	public AnomalieDto findById(Long id) {
+		
+		//TODO Ajouter les logs
+		// ----------   Exemple d'utilisation du logger avec lombok   ---------- 
+		//		log.info(message);
+		
 		Anomalie anomalie =  anomalieDao.findById(Anomalie.class, id);
 		AnomalieDto anomalieDto = mapper.anomalieToAnomalieDto(anomalie);
 		return anomalieDto;

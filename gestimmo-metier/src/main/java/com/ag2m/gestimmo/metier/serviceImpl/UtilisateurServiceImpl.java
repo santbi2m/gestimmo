@@ -19,11 +19,14 @@ import com.ag2m.gestimmo.metier.entite.Utilisateur;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.UtilisateurService;
 
+import lombok.extern.log4j.Log4j;
+
 /**
  * @author mombaye
  *
  */
 @Service("utilisateurService")
+@Log4j
 public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Autowired
@@ -37,6 +40,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
+		
+		//TODO Ajouter les logs
+		// ----------   Exemple d'utilisation du logger avec lombok   ---------- 
+		//
+		
 		Utilisateur utilisateur = utilisateurDao.findByUsername(username);
 		
 		 if (utilisateur == null) {
@@ -57,7 +65,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		 userDetailBuilder.roles(roles.toArray(new String[roles.size()]));
 	       
 		 return userDetailBuilder.build();
-	}	
+	}		
 	
 	
 	@Transactional

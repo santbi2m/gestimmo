@@ -13,11 +13,14 @@ import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.BienService;
 
+import lombok.extern.log4j.Log4j;
+
 /**
  * @author mombaye
  *
  */
 @Service("bienService")
+@Log4j
 public class BienServiceImpl implements BienService {
 
 	@Autowired
@@ -28,6 +31,10 @@ public class BienServiceImpl implements BienService {
 	
 	@Transactional(readOnly = true)
 	public BienDto findById(Long id) {
+		
+		//TODO Ajouter les logs
+		// ----------   Exemple d'utilisation du logger avec lombok   ---------- 
+		//
 		Bien bien = bienDao.findById(Bien.class, id);
 		BienDto bienDto = mapper.bienToBienDto(bien);
 		return bienDto;
