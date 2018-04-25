@@ -35,7 +35,6 @@
 		      <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 		      <prop key="hibernate.show_sql">true</prop>
 		      <prop key="hiernate.enable_lazy_load_no_trans">true</prop>
-		      <prop key="hibernate.default_schema">gestimmo</prop>
 		      <prop key="format_sql">true</prop>
 		      <prop key="use_sql_comments">true</prop>
 	      </props>
@@ -45,15 +44,15 @@
    
    <bean id="dataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource" >
       <property name = "driverClassName" value = "org.h2.Driver" />
-       <property name = "url" value = "jdbc:h2:mem:gestimmo;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;" />
+       <property name = "url" value = "jdbc:h2:mem:gestimmo;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=FALSE" />
         <property name = "username" value = "root" />
         <property name = "password" value = "" />
    </bean>
    
-   <jdbc:embedded-database id="dataSource" type="H2">
-	    <jdbc:script location="classpath:create-db.sql" />
+   <jdbc:initialize-database data-source="dataSource">
+	    <jdbc:script location="classpath:/create-db.sql" />
 <!-- 	    <jdbc:script location="classpath:insert-data.sql" />  A décommenter si besoin. Pour mettre un jeu de donnees avec des insert" dans insert-data.sql -->
-	</jdbc:embedded-database>
+	</jdbc:initialize-database>
    
    <bean id="transactionManager" class = "org.springframework.orm.hibernate5.HibernateTransactionManager">
       <property name = "sessionFactory" ref = "sessionFactory" />

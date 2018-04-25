@@ -1,7 +1,7 @@
 --
 -- Base de données :  `gestimmo`
 --
-CREATE SCHEMA IF NOT EXISTS gestimmo;
+
 -- --------------------------------------------------------
 
 --
