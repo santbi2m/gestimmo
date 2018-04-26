@@ -5,11 +5,16 @@ package com.ag2m.gestimmo.metier.dto;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author mombaye
  * Dto representant le role d'un 
  * utilisateur
  */
+@Getter @Setter @ToString
 public class RoleDto extends IdentifiantDto implements Serializable {
 
 	private static final long serialVersionUID = -5129818836381313815L;
@@ -19,36 +24,4 @@ public class RoleDto extends IdentifiantDto implements Serializable {
 	private UtilisateurDto utilisateur;
 
 
-	/**
-	 * @return the role
-	 */
-	public String getRole() {
-		return role;
-	}
-
-
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-
-	/**
-	 * @return the utilisateur
-	 */
-	public UtilisateurDto getUtilisateur() {
-		return utilisateur;
-	}
-
-
-	/**
-	 * @param utilisateur the utilisateur to set
-	 */
-	public void setUtilisateur(UtilisateurDto utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-	
-	
 }
