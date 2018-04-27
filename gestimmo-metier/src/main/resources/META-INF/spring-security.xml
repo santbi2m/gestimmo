@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/security
+   http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<context:component-scan base-package="com.ag2m.gestimmo" />
+	<!-- <bean id="utilisateurServiceImpl" class="com.ag2m.gestimmo.metier.serviceImpl.UtilisateurServiceImpl"> 
+		</bean> -->
+	<security:http auto-config="true">
+
+		<security:intercept-url pattern="/**"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/**"
+			access="hasRole('ROLE_USER')" />
+		<security:intercept-url pattern="/**"
+			access="hasRole('ROLE_API')" />
+
+	</security:http>
+	<!-- Use an embedded LDAP server. We need to declare the location of the 
+		LDIF file We also need to customize the root attribute default is "dc=springframework,dc=org" -->
+	 <security:ldap-server id="ldapServer" ldif="classpath:users.ldif"
+		port="39999" root="dc=gestionimmo,dc=com" /> 
+		<!-- 
+		<security:ldap-server url="ldap://localhost:10389"
+       root="dc=gestionimmo,dc=com"   /> -->
+		
+
+	<!-- Embedded LDAP server is not a best practice for production enviornment 
+		you can define ldap by using url attribute -->
+	<!-- <ldap-server id="ldapServer" url="ldap://172.16.2.119:389" manager-dn="CN=SBMAdminQA,OU=Service 
+		Accounts,OU=Privilege User Account,DC=corp,DC=exlservice,DC=com" manager-password="Exl12345" 
+		/> -->
+
+	<!-- For authentication: user-search-filter: the attribute name that contains 
+		the user name user-search-base: the base path where to find user information 
+		For authorization: group-search-filter: the attribute name that contains 
+		the full dn of a user group-search-base: the base path where to find role 
+		information group-role-attribute: the attribute name that contains the role 
+		type role-prefix: the prefix to be added when retrieving role values For 
+		server access: manager-dn: the full dn of the person that has access to an 
+		LDAP server manager-password: the password of the person that has access 
+		to an LDAP server -->
+	<security:authentication-manager>
+		<security:ldap-authentication-provider
+			user-search-filter="(uid={0})" user-search-base="ou=users"
+			group-search-filter="(uniqueMember={0})" group-search-base="ou=groups"
+			group-role-attribute="cn" role-prefix="ROLE_">
+		</security:ldap-authentication-provider>
+	</security:authentication-manager>
+
+</beans>

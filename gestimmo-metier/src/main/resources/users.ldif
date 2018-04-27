@@ -1,0 +1,77 @@
+version: 1
+
+dn: dc=gestionimmo,dc=com
+objectClass: organization
+objectClass: extensibleObject
+objectClass: top
+o: gestionimmo
+
+dn: ou=users,dc=gestionimmo,dc=com
+objectClass: extensibleObject
+objectClass: organizationalUnit
+objectClass: top
+ou: users
+
+dn: ou=groups,dc=gestionimmo,dc=com
+objectClass: extensibleObject
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: cn=User,ou=groups,dc=gestionimmo,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: User
+uniqueMember: cn=Normal User,ou=users,dc=gestionimmo,dc=com
+uniqueMember: cn=Api User,ou=users,dc=gestionimmo,dc=com
+uniqueMember: cn=Admin User,ou=users,dc=gestionimmo,dc=com
+
+dn: cn=Admin,ou=groups,dc=gestionimmo,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: Admin
+uniqueMember: cn=Admin User,ou=users,dc=gestionimmo,dc=com
+
+dn: cn=Api,ou=groups,dc=gestionimmo,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: Api
+uniqueMember: cn=Api User,ou=users,dc=gestionimmo,dc=com
+uniqueMember: cn=Admin User,ou=users,dc=gestionimmo,dc=com
+
+dn: cn=User,ou=groups,dc=gestionimmo,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: User
+uniqueMember: cn=Normal User,ou=users,dc=gestionimmo,dc=com
+uniqueMember: cn=Admin User,ou=users,dc=gestionimmo,dc=com
+
+dn: cn=Normal User,ou=users,dc=gestionimmo,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: Normal User
+sn: Normal
+uid: user
+userPassword:: cGFzcw==
+
+dn: cn=Admin User,ou=users,dc=gestionimmo,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: Admin User
+sn: Admin
+uid: adminuser
+userPassword:: cGFzcw==
+
+dn: cn=Api User,ou=users,dc=gestionimmo,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: top
+cn: Api User
+sn: Api
+uid: apiuser
+userPassword:: cGFzcw==

@@ -1,52 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ag2m.immo</groupId>
-  <artifactId>gestimmo</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<groupId>com.ag2m.immo</groupId>
+	<artifactId>gestimmo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-	
-  <name>gestimmo</name>
 
-  <properties>
-     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-     <junit-version>4.12</junit-version>
-     <spring-version>5.0.1.RELEASE</spring-version>
-     <log4j-version>1.2.17</log4j-version>
-     <slf4j-version>1.5.8</slf4j-version>
-     <mysql-connector-version>8.0.8-dmr</mysql-connector-version>
-     <hibernate-core-version>5.2.12.Final</hibernate-core-version>
-     <java-version>1.8</java-version>
-     <maven-version>3.7.0</maven-version>
-     <dbcp-version>2.1.1</dbcp-version>
-     <joda-version>2.9.9</joda-version>
-     <userType-version>6.0.1.GA</userType-version>
-     <jackson-version>2.9.3</jackson-version>
-     <mapstruct-version>1.2.0.Final</mapstruct-version>
-     <ehcache-version>2.0.0</ehcache-version>
+	<name>gestimmo</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<junit-version>4.12</junit-version>
+		<spring-version>5.0.1.RELEASE</spring-version>
+		<log4j-version>1.2.17</log4j-version>
+		<slf4j-version>1.5.8</slf4j-version>
+		<java-version>1.8</java-version>
+		<maven-version>3.7.0</maven-version>
+		<dbcp-version>2.1.1</dbcp-version>
+		<joda-version>2.9.9</joda-version>
+		<userType-version>6.0.1.GA</userType-version>
+		<jackson-version>2.9.3</jackson-version>
+		<mapstruct-version>1.2.0.Final</mapstruct-version>
+		<ehcache-version>2.0.0</ehcache-version>
      <lombok-version>1.16.20</lombok-version>
      <harmcrest-version>1.3</harmcrest-version>
      <h2-version>1.4.194</h2-version>
-  </properties>
+	</properties>
 
 	<build>
-	 <pluginManagement>
-	    <plugins>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-compiler-plugin</artifactId>
-	        <version>${maven-version}</version>
-	        <configuration>
-	          <source>${java-verison}</source>
-	          <target>${java-verison}</target>
-	           <annotationProcessorPaths>
-	            <path>
-	                <groupId>org.mapstruct</groupId>
-	                <artifactId>mapstruct-processor</artifactId>
-	                <version>${mapstruct-version}</version>
-	            </path>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-version}</version>
+					<configuration>
+						<source>${java-verison}</source>
+						<target>${java-verison}</target>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.mapstruct</groupId>
+								<artifactId>mapstruct-processor</artifactId>
+								<version>${mapstruct-version}</version>
+							</path>
 	            
 	             <!-- the annotation processor paths for lombok -->
                 <path>
@@ -55,93 +54,92 @@
 				    <version>${lombok-version}</version>
 				</path>
                         
-       		 </annotationProcessorPaths>
-	        </configuration>
-	      </plugin>
-	    </plugins>
-	   </pluginManagement>
- 	</build>
-  
+						</annotationProcessorPaths>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
 	<!-- Listes des dépendances du projets -->
-  <dependencies>
-  
-	  <dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-core</artifactId>
-	    <version>${spring-version}</version>
-	 	</dependency>
-		 
-		 <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+	<dependencies>
+
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-context</artifactId>
-		    <version>${spring-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring-version}</version>
 		</dependency>
-	
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-beans</artifactId>
-		    <version>${spring-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring-version}</version>
 		</dependency>
-	
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-test</artifactId>
-		    <version>${spring-version}</version>
-		    <scope>test</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring-version}</version>
+			<scope>test</scope>
 		</dependency>
-	
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aop</artifactId>
-		    <version>${spring-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring-version}</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-core</artifactId>
-		     <version>${spring-version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-version}</version>
 		</dependency>
-		
-		 <dependency>
-	        <groupId>org.springframework.security</groupId>
-	        <artifactId>spring-security-config</artifactId>
-	        <version>${spring-version}</version>
-        </dependency>
-		
-		 <dependency>
-		      <groupId>org.springframework.security</groupId>
-		      <artifactId>spring-security-web</artifactId>
-		      <version>${spring-version}</version>
-   		 </dependency>
 
-		  <dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
 		  	<groupId>org.springframework</groupId>
 		  	<artifactId>spring-orm</artifactId>
 		  	<version>${spring-version}</version>
-		  </dependency>
-		  
-		  <dependency>
-		  	<groupId>org.springframework</groupId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
 		  	<artifactId>spring-tx</artifactId>
-		  	<version>${spring-version}</version>
-		  </dependency>
-		  
-		  <dependency>
+			<version>${spring-version}</version>
+		</dependency>
+
+		<dependency>
 			 <groupId>org.springframework</groupId>
 			   <artifactId>spring-webmvc</artifactId>
 			 <version>${spring-version}</version>
 		</dependency>
 		  
-		  <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
 		<dependency>
-			    <groupId>org.springframework</groupId>
-			    <artifactId>spring-context-support</artifactId>
-			    <version>${spring-version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring-version}</version>
 		</dependency>
 		  
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
@@ -153,78 +151,78 @@
 		
 		<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
 		<dependency>
-		    <groupId>joda-time</groupId>
-		    <artifactId>joda-time</artifactId>
-		    <version>${joda-version}</version>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-version}</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-simple</artifactId>
-		    <version>${slf4j-version}</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<groupId>org.slf4j</groupId>
-		    		<artifactId>slf4j-api</artifactId>
-		    	</exclusion>
-		    </exclusions>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
-		  <!-- https://mvnrepository.com/artifact/org.jadira.usertype/usertype.core -->
+
+		<!-- https://mvnrepository.com/artifact/org.jadira.usertype/usertype.core -->
 		<dependency>
-		    <groupId>org.jadira.usertype</groupId>
-		    <artifactId>usertype.core</artifactId>
-		    <version>${userType-version}</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<groupId>org.slf4j</groupId>
-		    		<artifactId>slf4j-api</artifactId>
-		    	</exclusion>
-		    </exclusions>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+			<version>${userType-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-log4j12</artifactId>
-		    <version>${slf4j-version}</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<groupId>org.slf4j</groupId>
-		    		<artifactId>slf4j-api</artifactId>
-		    	</exclusion>
-		    </exclusions>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>${jackson-version}</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-version}</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-hibernate5 -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.datatype</groupId>
-		    <artifactId>jackson-datatype-hibernate5</artifactId>
-		    <version>${jackson-version}</version>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate5</artifactId>
+			<version>${jackson-version}</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>com.fasterxml.jackson.datatype</groupId>
-		  <artifactId>jackson-datatype-joda</artifactId>
-		  <version>${jackson-version}</version>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-joda</artifactId>
+			<version>${jackson-version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
 		<dependency>
-		    <groupId>net.sf.ehcache</groupId>
-		    <artifactId>ehcache</artifactId>
-		    <version>${ehcache-version}</version>
-		    <type>pom</type>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${ehcache-version}</version>
+			<type>pom</type>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
@@ -232,12 +230,48 @@
 		    <version>${lombok-version}</version>
 		    <scope>provided</scope>
 		</dependency>
+
+
+
+<!-- Parties LDAP -->
+		<dependency>
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-core</artifactId>
+			<version>2.3.1.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.directory.server</groupId>
+			<artifactId>apacheds-all</artifactId>
+			<version>1.5.5</version>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>org.apache.directory.server</groupId>
+			<artifactId>apacheds-server-jndi</artifactId>
+			<version>1.5.5</version>
+		</dependency> -->
+
 		
-  </dependencies>
-  
-	<!--   differents modules du projet -->
+	</dependencies>
+
+	<!-- differents modules du projet -->
 	<modules>
-	  	<module>gestimmo-metier</module>
-    	<module>gestimmo-webapp</module>
-  </modules>
+		<module>gestimmo-metier</module>
+		<module>gestimmo-webapp</module>
+	</modules>
 </project>
