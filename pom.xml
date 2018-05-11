@@ -17,6 +17,8 @@
 		<spring-version>5.0.1.RELEASE</spring-version>
 		<log4j-version>1.2.17</log4j-version>
 		<slf4j-version>1.5.8</slf4j-version>
+		<mysql-connector-version>8.0.8-dmr</mysql-connector-version>
+     	<hibernate-core-version>5.2.12.Final</hibernate-core-version> 
 		<java-version>1.8</java-version>
 		<maven-version>3.7.0</maven-version>
 		<dbcp-version>2.1.1</dbcp-version>
@@ -260,12 +262,13 @@
 			<version>1.5.5</version>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>org.apache.directory.server</groupId>
-			<artifactId>apacheds-server-jndi</artifactId>
-			<version>1.5.5</version>
-		</dependency> -->
-
+		
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.9.5 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.9.5</version>
+		</dependency>
 		
 	</dependencies>
 
