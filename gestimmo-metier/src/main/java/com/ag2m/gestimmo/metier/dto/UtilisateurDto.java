@@ -30,5 +30,11 @@ public class UtilisateurDto extends IdentifiantDto implements Serializable {
 	private boolean enabled;
 	
 	private List<RoleDto> roles;
+	
+	private String nom;
+	
+	private String prenom;
+	
+	private String adresseEmail;
 
 }

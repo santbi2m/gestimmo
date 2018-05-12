@@ -6,7 +6,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -44,10 +46,28 @@ public class Reservation extends Identifiant<Long> implements Serializable {
 	@Column(name="avec_petit_dej")
 	private Boolean petitDej;
 	
+	@Column(name="statut_reservation", nullable=false)
+	private String statut;
+	
+	@Column(name="prix", nullable=false)
+	private Double prix;
+	
+	@Column(name="date_creation", nullable=false)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	private LocalDateTime dateCreation;
+	
+	@Column(name="date_annulation")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	private LocalDateTime dateAnnulation;	
+	
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="reservations")
 	private List<Appartement> appartements;
 	
-	@Column(name="statut_reservation", nullable=false)
-	private String statut;
-
+	@ManyToOne
+	@JoinColumn(name="id_client", nullable=false)
+	private Client client;
+	
+	@ManyToOne
+	@JoinColumn(name="id_facture")
+	private Facture facture;
 }

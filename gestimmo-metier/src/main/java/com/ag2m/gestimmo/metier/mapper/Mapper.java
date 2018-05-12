@@ -6,15 +6,21 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
+import com.ag2m.gestimmo.metier.dto.ClientDto;
+import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.dto.RoleDto;
 import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
+import com.ag2m.gestimmo.metier.entite.Adresse;
 import com.ag2m.gestimmo.metier.entite.Anomalie;
 import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.entite.Bien;
+import com.ag2m.gestimmo.metier.entite.Client;
+import com.ag2m.gestimmo.metier.entite.Facture;
 import com.ag2m.gestimmo.metier.entite.Reservation;
 import com.ag2m.gestimmo.metier.entite.Role;
 import com.ag2m.gestimmo.metier.entite.Utilisateur;
@@ -75,8 +81,9 @@ public interface Mapper {
 			 }
 			        
 		 }
-
-	 	/**
+	 
+	 
+	 /**
 		 *  Map un Objet Role en RoleDto
 		 *  
 		 * @param role
@@ -92,6 +99,211 @@ public interface Mapper {
 		 */
 		Role roleDtoToRole(RoleDto roleDto);
 	 
+		
+		/**
+		 * Map un Objet Client en ClientDto
+		 * Ignore le mapping de Client dans les objets Reservations afin d'éviter 
+		 * un mapping cyclique.
+		 * Ce mapping sera géré par processReservationForClientDto
+		 * 
+		 * @param client
+		 * @return
+		 */
+		@Mapping(target = "reservations", ignore = true)
+		@Mapping(target = "factures", ignore = true)
+		public abstract ClientDto clientToClientDto(Client client);
+		
+		/**
+		 * Gère le mapping de l'objet Client contenu dans Reservation.
+		 * Elle sera appelée par clientToClientDto
+		 * 
+		 * @param clientDto
+		 */
+		 @AfterMapping
+		default void processReservationForClientDto(@MappingTarget ClientDto clientDto) {
+			 
+			 //Mapping des réservations
+			 if(clientDto.getReservations() != null) {
+			 		
+			 		clientDto.getReservations().forEach(resa -> resa.setClient(clientDto));
+			 	}
+			 
+			//Mapping des factures
+			 if(clientDto.getFactures() != null) {
+			 		
+			 		clientDto.getFactures().forEach(facture -> facture.setClient(clientDto));
+			 	}
+		  }
+		
+	 	/**
+		 * Map un Objet ClientDto en Client
+		 * Ignore le mapping de ClientDto dans les objets ReservationDto afin d'éviter 
+		 * un mapping cyclique.
+		 * Ce mapping sera géré par processReservationForClient
+		 * 
+		 * @param utilisateur
+		 * @return
+		 */
+		@Mapping(target = "reservations", ignore = true)
+		@Mapping(target = "factures", ignore = true)
+		Client clientDtoToClient(ClientDto client);
+		
+		/**
+		 * Gère le mapping de l'objet Client contenu dans Reservation.
+		 * Elle sera appelée par clientToClientDto
+		 * 
+		 * @param utilisateur
+		 */
+		 @AfterMapping
+			default void processReservationForClient(@MappingTarget Client client) {
+			 //Mapping des réservations
+				 if(client.getReservations() != null) {
+					 client.getReservations().forEach(resa -> resa.setClient(client));
+				 }
+				 
+			 //Mapping des factures
+			 if(client.getFactures() != null) {
+				 client.getFactures().forEach(facture -> facture.setClient(client));
+			 }
+				        
+			 }
+		 
+			/**
+			 * Map un Objet Adresse en AdresseDto
+			 * Ignore le mapping de Adresse dans les objets Client, Facture et Bien afin d'éviter 
+			 * un mapping cyclique.
+			 * Ce mapping sera géré par processClientAndBienForAdressetDto
+			 * 
+			 * @param adresse
+			 * @return
+			 */
+			@Mapping(target = "clients", ignore = true)
+			@Mapping(target = "biens", ignore = true)
+			@Mapping(target = "factures", ignore = true)
+			public abstract AdresseDto adresseToAdresseDto(Adresse adresse);
+			
+			/**
+			 * Gère le mapping de l'objet Adresse contenu dans Client Facture et Bien.
+			 * Elle sera appelée par adresseToAdresseDto
+			 * 
+			 * @param adresseDto
+			 */
+			 @AfterMapping
+			default void processClientAndBienForAdressetDto(@MappingTarget AdresseDto adresseDto) {
+				 //Mapper adresse dans chaque client	
+				 if(adresseDto.getClients()!= null) {
+				 		
+				 		adresseDto.getClients().forEach(adresse -> adresse.setAdresse(adresseDto));
+				 	}
+				 
+				 //Mapper adresse dans chaque Bien
+				 if(adresseDto.getBiens()!= null) {
+				 		
+				 		adresseDto.getBiens().forEach(bien -> bien.setAdresse(adresseDto));
+				 	}
+				 
+				//Mapper adresse dans chaque Facture
+				 if(adresseDto.getFactures()!= null) {
+				 		
+				 		adresseDto.getFactures().forEach(facture -> facture.setAdresseFacturation(adresseDto));
+				 	}
+			  }
+			
+		 	/**
+			 * Map un Objet AdresseDto en Adresse
+			 * Ignore le mapping de AdresseDto dans les objets ClientDto Fature et BienDto afin d'éviter 
+			 * un mapping cyclique.
+			 * Ce mapping sera géré par processClientAndBienForAdresse
+			 * 
+			 * @param adresse
+			 * @return
+			 */
+			 @Mapping(target = "clients", ignore = true)
+			 @Mapping(target = "biens", ignore = true)
+			 @Mapping(target = "factures", ignore = true)
+			 Adresse adresseDtoToAdresse(AdresseDto adresse);
+			
+			/**
+			 * Gère le mapping de l'objet Adresse contenu dans Client Facture et Bien.
+			 * Elle sera appelée par adresseToAdresseDto
+			 * 
+			 * @param adresse
+			 */
+			 @AfterMapping
+				default void processClientAndBienForAdresse(@MappingTarget Adresse adresse) {
+				
+				 //Mapper adresse dans chaque client	
+					 if(adresse.getClients() != null) {
+						 adresse.getClients().forEach(adr -> adr.setAdresse(adresse));
+					 }
+					 
+				//Mapper adresse dans chaque Bien
+				 if(adresse.getBiens()!= null) {
+				 		
+				 		adresse.getBiens().forEach(bien -> bien.setAdresse(adresse));
+				 	}
+				 
+				//Mapper adresse dans chaque Facture
+				 if(adresse.getFactures()!= null) {
+				 		
+				 		adresse.getFactures().forEach(facture -> facture.setAdresseFacturation(adresse));
+				 	}
+				 }
+	
+			 
+			/**
+			 * Map un Objet Facture en FactureDto
+			 * Ignore le mapping de Facture dans les objets Reservation afin d'éviter 
+			 * un mapping cyclique.
+			 * Ce mapping sera géré par processReservationForFactureDto
+			 * 
+			 * @param facture
+			 * @return
+			 */
+			@Mapping(target = "reservations", ignore = true)
+			public abstract FactureDto factureToFactureDto(Facture facture);
+			
+			/**
+			 * Gère le mapping de l'objet Facture contenu dans Reservation.
+			 * Elle sera appelée par factureToFactureDto
+			 * 
+			 * @param factureDto
+			 */
+			 @AfterMapping
+			default void processReservationForFactureDto(@MappingTarget FactureDto factureDto) {
+				 	if(factureDto.getReservations() != null) {
+				 		
+				 		factureDto.getReservations().forEach(resa -> resa.setFacture(factureDto));
+				 		
+				 	}
+			  }
+			
+		 	/**
+			 * Map un Objet FactureDto en Facture
+			 * Ignore le mapping de FactureDto dans les objets ReservationDto afin d'éviter 
+			 * un mapping cyclique.
+			 * Ce mapping sera géré par processReservationForFacture
+			 * 
+			 * @param facture
+			 * @return
+			 */
+			@Mapping(target = "reservations", ignore = true)
+			Facture factureDtoToFacture(FactureDto facture);
+			
+			/**
+			 * Gère le mapping de l'objet Facture contenu dans Reservation.
+			 * Elle sera appelée par factureToFactureDto
+			 * 
+			 * @param facture
+			 */
+			 @AfterMapping
+				default void processReservationForFacture(@MappingTarget Facture facture) {
+					 if(facture.getReservations() != null) {
+						 facture.getReservations().forEach(resa -> resa.setFacture(facture));
+					 }
+					        
+				 }
+			 
 	/**
 	 * Map un Objet Bien en BienDto
 	 * Ignore le mapping de Bien dans les objets Appartement afin d'éviter 

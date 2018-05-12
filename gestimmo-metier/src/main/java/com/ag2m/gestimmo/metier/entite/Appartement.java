@@ -24,6 +24,8 @@ import lombok.ToString;
 /**
  * @author mombaye
  *
+ * Classe représentant un appartement
+ * dans un bien
  */
 @Entity
 @Table(name="APPARTEMENT")
@@ -43,6 +45,9 @@ public class Appartement extends Identifiant<Long> implements Serializable {
 	@JoinColumn(name="id_bien", nullable=false)
 	private Bien bien;
 	
+	@Column(name="prix", nullable=false)
+	private Double prix;
+
 	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinTable(name = "assoc_resa_appart", joinColumns = {
 			@JoinColumn(name = "id_appartement", nullable = false, updatable = false) },
@@ -52,5 +57,6 @@ public class Appartement extends Identifiant<Long> implements Serializable {
 	
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="appartement")
 	private List<Anomalie> anomalies;
+	
 	
 }

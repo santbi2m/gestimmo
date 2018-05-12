@@ -10,21 +10,25 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
+import com.ag2m.gestimmo.metier.dto.ClientDto;
+import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.dto.RoleDto;
 import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
+import com.ag2m.gestimmo.metier.service.AdresseService;
 import com.ag2m.gestimmo.metier.service.AnomalieService;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 import com.ag2m.gestimmo.metier.service.BienService;
+import com.ag2m.gestimmo.metier.service.ClientService;
+import com.ag2m.gestimmo.metier.service.FactureService;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 import com.ag2m.gestimmo.metier.service.RoleService;
 import com.ag2m.gestimmo.metier.service.UtilisateurService;
@@ -64,6 +68,15 @@ public abstract class AbstractCommonTest {
 	protected RoleService roleService;
 	
 	@Autowired
+	protected AdresseService adresseService;
+	
+	@Autowired
+	protected ClientService clientService;
+	
+	@Autowired
+	protected FactureService factureService;
+	
+	@Autowired
 	protected BCryptPasswordEncoder passwordEncoder;
 	
 	
@@ -72,40 +85,120 @@ public abstract class AbstractCommonTest {
 	 * 
 	 * @param libelle
 	 * @param adresse
-	 * @param complementAdresse
-	 * @param ville
-	 * @param codePostal
-	 * @param pays
 	 * @return
 	 */
-	protected BienDto createBien(String libelle, String adresse, String complementAdresse, 
-			String ville, Integer codePostal, String pays) {
+	protected BienDto createBien(String libelle, AdresseDto adresse) {
+	
 		BienDto bien = new BienDto();
 		bien.setLibelle(libelle);
 		bien.setAdresse(adresse);
-		bien.setComplementAdresse(complementAdresse);
-		bien.setVille(ville);
-		bien.setCodePostal(codePostal);
-		bien.setPays(pays);
-		
 		bien = bienService.saveOrUpdate(bien);
 		
 		return bien;
 	}
 	
+	
 	/**
-	 * Permet de créer un appartement 
+	 * Permet de créer une adresse
+	 * 
+	 * @param adresse
+	 * @param complementAdresse
+	 * @param codePostal
+	 * @param ville
+	 * @param pays
+	 * 
+	 * @return
+	 */
+	protected AdresseDto createAdresse(String adresse, String complementAdresse,
+			Integer codePostal,  String ville, String pays) {
+		
+		AdresseDto adr = new AdresseDto();
+		adr.setAdresse(adresse);
+		adr.setCodePostal(codePostal);
+		adr.setComplementAdresse(complementAdresse);
+		adr.setVille(ville);
+		adr.setPays(pays);
+		
+		adr = adresseService.saveOrUpdate(adr);
+		
+		return adr;
+		
+	}
+	
+	
+	/**
+	 * Permet de créer un client
+	 * 
+	 * @param nom
+	 * @param prenom
+	 * @param adresseEmail
+	 * @param numeroPieceIdentite
+	 * @param typePieceIdentite
+	 * @param telephone
+	 * @param adresse
+	 * @return
+	 */
+	protected ClientDto createClient(String nom, String prenom, String adresseEmail,
+			String numeroPieceIdentite, String typePieceIdentite, String telephone,
+			AdresseDto adresse) {
+		
+		ClientDto client = new ClientDto();
+		client.setAdresse(adresse);
+		client.setAdresseEmail(adresseEmail);
+		client.setNom(nom);
+		client.setPrenom(prenom);
+		client.setTelephone(telephone);
+		client.setNumeroPieceIdentite(numeroPieceIdentite);
+		client.setTypePieceIdentite(typePieceIdentite);
+		
+		client = clientService.saveOrUpdate(client);
+		
+		return client;
+	}
+	
+	
+	/**
+	 * Permet de créer une Facture
+	 * 
+	 * @param client
+	 * @param taxeSejour
+	 * @param adresseFacturation
+	 * @param tva
+	 * @param remise
+	 * @return
+	 */
+	protected FactureDto createFacture(ClientDto client, Double taxeSejour,
+			AdresseDto adresseFacturation, Double tva, Double remise) {
+		
+		FactureDto facture = new FactureDto();
+		facture.setAdresseFacturation(adresseFacturation);
+		facture.setClient(client);
+		facture.setRemise(remise);
+		facture.setTaxeSejour(taxeSejour);
+		facture.setTva(tva);
+		
+		facture = factureService.saveOrUpdate(facture);
+		
+		return facture;
+		
+	}
+	
+	/**
+	 * Permet de créer un appartement
 	 * 
 	 * @param libelle
 	 * @param bien
 	 * @param type
+	 * @param prix
 	 * @return
 	 */
-	protected AppartementDto createAppartement(String libelle, BienDto bien, String type) {
+	protected AppartementDto createAppartement(String libelle, BienDto bien, String type, Double prix) {
+		
 		AppartementDto appartement = new AppartementDto();
 		appartement.setLibelle(libelle);
 		appartement.setBien(bien);
 		appartement.setType(type);
+		appartement.setPrix(prix);
 		
 		appartement = appartementService.saveOrUpdate(appartement);
 		
@@ -122,10 +215,17 @@ public abstract class AbstractCommonTest {
 	 * @param petitDej
 	 * @param statut
 	 * @param appartements
+	 * @param prix
+	 * @param dateCreation
+	 * @param dateAnnulation
+	 * @param client
+	 * @param facture
 	 * @return
 	 */
 	protected ReservationDto createReservation(LocalDateTime dateCheckin, LocalDateTime dateCheckout, 
-			String note, Boolean petitDej, String statut, List<AppartementDto> appartements){
+			String note, Boolean petitDej, String statut, List<AppartementDto> appartements, 
+			Double prix, LocalDateTime dateCreation, LocalDateTime dateAnnulation, ClientDto client,
+			FactureDto facture){
 		
 		final ReservationDto reservation = new ReservationDto();
 		
@@ -134,6 +234,14 @@ public abstract class AbstractCommonTest {
 		reservation.setNote(note);
 		reservation.setPetitDej(petitDej);
 		reservation.setStatut(statut);
+		reservation.setDateCheckin(dateCheckin);
+		reservation.setDateCheckout(dateCheckout);
+		reservation.setDateCreation(dateCreation);
+		reservation.setFacture(facture);
+		reservation.setPrix(prix);
+		reservation.setClient(client);
+		reservation.setFacture(facture);
+		reservation.setDateAnnulation(dateAnnulation);
 		reservation.setAppartements(appartements);
 		
 		return reservationService.saveOrUpdate(reservation); 
@@ -178,12 +286,16 @@ public abstract class AbstractCommonTest {
 	 * @param roles
 	 * @return
 	 */
-	protected UtilisateurDto createUtilisateur(String username, String password, boolean enabled) {
+	protected UtilisateurDto createUtilisateur(String username, String password, String nom, 
+			String prenom, String adresseEmail, boolean enabled) {
 		
 		UtilisateurDto utilisateur = new UtilisateurDto();
 		String encodedPassword = passwordEncoder.encode(password);
 		utilisateur.setPassword(encodedPassword);
 		utilisateur.setUsername(username);
+		utilisateur.setNom(nom);
+		utilisateur.setPrenom(prenom);
+		utilisateur.setAdresseEmail(adresseEmail);
 		utilisateur.setEnabled(enabled);
 		
 		utilisateur = utilisateurService.saveOrUpdate(utilisateur);

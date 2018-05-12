@@ -30,9 +30,9 @@ public class UtilisateurServiceImplTest extends AbstractCommonTest{
 	public void testSaveOrUpdate() {
 		
 		//Création des utilisateurs
-		UtilisateurDto utilisateurAdmin = createUtilisateur("asouane", "asouane", true);
-		UtilisateurDto utilisateurReceptionniste = createUtilisateur("mombaye", "mombaye", true);
-		UtilisateurDto utilisateurCuisinier = createUtilisateur("ammaiga", "ammaiga", true);
+		UtilisateurDto utilisateurAdmin = createUtilisateur("asouane", "asouane", "Souané", "Amadou", "asouan@gmail.com",true);
+		UtilisateurDto utilisateurReceptionniste = createUtilisateur("mombaye", "mombaye", "Mbaye", "Mohamet", "mmbaye@gmail.com", true);
+		UtilisateurDto utilisateurCuisinier = createUtilisateur("ammaiga", "ammaiga", "Maiga", "Amadou Dior", "amai@gmail.com",  true);
 		
 		
 		//Création des Rôles
@@ -64,7 +64,4 @@ public class UtilisateurServiceImplTest extends AbstractCommonTest{
 			 Assert.assertThat(role.getAuthority(), equalTo("ROLE_CUISINIER"));
 		 });
 	}
-
-	
-	
 }

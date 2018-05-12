@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -31,23 +33,11 @@ public class Bien extends Identifiant<Long> implements Serializable{
 	@Column(name="libelle")
 	private String libelle;
 	
-	@Column(name="adresse", nullable = false)
-	private String adresse;
-	
-	@Column(name="complement_adresse")
-	private String complementAdresse;
-	
-	@Column(name="code_postal", nullable = false)
-	private Integer codePostal;
-	
-	@Column(name="ville", nullable = false)
-	private String ville;
-	
-	@Column(name="pays", nullable = false)
-	private String pays;
-	
-	
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="bien")
 	private List<Appartement> appartements;
+	
+	@ManyToOne
+	@JoinColumn(name="id_adresse", nullable=false)
+	private Adresse adresse;
 	
 }

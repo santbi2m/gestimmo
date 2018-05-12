@@ -16,8 +16,9 @@ public enum EnumStatutReservation {
 
 	ENREGISTREE("Enregistrée"),
 	CONFIRMEE("Confirmée"),
-	PAYEE("Payée"),
-	ANNULEE("Annulée");
+	FACTUREE("Facturée"),
+	ANNULEE("Annulée"),
+	ANNULEE_FACTUREE("Annulée et facturée");
 	
 	private String statut;
 }

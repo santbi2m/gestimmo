@@ -21,7 +21,9 @@ import lombok.ToString;
 
 /**
  * @author mombaye
- *
+ * 
+ * Classe représentant une anomalie
+ * dans une appartement
  */
 @Entity
 @Table(name="ANOMALIE")

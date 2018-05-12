@@ -17,7 +17,7 @@ import lombok.ToString;
 
 /**
  * @author mombaye
- * Entite representant le role d'un 
+ * Entite representant le rôle d'un 
  * utilisateur
  */
 @Entity
@@ -29,7 +29,6 @@ public class Role extends Identifiant<Long> implements Serializable {
 
 	@Column(name="role", nullable=false)
 	private String role;
-	
 	
 	@ManyToOne
 	@JoinColumn(name="username", referencedColumnName="username", nullable=false)

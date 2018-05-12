@@ -19,6 +19,7 @@ public enum EnumTypeAppartement {
 	T5("T5"),
 	T6("T6"),
 	CHAMBRE("Chambre"),
+	MAISON("Maison"),
 	STUDIO("Studio");
 	
 	

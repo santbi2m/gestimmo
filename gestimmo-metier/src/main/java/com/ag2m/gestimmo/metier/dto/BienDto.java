@@ -22,15 +22,7 @@ public class BienDto extends IdentifiantDto implements Serializable{
 
 	private String libelle;
 	
-	private String adresse;
-	
-	private String complementAdresse;
-	
-	private Integer codePostal;
-	
-	private String ville;
-	
-	private String pays;
-	
 	private List<AppartementDto> appartements;
+	
+	private AdresseDto adresse;
 }

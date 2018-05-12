@@ -26,6 +26,8 @@ public class AppartementDto extends IdentifiantDto implements Serializable {
 	
 	private BienDto bien;
 	
+	private Double prix;
+	
 	private List<ReservationDto> reservations;
 	
 	private List<AnomalieDto> anomalies;

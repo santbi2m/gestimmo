@@ -41,5 +41,14 @@ public class Utilisateur extends Identifiant<Long> implements Serializable {
 	
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="utilisateur")
 	private List<Role> roles;
+	
+	@Column(name="nom", nullable=false)
+	private String nom;
+	
+	@Column(name="prenom", nullable=false)
+	private String prenom;
+	
+	@Column(name="adresse_email", nullable=false)
+	private String adresseEmail;
 
 }

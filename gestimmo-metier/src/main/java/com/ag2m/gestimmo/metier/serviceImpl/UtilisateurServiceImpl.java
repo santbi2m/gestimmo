@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ag2m.gestimmo.metier.dao.UtilisateurDao;
-import com.ag2m.gestimmo.metier.dto.RoleDto;
 import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
-import com.ag2m.gestimmo.metier.entite.Role;
 import com.ag2m.gestimmo.metier.entite.Utilisateur;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.UtilisateurService;

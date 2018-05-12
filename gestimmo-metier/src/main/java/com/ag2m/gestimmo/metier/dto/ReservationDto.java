@@ -36,5 +36,14 @@ public class ReservationDto extends IdentifiantDto implements Serializable {
 	private List<AppartementDto> appartements;
 	
 	private String statut;
+
+	private Double prix;
 	
+	private LocalDateTime dateCreation;
+	
+	private LocalDateTime dateAnnulation;	
+	
+	private ClientDto client;
+	
+	private FactureDto facture;
 }

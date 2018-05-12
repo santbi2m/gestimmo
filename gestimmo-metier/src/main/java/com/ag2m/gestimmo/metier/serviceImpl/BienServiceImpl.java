@@ -35,6 +35,7 @@ public class BienServiceImpl implements BienService {
 		//TODO Ajouter les logs
 		// ----------   Exemple d'utilisation du logger avec lombok   ---------- 
 		//
+		
 		Bien bien = bienDao.findById(Bien.class, id);
 		BienDto bienDto = mapper.bienToBienDto(bien);
 		return bienDto;

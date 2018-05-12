@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
@@ -29,16 +30,25 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	@Test
 	public void testFindAll() {
 		
+		//Adresse
+		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		
-		BienDto bien = createBien("Wakeur Meissa", "12 cité Fadia", null, "Sacré coeur", 99000, "Sénégal");
-		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType());
-		createAppartement("Dem Deloussi", bien, EnumTypeAppartement.T3.getType());
-		createAppartement("Tawfekh", bien, EnumTypeAppartement.STUDIO.getType());
+		//Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
 		
+		//Appartements
+		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		createAppartement("Dem Deloussi", bien, EnumTypeAppartement.T3.getType(), 70D);
+		createAppartement("Tawfekh", bien, EnumTypeAppartement.STUDIO.getType(), 45D);
+		
+		//Appel
 		List<AppartementDto> appartements = appartementService.findAll();
+		
+		//Check results
 		assertThat(appartements, is(notNullValue()));
 		assertTrue(appartements.size() >= 3);
-
+		
+		//check cache
 		assertThat(cacheManager.getObject().getCache("bien").getSize(), greaterThanOrEqualTo(2));
 	}
 
@@ -47,12 +57,19 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 
 		int oldSize = cacheManager.getObject().getCache("bien").getSize();
 		
-		BienDto bien = createBien("Keur Naby", "12 cité Adja Mareme", "2ème porte", "Grand Mbao", 99000, "Sénégal");
+		//Adresse
+		AdresseDto adresse = createAdresse("12 cité Adja Mareme", "2ème porte", 9900, "Grand Mbao", "Sénégal");
 		
-		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType());
+		//Bien
+		BienDto bien = createBien("Keur Naby",adresse);
 		
+		//Appartements
+		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Check results
 		assertThat(appartement.getId(), is(notNullValue()));
 		
+		//Check cache
 		int newSize = cacheManager.getObject().getCache("bien").getSize();
 		assertThat(newSize, greaterThan(oldSize));
 	}
@@ -60,22 +77,37 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	
 	@Test
 	public void testDelete() {
-		BienDto bien = createBien("Keur Dabakh", "124 cité promocap", "2ème porte", "Petit Mbao", 99000, "Sénégal");
+		
+		// Adresse
+		AdresseDto adresse = createAdresse("124 cité promocap", "2ème porte", 9900, "Petit Mbao", "Sénégal");
+
+		// Bien		
+		BienDto bien = createBien("Keur Dabakh", adresse);
+		
+		// Check results
 		Long id = bien.getId();
 		assertThat(bien.getId(), is(notNullValue()));
 		
-		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType());
+		//Appartement
+		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		// Check results
 		assertThat(appartement.getId(), is(notNullValue()));
 		
+		//load and check previous appart
 		AppartementDto entite = appartementService.findById(appartement.getId());
 		assertThat(entite, is(notNullValue()));
 		
+		//Call services
 		appartementService.delete(entite);
 		entite = appartementService.findById(entite.getId());
+		//Check
 		assertThat(entite, is(nullValue()));
 		
+		//Call services
 		bienService.delete(bien);
 		bien = bienService.findById(id);
+		//Check
 		assertThat(bien, is(nullValue()));
 	}		
 }

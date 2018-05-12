@@ -53,11 +53,11 @@ public class BienController {
 	    public @ResponseBody void saveBien() {
 
 	    	BienDto bien = new BienDto();
-	    	bien.setLibelle("Résidence Kheweul");
-	    	bien.setAdresse("1 av Bourguiba");
-	    	bien.setCodePostal(99000);
-	    	bien.setVille("Saint-Louis");
-	    	bien.setPays("Sénégal");
+//	    	bien.setLibelle("Résidence Kheweul");
+//	    	bien.setAdresse("1 av Bourguiba");
+//	    	bien.setCodePostal(99000);
+//	    	bien.setVille("Saint-Louis");
+//	    	bien.setPays("Sénégal");
 	    	bienService.saveOrUpdate(bien);
 	     
 	    }
