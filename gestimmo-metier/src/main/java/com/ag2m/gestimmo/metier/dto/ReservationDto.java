@@ -6,6 +6,7 @@ import java.util.List;
 import org.joda.time.LocalDateTime;
 
 import com.ag2m.gestimmo.config.CustomDateSerializer;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
@@ -33,14 +34,17 @@ public class ReservationDto extends IdentifiantDto implements Serializable {
 	
 	private Boolean petitDej;
 	
+	@JsonBackReference
 	private List<AppartementDto> appartements;
 	
 	private String statut;
 
 	private Double prix;
 	
+	@JsonSerialize(using = CustomDateSerializer.class)
 	private LocalDateTime dateCreation;
 	
+	@JsonSerialize(using = CustomDateSerializer.class)
 	private LocalDateTime dateAnnulation;	
 	
 	private ClientDto client;
