@@ -1,4 +1,4 @@
-package com.ag2m.gestimmo.config;
+package com.ag2m.gestimmo.metier.utils;
 
 import java.io.IOException;
 

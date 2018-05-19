@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 import org.joda.time.LocalDateTime;
 
-import com.ag2m.gestimmo.config.CustomDateSerializer;
+import com.ag2m.gestimmo.metier.utils.CustomDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;

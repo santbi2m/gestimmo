@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.joda.time.LocalDateTime;
 
-import com.ag2m.gestimmo.config.CustomDateSerializer;
+import com.ag2m.gestimmo.metier.utils.CustomDateSerializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

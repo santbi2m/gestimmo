@@ -6,6 +6,7 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import com.ag2m.gestimmo.metier.config.ParamConfig;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
@@ -271,6 +272,11 @@ public interface Mapper {
 			 */
 			 @AfterMapping
 			default void processReservationForFactureDto(@MappingTarget FactureDto factureDto) {
+				 
+				 // Init tva et taxe de séjour
+				 factureDto.setTaxeSejour(ParamConfig.TAXE_SEJOUR);
+				 factureDto.setTva(ParamConfig.TVA);
+				 
 				 	if(factureDto.getReservations() != null) {
 				 		
 				 		factureDto.getReservations().forEach(resa -> resa.setFacture(factureDto));
@@ -298,6 +304,11 @@ public interface Mapper {
 			 */
 			 @AfterMapping
 				default void processReservationForFacture(@MappingTarget Facture facture) {
+				 
+					// Init tva et taxe de séjour
+					 facture.setTaxeSejour(ParamConfig.TAXE_SEJOUR);
+					 facture.setTva(ParamConfig.TVA);
+					 
 					 if(facture.getReservations() != null) {
 						 facture.getReservations().forEach(resa -> resa.setFacture(facture));
 					 }
