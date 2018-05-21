@@ -147,8 +147,8 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		assertThat(entite, is(nullValue()));
 		
 		//Call services
-		bienService.delete(bien);
-		bien = bienService.findById(id);
+		bienService.deleteBien(bien);
+		bien = bienService.findBienById(id);
 		//Check
 		assertThat(bien, is(nullValue()));
 	}	

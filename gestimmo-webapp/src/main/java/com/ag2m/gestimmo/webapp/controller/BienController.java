@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ag2m.gestimmo.metier.dto.BienDto;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.service.BienService;
 
 @RestController
@@ -27,7 +28,7 @@ public class BienController {
 	 */
 		@RequestMapping(value = "/biens", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public @ResponseBody List<BienDto> findAllBien() {
-	        List<BienDto> biens = bienService.findAll();
+	        List<BienDto> biens = bienService.loadAllBien();
 	        return biens;
 	    }
 	  
@@ -36,40 +37,43 @@ public class BienController {
 		 * Retourne le bien dont l'id est en paramètre, sous format Json
 		 * 
 		 * @return
+		 * @throws FunctionalException 
 		 */
 	    @RequestMapping(value = "/biens/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public @ResponseBody BienDto getBien(@PathVariable("id") long id) {
+	    public @ResponseBody BienDto getBien(@PathVariable("id") long id) throws FunctionalException {
 
-	    	BienDto bien = bienService.findById(id);
+	    	BienDto bien = bienService.findBienById(id);
 	     
 	    	return bien;
 	    }
 	    
 	    /**
 		 * Crée un nouveau bien
+	     * @throws FunctionalException 
 		 * 
 		 */
 	    @RequestMapping(value = "/biens/save", method = RequestMethod.POST)
-	    public @ResponseBody void saveBien() {
+	    public @ResponseBody void saveBien() throws FunctionalException {
 
-	    	BienDto bien = new BienDto();
+//	    	BienDto bien = new BienDto();
 //	    	bien.setLibelle("Résidence Kheweul");
 //	    	bien.setAdresse("1 av Bourguiba");
 //	    	bien.setCodePostal(99000);
 //	    	bien.setVille("Saint-Louis");
 //	    	bien.setPays("Sénégal");
-	    	bienService.saveOrUpdate(bien);
+//	    	bienService.createBien(bien);
 	     
 	    }
 	    
 	    	/**
 			 * supprime le bien dont l'id est en paramètre
+	    	 * @throws FunctionalException 
 			 * 
 			 */
 		    @RequestMapping(value = "/biens/delete/id/{id}", method = RequestMethod.DELETE)
-		    public @ResponseBody void deleteBien(@PathVariable("id") long id) {
-		    	BienDto bien = bienService.findById(id);
-		    	bienService.delete(bien);
+		    public @ResponseBody void deleteBien(@PathVariable("id") long id) throws FunctionalException {
+		    	BienDto bien = bienService.findBienById(id);
+		    	bienService.deleteBien(bien);
 		     
 		    }
 }

@@ -15,6 +15,8 @@ import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.*;
 
@@ -27,7 +29,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	
 
 	@Test
-	public void testFindAll() {
+	public void testFindAll() throws FunctionalException {
 
 		//Adresse
 		AdresseDto adresse = createAdresse("120 cité Azur", null, 9900, "Mermoz", "Sénégal");
@@ -38,7 +40,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		createBien("Dianna Mahwa", adresse2);
 		
 		//Call services
-		List<BienDto> biens = bienService.findAll();
+		List<BienDto> biens = bienService.loadAllBien();
 		
 		//Check results
 		assertThat(biens, is(notNullValue()));
@@ -50,7 +52,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	}
 
 	@Test
-	public void testSaveOrUpdate() {
+	public void testCreateBien() throws FunctionalException {
 		
 		int oldSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		
@@ -61,7 +63,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		BienDto bien = createBien("Keur Dabakh", adresse);
 		
 		//Call service
-		bien = bienService.findById(bien.getId());
+		bien = bienService.findBienById(bien.getId());
 		
 		//Check result
 		assertThat(bien.getId(), is(notNullValue()));
@@ -70,10 +72,28 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		int newSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		assertThat(newSize, greaterThan(oldSize));
 	}
+	
+	@Test
+	public void testUpdateBien() throws FunctionalException {
+
+		BienDto bien = bienService.findBienById(1L);
+		//Check results
+		assertThat(bien, is(notNullValue()));
+		assertThat(bien.getId(), is(1L));
+		
+		//Call service for updating bien
+		bien.setLibelle("updated libelle");
+		bien = bienService.updateBien(bien);
+		
+		//Check results
+		assertThat(bien.getId(), is(1L));
+		assertThat(bien.getLibelle(), is("updated libelle"));
+	}
+	
 
 	
 	@Test
-	public void testDelete() {
+	public void testDeleteBien() throws FunctionalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("124 cité promocap", "2ème porte", 9900, "Petit Mbao", "Sénégal");
@@ -85,14 +105,13 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		assertThat(bien.getId(), is(notNullValue()));
 		
 		//Call service
-		BienDto entite = bienService.findById(bien.getId());
-		
+		BienDto entite = bienService.findBienById(bien.getId());
 		//Check result
 		assertThat(entite, is(notNullValue()));
 		
 		//Call services
-		bienService.delete(entite);
-		entite = bienService.findById(bien.getId());
+		bienService.deleteBien(entite);
+		entite = bienService.findBienById(bien.getId());
 		
 		//Check result
 		assertThat(entite, is(nullValue()));
@@ -115,8 +134,8 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		AppartementDto app3= createAppartement("Tawfekh", bien, EnumTypeAppartement.STUDIO.getType(), 45D);
 		
 		//Call Services
-		bienService.delete(bien);
-		bien = bienService.findById(bien.getId());
+		bienService.deleteBien(bien);
+		bien = bienService.findBienById(bien.getId());
 		app1 = appartementService.findAppartementById(app1.getId());
 		app2 = appartementService.findAppartementById(app2.getId());
 		app3 = appartementService.findAppartementById(app3.getId());
@@ -126,6 +145,182 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		assertThat(app1, is(nullValue()));
 		assertThat(app2, is(nullValue()));
 		assertThat(app3, is(nullValue()));
+	}
+	
+	/**
+	 * Tester le service findAppartementByCriteria
+	 * sans critères d'entrée
+	 * 
+	 * @throws FunctionalException
+	 */
+
+	@Test
+	public void testFindBienByCriteriaAllCriteriaNull() throws FunctionalException {
+		
+		//Adresse
+		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
+		
+		//Bien
+		createBien("Wakeur Meissa", adresse);
+		createBien("bien1", adresse);
+		createBien("bien2", adresse);
+		createBien("bien3", adresse);
+		
+		
+		
+		//Call service
+		List<BienDto> result = bienService.findBienByCriteria(null, null, null, 0, null, null);
+		
+		//Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(4)));
+	}
+	
+	/**
+	 * Tester le service findAppartementByCriteria
+	 * avec le libellé comme critère d'entrée
+	 * 
+	 * @throws FunctionalException
+	 */
+
+	@Test
+	public void testFindBienByCriteriaLibelle() throws FunctionalException {
+
+		// Adresse
+		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
+
+		// Bien
+		createBien("Wakeur Meissa", adresse);
+		createBien("bien1", adresse);
+		createBien("bien2", adresse);
+
+		/************
+		 * ************ Case parametter repected * *
+		 ************/
+		// Call service
+		List<BienDto> result = bienService.findBienByCriteria("Wakeur Meissa", null, null, 0, null, null);
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getLibelle(), is("Wakeur Meissa"));
+		});
+
+		/************
+		 * ************ Parametter in Lower case * *
+		 ************/
+		// Call service
+		result = bienService.findBienByCriteria("bien1", null, null, 0, null, null);
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getLibelle(), is("bien1"));
+		});
+
+		/************
+		 * ************ Parametter in any case * *
+		 ************/
+
+		result = bienService.findBienByCriteria("bien2", null, null, 0, null, null);
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getLibelle(), is("bien2"));
+		});
+	}
+	
+	/**
+	 * Tester le service findAppartementByCriteria
+	 * avec les champs dde l' adresse comme critère d'entrée
+	 * 
+	 * @throws FunctionalException
+	 */
+
+	@Test
+	public void testFindBienByCriteriaAdresse() throws FunctionalException {
+
+		// Adresse
+		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
+		assertThat(adresse.getId(), is(notNullValue()));
+		// Bien
+		createBien("Wakeur Meissa", adresse);
+
+
+		/************
+		 * ************ Case parametter repected * *
+		 ************/
+		// Call service
+		List<BienDto> result = bienService.findBienByCriteria(null, adresse.getAdresse(), null, 0, null, null);
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getAdresse().getId(), is(notNullValue()));
+			assertThat(app.getAdresse().getAdresse(), is("12 cité Fadia"));
+		});
+
+		/************
+		 * ************ Parametter in Lower case * *
+		 ************/
+		// Call service
+		result = bienService.findBienByCriteria(null, null, null, adresse.getCodePostal(), null, null);
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getId(), is(notNullValue()));
+			assertThat(app.getAdresse().getCodePostal(), is(9900));
+		});
+
+		/************
+		 * ************ Parametter in any case * *
+		 ************/
+
+		result = bienService.findBienByCriteria(null, null, null, 0, adresse.getVille(), null);
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getAdresse().getId(), is(notNullValue()));
+			assertThat(app.getAdresse().getVille(), is("Sacré coeur"));
+		});
+		
+		/************
+		 * ************ Parametter in any case * *
+		 ************/
+
+		result = bienService.findBienByCriteria(null, null, null, 0, null, adresse.getPays());
+
+		// Check
+		assertThat(result, is(notNullValue()));
+		assertThat(result, is(not(empty())));
+		assertThat(result.size(), is(greaterThanOrEqualTo(1)));
+
+		result.forEach(app -> {
+			assertThat(app.getAdresse().getId(), is(notNullValue()));
+			assertThat(app.getAdresse().getPays(), is("Sénégal"));
+		});
 	}
 
 }

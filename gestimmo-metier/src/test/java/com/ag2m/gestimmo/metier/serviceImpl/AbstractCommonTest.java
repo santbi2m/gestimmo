@@ -92,13 +92,14 @@ public abstract class AbstractCommonTest {
 	 * @param libelle
 	 * @param adresse
 	 * @return
+	 * @throws FunctionalException 
 	 */
-	protected BienDto createBien(String libelle, AdresseDto adresse) {
+	protected BienDto createBien(String libelle, AdresseDto adresse) throws FunctionalException {
 	
 		BienDto bien = new BienDto();
 		bien.setLibelle(libelle);
 		bien.setAdresse(adresse);
-		bien = bienService.saveOrUpdate(bien);
+		bien = bienService.createBien(bien);
 		
 		return bien;
 	}

@@ -2,7 +2,10 @@ package com.ag2m.gestimmo.metier.service;
 
 import java.util.List;
 
+import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
+import com.ag2m.gestimmo.metier.entite.Appartement;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
 /**
  * 
@@ -16,29 +19,60 @@ public interface BienService {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws FunctionalException 
 	 */
-	public BienDto findById(Long id);
+	public BienDto findBienById(Long id) throws FunctionalException;
 	
 	/**
 	 * Retourne une liste d'entités
 	 * 
 	 * @return
 	 */
-	public List<BienDto> findAll();
+	public List<BienDto> loadAllBien();
 	
 	/**
-	 * Sauvegarde ou met à jour l'entité correspondant au DTO en paramètre
+	 * Sauvegarde ou l'entité en paramètre
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws FunctionalException 
 	 */
-	public BienDto saveOrUpdate(BienDto entite);
+	public  BienDto createBien(BienDto bienDto) throws FunctionalException;
+	
 	
 	/**
-	 * Permet de supprimer l'entité correspondant au DTO en entrée
+	 * Met à jour l'entité en paramètre
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws FunctionalException 
 	 */
-	public boolean delete(BienDto entite);
+	BienDto updateBien(BienDto bienDt) throws FunctionalException;
+	
+	/**
+	 * Permet de supprimer l'entité en entrée
+	 * 
+	 * @param entite
+	 * @return
+	 * @throws FunctionalException 
+	 */
+	public boolean deleteBien(BienDto bienDto) throws FunctionalException;
+	
+	/**
+	 *  Permet de combiner tous les critères possibles
+	 *  de recherche d’appartements, de retourner 
+	 *  le résultat et de le mettre dans le cache.
+	 *  
+	 * @param libelle
+	 * @param adresse
+	 * @param complement
+	 * @param codePostal
+	 * @param ville
+	 * @param pays
+	 * @return
+	 * @throws FunctionalException
+	 */
+	List<BienDto> findBienByCriteria(String libelle, 
+			String adresse, String complement, Integer codePostal, String ville, String pays) throws FunctionalException;
+
 }
