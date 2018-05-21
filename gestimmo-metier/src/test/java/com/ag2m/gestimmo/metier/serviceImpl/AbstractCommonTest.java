@@ -6,6 +6,8 @@ package com.ag2m.gestimmo.metier.serviceImpl;
 import java.util.List;
 
 import org.joda.time.LocalDateTime;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
@@ -22,6 +24,7 @@ import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.dto.RoleDto;
 import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.AdresseService;
 import com.ag2m.gestimmo.metier.service.AnomalieService;
@@ -78,6 +81,9 @@ public abstract class AbstractCommonTest {
 	
 	@Autowired
 	protected BCryptPasswordEncoder passwordEncoder;
+	
+	@Rule
+	public ExpectedException thrown= ExpectedException.none();
 	
 	
 	/**
@@ -191,8 +197,9 @@ public abstract class AbstractCommonTest {
 	 * @param type
 	 * @param prix
 	 * @return
+	 * @throws FunctionalException 
 	 */
-	protected AppartementDto createAppartement(String libelle, BienDto bien, String type, Double prix) {
+	protected AppartementDto createAppartement(String libelle, BienDto bien, String type, Double prix) throws FunctionalException {
 		
 		AppartementDto appartement = new AppartementDto();
 		appartement.setLibelle(libelle);
@@ -200,7 +207,7 @@ public abstract class AbstractCommonTest {
 		appartement.setType(type);
 		appartement.setPrix(prix);
 		
-		appartement = appartementService.saveOrUpdate(appartement);
+		appartement = appartementService.createAppartement(appartement);
 		
 		return appartement;
 	}

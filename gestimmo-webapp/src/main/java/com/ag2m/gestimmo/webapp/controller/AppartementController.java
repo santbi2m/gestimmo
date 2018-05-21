@@ -11,17 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.service.AppartementService;
-import com.ag2m.gestimmo.metier.service.BienService;
 
 @RestController
 public class AppartementController {
 
 	@Autowired
 	private AppartementService appartementService;
-	
-	@Autowired
-	private BienService bienService;
 	
 	
 	/**
@@ -31,7 +28,7 @@ public class AppartementController {
 	 */
 		@RequestMapping(value = "/appartements", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public @ResponseBody List<AppartementDto> findAllAppartement() {
-	        List<AppartementDto> appartements = appartementService.findAll();
+	        List<AppartementDto> appartements = appartementService.loadAllAppartement();
 	        return appartements;
 	    }
 	  
@@ -40,11 +37,12 @@ public class AppartementController {
 		 * Retourne l'appartement dont l'id est en paramètre, sous format Json
 		 * 
 		 * @return
+		 * @throws FunctionalException 
 		 */
 	    @RequestMapping(value = "/appartements/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public @ResponseBody AppartementDto getAppartement(@PathVariable("id") long id) {
+	    public @ResponseBody AppartementDto getAppartement(@PathVariable("id") long id) throws FunctionalException {
 
-	    	AppartementDto appartement = appartementService.findById(id);
+	    	AppartementDto appartement = appartementService.findAppartementById(id);
 	     
 	    	return appartement;
 	    }
@@ -61,18 +59,19 @@ public class AppartementController {
 //	    	appartement.setLibelle("Gokhou Mbath");
 //	    	appartement.setBien(bien);
 //	    	appartement.setType(EnumTypeAppartement.T2.getType());
-//	    	appartementService.saveOrUpdate(appartement);
+//	    	appartementService.createAppartement(appartement);
 	     
 	    }
 	    
 	    	/**
 			 * supprime l'appartement dont l'id est en paramètre
+	    	 * @throws FunctionalException 
 			 * 
 			 */
 		    @RequestMapping(value = "/appartements/delete/id/{id}", method = RequestMethod.DELETE)
-		    public @ResponseBody void deleteAppartement(@PathVariable("id") long id) {
-		    	AppartementDto appartement = appartementService.findById(id);
-		    	appartementService.delete(appartement);
+		    public @ResponseBody void deleteAppartement(@PathVariable("id") long id) throws FunctionalException {
+		    	AppartementDto appartement = appartementService.findAppartementById(id);
+		    	appartementService.deleteAppartement(appartement);
 		     
 		    }
 }

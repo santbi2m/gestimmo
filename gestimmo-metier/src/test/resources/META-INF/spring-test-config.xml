@@ -20,7 +20,7 @@
 	<context:annotation-config />
 	<cache:annotation-driven cache-manager="cacheManager"/>
     <context:component-scan base-package = "com.ag2m.gestimmo.metier.dao, 
-    										com.ag2m.gestimmo.metier.daoImpl, 
+    										com.ag2m.gestimmo.metier.daoimpl, 
     										com.ag2m.gestimmo.metier.service, 
     										com.ag2m.gestimmo.metier.serviceImpl,
     										com.ag2m.gestimmo.metier.mapper" />

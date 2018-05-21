@@ -13,7 +13,7 @@ import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
-
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.*;
@@ -45,14 +45,14 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		assertThat(biens.size(), greaterThanOrEqualTo(2));
 		
 		//Check cache
-		assertThat(cacheManager.getObject().getCache("bien").getSize(), greaterThanOrEqualTo(2));
+		assertThat(cacheManager.getObject().getCache("gestimmo").getSize(), greaterThanOrEqualTo(2));
 		
 	}
 
 	@Test
 	public void testSaveOrUpdate() {
 		
-		int oldSize = cacheManager.getObject().getCache("bien").getSize();
+		int oldSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("124 cité promocap", "2ème porte", 9900, "Petit Mbao", "Sénégal");
@@ -67,7 +67,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		assertThat(bien.getId(), is(notNullValue()));
 		
 		//Check cache
-		int newSize = cacheManager.getObject().getCache("bien").getSize();
+		int newSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		assertThat(newSize, greaterThan(oldSize));
 	}
 
@@ -101,7 +101,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	
 	
 	@Test
-	public void testDeleteBienWithAppart() {
+	public void testDeleteBienWithAppart() throws FunctionalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -117,9 +117,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		//Call Services
 		bienService.delete(bien);
 		bien = bienService.findById(bien.getId());
-		app1 = appartementService.findById(app1.getId());
-		app2 = appartementService.findById(app2.getId());
-		app3 = appartementService.findById(app3.getId());
+		app1 = appartementService.findAppartementById(app1.getId());
+		app2 = appartementService.findAppartementById(app2.getId());
+		app3 = appartementService.findAppartementById(app3.getId());
 		
 		//Check results
 		assertThat(bien, is(nullValue()));
@@ -127,4 +127,5 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		assertThat(app2, is(nullValue()));
 		assertThat(app3, is(nullValue()));
 	}
+
 }

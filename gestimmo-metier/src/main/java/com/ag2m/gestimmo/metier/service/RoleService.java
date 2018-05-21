@@ -6,7 +6,6 @@ package com.ag2m.gestimmo.metier.service;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.RoleDto;
-import com.ag2m.gestimmo.metier.entite.Role;
 
 /**
  * @author mombaye

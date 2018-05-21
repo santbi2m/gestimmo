@@ -64,4 +64,5 @@ public class UtilisateurServiceImplTest extends AbstractCommonTest{
 			 Assert.assertThat(role.getAuthority(), equalTo("ROLE_CUISINIER"));
 		 });
 	}
+	
 }

@@ -16,7 +16,7 @@
               memoryStoreEvictionPolicy="LRU" statistics="false">
 	</defaultCache>
 	
-	<cache name="bien" maxElementsInMemory="10000" eternal="false"
+	<cache name="gestimmo" maxElementsInMemory="10000" eternal="false"
 		timeToIdleSeconds="5" timeToLiveSeconds="10">
 	</cache>
 	

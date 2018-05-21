@@ -19,6 +19,7 @@ import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumStatutReservation;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypePieceIdentite;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
 import static org.hamcrest.core.IsNull.*;
 import static org.hamcrest.core.Is.*;
@@ -30,7 +31,7 @@ import static org.hamcrest.core.Is.*;
 public class ReservationServiceImplTest extends AbstractCommonTest{
 
 	@Test
-	public void testSaveOrUpdate() {
+	public void testSaveOrUpdate() throws FunctionalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -70,9 +71,9 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		app3.setReservations(Arrays.asList(reservation1, reservation2));
 		
 		//Call services
-		appartementService.saveOrUpdate(app1);
-		appartementService.saveOrUpdate(app2);
-		appartementService.saveOrUpdate(app3);
+		appartementService.createAppartement(app1);
+		appartementService.createAppartement(app2);
+		appartementService.createAppartement(app3);
 		
 		//Check results
 		assertThat(reservation1.getId(), is(notNullValue()));
@@ -82,7 +83,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	
 	
 	@Test
-	public void testDelete() {
+	public void testDelete() throws FunctionalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -121,14 +122,14 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		app2.setReservations(Arrays.asList(reservation1, reservation2));
 		app3.setReservations(Arrays.asList(reservation1, reservation2));
 		
-		appartementService.saveOrUpdate(app1);
-		appartementService.saveOrUpdate(app2);
-		appartementService.saveOrUpdate(app3);
+		appartementService.createAppartement(app1);
+		appartementService.createAppartement(app2);
+		appartementService.createAppartement(app3);
 		
 		assertThat(reservation1.getId(), is(notNullValue()));
 		assertThat(reservation2.getId(), is(notNullValue()));
 		
-		appartementService.delete(app2);
+		appartementService.deleteAppartement(app2);
 		
 		ReservationDto resa1 = reservationService.findById(reservation2.getId());
 		ReservationDto resa2 = reservationService.findById(reservation2.getId());
@@ -138,4 +139,5 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		assertThat(resa2, is(nullValue()));
 		assertThat(resa3, is(nullValue()));
 	}
+	
 }

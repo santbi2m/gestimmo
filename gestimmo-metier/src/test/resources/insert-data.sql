@@ -6,12 +6,13 @@
 -- --------------------------------------------------------
 
 
-
--- Ajout d'un exemple de Bien en BDD histoire de tester 
--- que la conf fonctionne.
--- A supprimer lors de l'alimentation de ce fichier.
-
 -- Adresse
 insert into ADRESSE (id, adresse, complement_adresse, code_postal, ville, pays) values (1, 'Avenue Antoine Becquerel', null, '33600', 'Pessac', 'France');
-insert into BIEN (libelle, id_adresse) values ('Résidence Dabakh', 1);
+
+-- Bien
+insert into BIEN (id, libelle, id_adresse) values (1, 'Résidence Dabakh', 1);
+
+
+-- APPARTEMENT
+insert into APPARTEMENT (id, libelle, type_appart, prix, id_bien) values (9999, 'Résidence Kiné', 'T3', 80, 1);
 

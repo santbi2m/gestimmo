@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.ag2m.gestimmo.metier.entite.Identifiant;
 
 @Repository
-@CacheConfig(cacheNames={"bien"})
+@CacheConfig(cacheNames={"gestimmo"})
 public abstract class AbstractDao<ID extends Serializable, T extends Identifiant<ID>>{
 
 	@Autowired
