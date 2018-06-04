@@ -1,10 +1,10 @@
 package com.ag2m.gestimmo.metier.dto;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.joda.time.LocalDateTime;
 
+import com.ag2m.gestimmo.metier.ioparam.IPeriode;
 import com.ag2m.gestimmo.metier.utils.CustomDateSerializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -20,7 +20,7 @@ import lombok.ToString;
  */
 @Getter @Setter
 @ToString(exclude= {"appartements"})
-public class ReservationDto extends IdentifiantDto implements Serializable {
+public class ReservationDto extends IdentifiantDto implements IPeriode {
 
 	private static final long serialVersionUID = 5157786246432635298L;
 

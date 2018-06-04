@@ -3,7 +3,7 @@ package com.ag2m.gestimmo.metier.service;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 /**
  * Business service contenant
@@ -20,9 +20,9 @@ public interface AppartementService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public AppartementDto findAppartementById(Long id) throws FunctionalException;
+	public AppartementDto findAppartementById(Long id) throws TechnicalException;
 	
 	/**
 	 * Retourne une liste d'entités
@@ -36,9 +36,9 @@ public interface AppartementService {
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public AppartementDto createAppartement(AppartementDto entite) throws FunctionalException;
+	public AppartementDto createAppartement(AppartementDto entite) throws TechnicalException;
 	
 	
 	/**
@@ -46,18 +46,18 @@ public interface AppartementService {
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	AppartementDto updateAppartement(AppartementDto entiteDto) throws FunctionalException;
+	AppartementDto updateAppartement(AppartementDto entiteDto) throws TechnicalException;
 	
 	/**
 	 * Permet de supprimer l'entité en entrée
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public boolean deleteAppartement(AppartementDto entite) throws FunctionalException;
+	public boolean deleteAppartement(AppartementDto entite) throws TechnicalException;
 	
 	
 	/**
@@ -68,8 +68,7 @@ public interface AppartementService {
 	 * @param type
 	 * @param idBien
 	 * @return
-	 * @throws FunctionalException 
 	 */
 	List<AppartementDto> findAppartementByCriteria(String libelle, 
-			String type, Long idBien) throws FunctionalException;
+			String type, Long idBien);
 }

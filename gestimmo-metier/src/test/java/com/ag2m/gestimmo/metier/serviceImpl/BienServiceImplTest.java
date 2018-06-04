@@ -13,7 +13,7 @@ import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -120,7 +120,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	
 	
 	@Test
-	public void testDeleteBienWithAppart() throws FunctionalException {
+	public void testDeleteBienWithAppart() throws TechnicalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");

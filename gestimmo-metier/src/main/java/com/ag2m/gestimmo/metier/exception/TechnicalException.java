@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  *
  */
 @NoArgsConstructor
-public class FunctionalException extends RuntimeException {
+public class TechnicalException extends Exception{
 
 	private static final long serialVersionUID = 390557600009674348L;
 	
@@ -21,7 +21,7 @@ public class FunctionalException extends RuntimeException {
 	 * 
 	 * @param message
 	 */
-	 public FunctionalException (String message) {
+	 public TechnicalException (String message) {
 	        super (message);
 	    }
 
@@ -32,7 +32,7 @@ public class FunctionalException extends RuntimeException {
 	  * 
 	  * @param cause
 	  */
-	 public FunctionalException (Throwable cause) {
+	 public TechnicalException (Throwable cause) {
 	        super (cause);
 	 	}
 
@@ -46,7 +46,7 @@ public class FunctionalException extends RuntimeException {
 	  * @param message
 	  * @param cause
 	  */
-	 public FunctionalException (String message, Throwable cause) {
+	 public TechnicalException (String message, Throwable cause) {
 	        super (message, cause);
 	    }
 

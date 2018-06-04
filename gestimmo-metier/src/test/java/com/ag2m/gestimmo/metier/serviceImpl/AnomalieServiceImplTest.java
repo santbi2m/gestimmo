@@ -14,7 +14,7 @@ import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumStatutAnomalie;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -27,7 +27,7 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 	
 
 	@Test
-	public void testSaveOrUpdate() throws FunctionalException {
+	public void testSaveOrUpdate() throws TechnicalException {
 		
 		//Create and save
 		AnomalieDto anomalie = createNewAnomalie();
@@ -40,7 +40,7 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 
 	
 	@Test
-	public void testDelete() throws FunctionalException {
+	public void testDelete() throws TechnicalException {
 		
 		//Create and save ano
 		AnomalieDto anomalie = createNewAnomalie();
@@ -57,7 +57,7 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 	}	
 	
 	
-	private AnomalieDto createNewAnomalie() throws FunctionalException {
+	private AnomalieDto createNewAnomalie() throws TechnicalException {
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		

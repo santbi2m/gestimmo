@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 
@@ -31,7 +32,7 @@ public class ReservationController {
 	 */
 		@RequestMapping(value = "/reservations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public @ResponseBody List<ReservationDto> findAllReservation() {
-	        List<ReservationDto> reservations = reservationService.findAll();
+	        List<ReservationDto> reservations = reservationService.loadAllReservation();
 	        return reservations;
 	    }
 	  
@@ -40,11 +41,12 @@ public class ReservationController {
 		 * Retourne la reservation dont l'id est en paramètre, sous format Json
 		 * 
 		 * @return
+		 * @throws TechnicalException 
 		 */
 	    @RequestMapping(value = "/reservations/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public @ResponseBody ReservationDto getReservation(@PathVariable("id") long id) {
+	    public @ResponseBody ReservationDto getReservation(@PathVariable("id") long id) throws TechnicalException {
 
-	    	ReservationDto reservation = reservationService.findById(id);
+	    	ReservationDto reservation = reservationService.findReservationById(id);
 	     
 	    	return reservation;
 	    }
@@ -67,12 +69,13 @@ public class ReservationController {
 	    
 	    	/**
 			 * supprime le bien dont l'id est en paramètre
+	    	 * @throws TechnicalException 
 			 * 
 			 */
 		    @RequestMapping(value = "/reservations/delete/id/{id}", method = RequestMethod.DELETE)
-		    public @ResponseBody void deleteAppartement(@PathVariable("id") long id) {
-		    	ReservationDto reservation = reservationService.findById(id);
-		    	reservationService.delete(reservation);
+		    public @ResponseBody void deleteAppartement(@PathVariable("id") long id) throws TechnicalException {
+		    	ReservationDto reservation = reservationService.findReservationById(id);
+		    	reservationService.deleteReservation(reservation);
 		     
 		    }
 }

@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class CustomDateSerializer extends JsonSerializer<LocalDateTime> {
 	  
     /**
-	 * 
+	 * Default formatter
 	 */
-	private DateTimeFormatter formatter 
+	private final DateTimeFormatter formatter 
       = DateTimeFormat.forPattern("dd-MM-yyyy hh:mm:ss");
  
  

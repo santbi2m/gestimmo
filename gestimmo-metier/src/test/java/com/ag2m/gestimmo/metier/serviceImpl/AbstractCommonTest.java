@@ -25,6 +25,7 @@ import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.dto.RoleDto;
 import com.ag2m.gestimmo.metier.dto.UtilisateurDto;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.AdresseService;
 import com.ag2m.gestimmo.metier.service.AnomalieService;
@@ -201,7 +202,7 @@ public abstract class AbstractCommonTest {
 	 * @return
 	 * @throws FunctionalException 
 	 */
-	protected AppartementDto createAppartement(String libelle, BienDto bien, String type, Double prix) throws FunctionalException {
+	protected AppartementDto createAppartement(String libelle, BienDto bien, String type, Double prix) throws TechnicalException {
 		
 		AppartementDto appartement = new AppartementDto();
 		appartement.setLibelle(libelle);
@@ -230,11 +231,13 @@ public abstract class AbstractCommonTest {
 	 * @param client
 	 * @param facture
 	 * @return
+	 * @throws TechnicalException 
+	 * @throws FunctionalException 
 	 */
 	protected ReservationDto createReservation(LocalDateTime dateCheckin, LocalDateTime dateCheckout, 
 			String note, Boolean petitDej, String statut, List<AppartementDto> appartements, 
 			Double prix, LocalDateTime dateCreation, LocalDateTime dateAnnulation, ClientDto client,
-			FactureDto facture){
+			FactureDto facture) throws TechnicalException, FunctionalException{
 		
 		final ReservationDto reservation = new ReservationDto();
 		
@@ -253,7 +256,7 @@ public abstract class AbstractCommonTest {
 		reservation.setDateAnnulation(dateAnnulation);
 		reservation.setAppartements(appartements);
 		
-		return reservationService.saveOrUpdate(reservation); 
+		return reservationService.createReservation(reservation); 
 		
 	}
 	

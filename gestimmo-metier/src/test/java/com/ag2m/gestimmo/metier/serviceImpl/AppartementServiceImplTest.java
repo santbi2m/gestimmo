@@ -4,19 +4,17 @@
 package com.ag2m.gestimmo.metier.serviceImpl;
 
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.hibernate.hql.internal.ast.tree.FunctionNode;
 import org.junit.Test;
 
-import com.ag2m.gestimmo.metier.constants.MessageErrorConstants;
+import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.greaterThan;
@@ -31,7 +29,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 
 	
 	@Test
-	public void testLoadAllAppartement() throws FunctionalException {
+	public void testLoadAllAppartement() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -49,14 +47,14 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Check results
 		assertThat(appartements, is(notNullValue()));
-		assertTrue(appartements.size() >= 3);
+		assertThat(appartements.size(), is(greaterThanOrEqualTo(3)));
 		
 		//check cache
 		assertThat(cacheManager.getObject().getCache("gestimmo").getSize(), greaterThanOrEqualTo(2));
 	}
 
 	@Test
-	public void testCreateAppartement() throws FunctionalException {
+	public void testCreateAppartement() throws TechnicalException {
 
 		int oldSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		
@@ -79,7 +77,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	
 	
 	@Test
-	public void testUpdateAppartement() throws FunctionalException {
+	public void testUpdateAppartement() throws TechnicalException {
 
 		AppartementDto app = appartementService.findAppartementById(9999L);
 		//Check results
@@ -99,7 +97,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	
 	
 	@Test
-	public void testUpdateAppartementIdNull() throws FunctionalException {
+	public void testUpdateAppartementIdNull() throws TechnicalException {
 
 		AppartementDto app = appartementService.findAppartementById(9999L);
 		//Check results
@@ -107,8 +105,8 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		assertThat(app.getId(), is(9999L));
 		
 		//Assert that an exception has thrown
-		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(MessageErrorConstants.ERREUR_ENTREE_MODIFICATION_NULL);
+		thrown.expect(TechnicalException.class);
+		thrown.expectMessage(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL);
 		
 		//Call service for updating appartement
 		app.setId(null);
@@ -118,7 +116,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 
 	
 	@Test
-	public void testDeleteApparetement() throws FunctionalException {
+	public void testDeleteApparetement() throws TechnicalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("124 cité promocap", "2ème porte", 9900, "Petit Mbao", "Sénégal");
@@ -158,11 +156,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * sans critères d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteriaAllCriteriaNull() throws FunctionalException {
+	public void testFindAppartementByCriteriaAllCriteriaNull() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -189,11 +187,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * avec le libellé comme critère d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteriaLibelle() throws FunctionalException {
+	public void testFindAppartementByCriteriaLibelle() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -261,11 +259,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * avec le libellé comme critère d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteriaType() throws FunctionalException {
+	public void testFindAppartementByCriteriaType() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -295,11 +293,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * avec l'id du Bien comme critère d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteriaBien() throws FunctionalException {
+	public void testFindAppartementByCriteriaBien() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -331,11 +329,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * avec tous les paramètres d'entrée.
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteria() throws FunctionalException {
+	public void testFindAppartementByCriteria() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -369,11 +367,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * avec le libellé comme critère d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteriaBadLibelle() throws FunctionalException {
+	public void testFindAppartementByCriteriaBadLibelle() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -398,11 +396,11 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 	 * Tester le service findAppartementByCriteria
 	 * Tester que le service utilise bien le cache
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException
 	 */
 
 	@Test
-	public void testFindAppartementByCriteriaCheckCache() throws FunctionalException {
+	public void testFindAppartementByCriteriaCheckCache() throws TechnicalException {
 		
 		
 		//Adresse

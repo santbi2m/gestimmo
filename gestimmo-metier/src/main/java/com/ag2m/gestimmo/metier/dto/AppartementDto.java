@@ -19,9 +19,9 @@ import lombok.ToString;
  */
 @Getter @Setter
 @ToString(exclude= {"reservations", "anomalies"})
-public class AppartementDto extends IdentifiantDto implements Serializable {
+public class AppartementDto extends IdentifiantDto /*implements Serializable*/ {
 
-	private static final long serialVersionUID = -7712191825501565673L;
+//	private static final long serialVersionUID = -7712191825501565673L;
 
 	private String libelle;
 	

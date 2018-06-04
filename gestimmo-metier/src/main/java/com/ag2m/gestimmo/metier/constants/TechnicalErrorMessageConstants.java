@@ -1,6 +1,6 @@
 package com.ag2m.gestimmo.metier.constants;
 
-public class MessageErrorConstants {
+public class TechnicalErrorMessageConstants {
 
 	/** Constante ERREUR_ID_NULL */
 	public static final String ERREUR_ID_NULL =
@@ -9,18 +9,6 @@ public class MessageErrorConstants {
 	/** Constante TAXE_NON_PARAMETREE */
 	public static final String TAXE_NON_PARAMETREE =
 			"La taxe doit être paramétrée en base de données.";
-	
-	/** Constante ERREUR_A_LA_SAUVEGARDE */
-	public static final String ERREUR_A_LA_SAUVEGARDE =
-			"Une erreur est survenue lors de la sauvegarde: ";
-	
-	/** Constante ERREUR_A_LA_SUPPRESSION */
-	public static final String ERREUR_A_LA_SUPPRESSION =
-			"Une erreur est survenue lors de la suppression: ";
-	
-	/** Constante ERREUR_A_LA_SAUVEGARDE */
-	public static final String ERREUR_AU_CHARGEMENT =
-			"Une erreur est survenue lors du chargement de l'objet: id= ";
 	
 	/** Constante ERREUR_ENTREE_CREATION_NULL */
 	public static final String ERREUR_ENTREE_CREATION_NULL =
@@ -35,7 +23,7 @@ public class MessageErrorConstants {
 			"L'objet à supprimer ne peut pas être nul: ";
 	
 	/** Constante ERREUR_ENTREE_SUPP_NULL */
-	public static final String ERREUR_BDD =
-			"Une erreur est survenue lors de l'accès à la base de données ";
+	public static final String ERREUR_FORMATTER_DATE_NULLE =
+			"La date à formatter ne doit pas être nulle.";
 	
 }

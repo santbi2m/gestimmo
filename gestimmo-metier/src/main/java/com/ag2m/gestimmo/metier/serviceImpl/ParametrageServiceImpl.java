@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ag2m.gestimmo.metier.config.ParamConfig;
-import com.ag2m.gestimmo.metier.constants.MessageErrorConstants;
+import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.ParametrageDao;
 import com.ag2m.gestimmo.metier.entite.referentiel.Taxe;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
@@ -31,8 +31,8 @@ public class ParametrageServiceImpl implements ParametrageService {
 		
 		//Il faut que la taxe soit paramétrée ne BDD
 		if(taxe == null) {
-			log.error(MessageErrorConstants.TAXE_NON_PARAMETREE);
-			throw new FunctionalException(MessageErrorConstants.TAXE_NON_PARAMETREE);
+			log.error(TechnicalErrorMessageConstants.TAXE_NON_PARAMETREE);
+			throw new FunctionalException(TechnicalErrorMessageConstants.TAXE_NON_PARAMETREE);
 		}
 		
 		//initialiser la tva et la taxe de séjour

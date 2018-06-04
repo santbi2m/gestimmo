@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 
 @RestController
@@ -37,10 +37,10 @@ public class AppartementController {
 		 * Retourne l'appartement dont l'id est en paramètre, sous format Json
 		 * 
 		 * @return
-		 * @throws FunctionalException 
+		 * @throws TechnicalException 
 		 */
 	    @RequestMapping(value = "/appartements/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public @ResponseBody AppartementDto getAppartement(@PathVariable("id") long id) throws FunctionalException {
+	    public @ResponseBody AppartementDto getAppartement(@PathVariable("id") long id) throws TechnicalException {
 
 	    	AppartementDto appartement = appartementService.findAppartementById(id);
 	     
@@ -65,11 +65,11 @@ public class AppartementController {
 	    
 	    	/**
 			 * supprime l'appartement dont l'id est en paramètre
-	    	 * @throws FunctionalException 
+	    	 * @throws TechnicalException 
 			 * 
 			 */
 		    @RequestMapping(value = "/appartements/delete/id/{id}", method = RequestMethod.DELETE)
-		    public @ResponseBody void deleteAppartement(@PathVariable("id") long id) throws FunctionalException {
+		    public @ResponseBody void deleteAppartement(@PathVariable("id") long id) throws TechnicalException {
 		    	AppartementDto appartement = appartementService.findAppartementById(id);
 		    	appartementService.deleteAppartement(appartement);
 		     
