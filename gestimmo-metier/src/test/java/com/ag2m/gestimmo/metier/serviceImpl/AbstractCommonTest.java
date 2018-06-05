@@ -144,10 +144,11 @@ public abstract class AbstractCommonTest {
 	 * @param telephone
 	 * @param adresse
 	 * @return
+	 * @throws FunctionalException 
 	 */
 	protected ClientDto createClient(String nom, String prenom, String adresseEmail,
 			String numeroPieceIdentite, String typePieceIdentite, String telephone,
-			AdresseDto adresse) {
+			AdresseDto adresse) throws FunctionalException {
 		
 		ClientDto client = new ClientDto();
 		client.setAdresse(adresse);
@@ -158,7 +159,7 @@ public abstract class AbstractCommonTest {
 		client.setNumeroPieceIdentite(numeroPieceIdentite);
 		client.setTypePieceIdentite(typePieceIdentite);
 		
-		client = clientService.saveOrUpdate(client);
+		client = clientService.createClient(client);
 		
 		return client;
 	}

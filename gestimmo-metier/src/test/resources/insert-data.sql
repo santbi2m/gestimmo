@@ -16,3 +16,5 @@ insert into BIEN (id, libelle, id_adresse) values (1, 'Résidence Dabakh', 1);
 -- APPARTEMENT
 insert into APPARTEMENT (id, libelle, type_appart, prix, id_bien) values (9999, 'Résidence Kiné', 'T3', 80, 1);
 
+-- Client
+insert into CLIENT (id, nom, prenom, adresse_email, numero_piece, type_piece, telephone, id_adresse) values (222, 'Gassama', 'Mamadou', 'mamadou@gmail.com', '111100AZ', 'CNI', '0011223344', 1);

@@ -2,9 +2,7 @@ package com.ag2m.gestimmo.metier.service;
 
 import java.util.List;
 
-import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
-import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
 /**
