@@ -94,8 +94,9 @@ public abstract class AbstractCommonTest {
 	 * @param adresse
 	 * @return
 	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	protected BienDto createBien(String libelle, AdresseDto adresse) throws FunctionalException {
+	protected BienDto createBien(String libelle, AdresseDto adresse) throws TechnicalException {
 	
 		BienDto bien = new BienDto();
 		bien.setLibelle(libelle);
@@ -146,10 +147,11 @@ public abstract class AbstractCommonTest {
 	 * @param adresse
 	 * @return
 	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
 	protected ClientDto createClient(String nom, String prenom, String adresseEmail,
 			String numeroPieceIdentite, String typePieceIdentite, String telephone,
-			AdresseDto adresse) throws FunctionalException {
+			AdresseDto adresse) throws TechnicalException {
 		
 		ClientDto client = new ClientDto();
 		client.setAdresse(adresse);

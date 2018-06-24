@@ -3,7 +3,7 @@ package com.ag2m.gestimmo.metier.service;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.ClientDto;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 public interface ClientService {
 
@@ -12,9 +12,9 @@ public interface ClientService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public ClientDto findClientById(Long id) throws FunctionalException;
+	public ClientDto findClientById(Long id) throws TechnicalException;
 	
 	/**
 	 * Retourne une liste d'entités
@@ -28,9 +28,9 @@ public interface ClientService {
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public  ClientDto createClient(ClientDto clientDto) throws FunctionalException;
+	public  ClientDto createClient(ClientDto clientDto) throws TechnicalException;
 	
 	
 	/**
@@ -38,18 +38,18 @@ public interface ClientService {
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	ClientDto updateClient(ClientDto clientDto) throws FunctionalException;
+	ClientDto updateClient(ClientDto clientDto) throws TechnicalException;
 	
 	/**
 	 * Permet de supprimer l'entité en entrée
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public boolean deleteClient(ClientDto entite) throws FunctionalException;
+	public boolean deleteClient(ClientDto entite) throws TechnicalException;
 	/**
 	 *  Permet de combiner tous les critères possibles
 	 *  de recherche de client, de retourner 
@@ -66,10 +66,10 @@ public interface ClientService {
 	 * @param ville
 	 * @param pays
 	 * @return
-	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 	List<ClientDto> findClientByCriteria(String nom, 
 			String prenom, String adresseEmail, String numeroPiece, String typePiece, String telephone,
-			String adresse, String complement, Integer codePostal, String ville, String pays) throws FunctionalException;
+			String adresse, String complement, Integer codePostal, String ville, String pays) throws TechnicalException;
 
 }

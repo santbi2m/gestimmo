@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.service.BienService;
 
 @RestController
@@ -38,9 +39,10 @@ public class BienController {
 		 * 
 		 * @return
 		 * @throws FunctionalException 
+		 * @throws TechnicalException 
 		 */
 	    @RequestMapping(value = "/biens/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public @ResponseBody BienDto getBien(@PathVariable("id") long id) throws FunctionalException {
+	    public @ResponseBody BienDto getBien(@PathVariable("id") long id) throws TechnicalException {
 
 	    	BienDto bien = bienService.findBienById(id);
 	     
@@ -68,10 +70,11 @@ public class BienController {
 	    	/**
 			 * supprime le bien dont l'id est en paramètre
 	    	 * @throws FunctionalException 
+	    	 * @throws TechnicalException 
 			 * 
 			 */
 		    @RequestMapping(value = "/biens/delete/id/{id}", method = RequestMethod.DELETE)
-		    public @ResponseBody void deleteBien(@PathVariable("id") long id) throws FunctionalException {
+		    public @ResponseBody void deleteBien(@PathVariable("id") long id) throws TechnicalException {
 		    	BienDto bien = bienService.findBienById(id);
 		    	bienService.deleteBien(bien);
 		     

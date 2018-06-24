@@ -3,7 +3,7 @@ package com.ag2m.gestimmo.metier.service;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.BienDto;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 /**
  * 
@@ -17,9 +17,9 @@ public interface BienService {
 	 * 
 	 * @param id
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public BienDto findBienById(Long id) throws FunctionalException;
+	public BienDto findBienById(Long id) throws TechnicalException;
 	
 	/**
 	 * Retourne une liste d'entités
@@ -33,9 +33,9 @@ public interface BienService {
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public  BienDto createBien(BienDto bienDto) throws FunctionalException;
+	public  BienDto createBien(BienDto bienDto) throws TechnicalException;
 	
 	
 	/**
@@ -43,18 +43,18 @@ public interface BienService {
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	BienDto updateBien(BienDto bienDt) throws FunctionalException;
+	BienDto updateBien(BienDto bienDt) throws TechnicalException;
 	
 	/**
 	 * Permet de supprimer l'entité en entrée
 	 * 
 	 * @param entite
 	 * @return
-	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public boolean deleteBien(BienDto bienDto) throws FunctionalException;
+	public boolean deleteBien(BienDto bienDto) throws TechnicalException;
 	
 	/**
 	 *  Permet de combiner tous les critères possibles
@@ -68,9 +68,8 @@ public interface BienService {
 	 * @param ville
 	 * @param pays
 	 * @return
-	 * @throws FunctionalException
 	 */
 	List<BienDto> findBienByCriteria(String libelle, 
-			String adresse, String complement, Integer codePostal, String ville, String pays) throws FunctionalException;
+			String adresse, String complement, Integer codePostal, String ville, String pays);
 
 }

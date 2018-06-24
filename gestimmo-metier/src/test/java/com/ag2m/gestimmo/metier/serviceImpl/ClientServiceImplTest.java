@@ -12,16 +12,20 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
+import com.ag2m.gestimmo.metier.dto.AppartementDto;
+import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.dto.ClientDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumStatutReservation;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 /**
  * @author mombaye
@@ -32,7 +36,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	
 
 	@Test
-	public void testloadAllClient() throws FunctionalException {
+	public void testloadAllClient() throws TechnicalException {
 
 		//Adresse
 		AdresseDto adresse = createAdresse("120 cité Azur", null, 9900, "Mermoz", "Sénégal");
@@ -55,7 +59,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	}
 
 	@Test
-	public void testCreateClient() throws FunctionalException {
+	public void testCreateClient() throws TechnicalException {
 		
 		int oldSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		
@@ -77,7 +81,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	}
 	
 	@Test
-	public void testUpdateClient() throws FunctionalException {
+	public void testUpdateClient() throws TechnicalException {
 
 		ClientDto client = clientService.findClientById(222L);
 		//Check results
@@ -100,7 +104,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 
 	
 	@Test
-	public void testDeleteClient() throws FunctionalException {
+	public void testDeleteClient() throws TechnicalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("124 cité promocap", "2ème porte", 9900, "Petit Mbao", "Sénégal");
@@ -127,7 +131,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	
 	
 	@Test
-	public void testDeleteClientWithAppart() throws FunctionalException {
+	public void testDeleteClientWithAppart() throws TechnicalException {
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -135,22 +139,27 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		//Client
 		ClientDto client = createClient("Boubakh", "Wadji", "wadji@gmail.com", "145ZERT", "passeport", "0625986550", adresse);
 		
+		// Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
 		//Appartements
+		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Reservations
 		ReservationDto reservation1 = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Avec lit bébé svp", 
-				true, EnumStatutReservation.ENREGISTREE.getStatut(), null,
+				true, EnumStatutReservation.ENREGISTREE.getStatut(), Arrays.asList(app1),
 				50D, new LocalDateTime(), null, client, null);
 
 		ReservationDto reservation2 = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(3), "RAS", 
-		true, EnumStatutReservation.ANNULEE.getStatut(), null, 
-		120D, new LocalDateTime(), new LocalDateTime().plusDays(2), client, null);
+		true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1), 
+		120D, new LocalDateTime(), null, client, null);
 
 
 		
 		//Call Services
 		clientService.deleteClient(client);
 		client = clientService.findClientById(client.getId());
-		reservation1 = reservationService.findById(reservation1.getId());
-		reservation2 = reservationService.findById(reservation2.getId());
+		reservation1 = reservationService.findReservationById(reservation1.getId());
+		reservation2 = reservationService.findReservationById(reservation2.getId());
 		
 		//Check results
 		assertThat(client, is(nullValue()));
@@ -159,14 +168,14 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	}
 	
 	/**
-	 * Tester le service findAppartementByCriteria
+	 * Tester le service testFindClientByCriteriaAllCriteriaNull
 	 * sans critères d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 
 	@Test
-	public void testFindClientByCriteriaAllCriteriaNull() throws FunctionalException {
+	public void testFindClientByCriteriaAllCriteriaNull() throws TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -185,14 +194,14 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	}
 	
 	/**
-	 * Tester le service findAppartementByCriteria
+	 * Tester le service testFindClientByCriteria
 	 * avec le libellé comme critère d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 
 	@Test
-	public void testFindClientByCriteria() throws FunctionalException {
+	public void testFindClientByCriteria() throws TechnicalException {
 
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -282,14 +291,14 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	}
 	
 	/**
-	 * Tester le service findAppartementByCriteria
+	 * Tester le service testFindClientByCriteriaAdresse
 	 * avec les champs dde l' adresse comme critère d'entrée
 	 * 
-	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 
 	@Test
-	public void testFindClientByCriteriaAdresse() throws FunctionalException {
+	public void testFindClientByCriteriaAdresse() throws TechnicalException {
 
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");

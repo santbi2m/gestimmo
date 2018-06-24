@@ -139,8 +139,8 @@ INSERT INTO assoc_resa_appart (id_appartement, id_reservation) VALUES
 
 
 
-INSERT INTO anomalie (id, titre, description, statut_anomalie, date_ouverture, date_traitement, id_appartement, commentaire) VALUES
-(1, 'Panne de clim', 'La climatisation de la chambre parente fait du bruit et ne refroidit plus la pièce', 'En traitement', '2018-05-11 00:00:00', '2018-05-11 00:00:00', 9999, 'Le technicien est en cours de réparation du problème'),
+--INSERT INTO anomalie (id, titre, description, statut_anomalie, date_ouverture, date_traitement, id_appartement, commentaire) VALUES
+--(1, 'Panne de clim', 'La climatisation de la chambre parente fait du bruit et ne refroidit plus la pièce', 'En traitement', '2018-05-11 00:00:00', '2018-05-11 00:00:00', 9999, 'Le technicien est en cours de réparation du problème'),
 
 -- Client
 insert into CLIENT (id, nom, prenom, adresse_email, numero_piece, type_piece, telephone, id_adresse) values (222, 'Gassama', 'Mamadou', 'mamadou@gmail.com', '111100AZ', 'CNI', '0011223344', 1);
