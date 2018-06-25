@@ -161,4 +161,12 @@ public interface ReservationService {
 	 */
 	Map<Long, List<UniteReservation>> loadSchedule(LocalDateTime dateDebut, LocalDateTime dateFin, Long idBien)
 			throws FunctionalException, TechnicalException;
+
+	/**
+	 * Permet l’annulation d’une réservation Enrégistrée, confirmée ou En attente.
+	 * @param reservationDto
+	 * @return
+	 * @throws TechnicalException 
+	 */
+	ReservationDto cancelReservation(ReservationDto reservationDto) throws TechnicalException;
 }

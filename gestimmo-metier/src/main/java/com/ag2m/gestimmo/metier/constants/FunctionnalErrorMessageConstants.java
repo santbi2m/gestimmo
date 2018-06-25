@@ -8,6 +8,10 @@ public class FunctionnalErrorMessageConstants {
 	public static final String ERREUR_RESERVATION_STATUT_INCORRECT =
 			"Impossible de créer une réservation avec un statut annulé ou facturé.";
 	
+	/** Constante ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT */
+	public static final String ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT =
+			"Le statut de la réservation ne permet pas une annulation";
+	
 	/** Constante ERREUR_RESERVATION_DATE_CHECKIN_INCORRECT */
 	public static final String ERREUR_RESERVATION_DATE_CHECKIN_INCORRECT =
 			"La date de checkin ne peut pas être dans le passé";
@@ -19,6 +23,10 @@ public class FunctionnalErrorMessageConstants {
 	/** Constante ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE */
 	public static final String ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE =
 			"Le champs note doit être renseigné afin de justifier la diminution du tarif de l'appartement.";
+	
+	/** Constante ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE */
+	public static final String ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE =
+			"Le champs note doit être renseigné afin de justifier l'annulation de la réservation.";
 	
 	/** Constante ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE */
 	public static final String ERREUR_RESERVATION_PERIODE_SUP_30_JOURS =

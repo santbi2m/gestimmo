@@ -1535,4 +1535,166 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 			assertThat(journeeReservation.get(index).getIdReservations(), is(empty()));
 		}
 	}
+	
+	
+
+	/****************************************************
+	 * **************************************************
+	 * 
+	 *  Test du service métier cancelReservation()
+	 *                                             
+	 *  ************************************************
+	 ***************************************************/
+	
+	
+	/**
+	 * Annulation d'une réservation 
+	 * non encore créée en BDD.
+	 * Vérifier qu'une exception technique est lancée.
+	 * 
+	 * @throws TechnicalException 
+	 */
+	@Test
+	public void testCancelReservationIdNull() throws TechnicalException {
+
+		//Assert that an exception has thrown
+		thrown.expect(TechnicalException.class);
+		thrown.expectMessage(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL);
+
+		ReservationDto resa = new ReservationDto();
+		// Call service
+		reservationService.cancelReservation(resa);
+	}
+	
+	
+	/**
+	 * Annulation d'une réservation 
+	 * nulle.
+	 * Vérifier qu'une exception technique est lancée.
+	 * 
+	 * @throws TechnicalException 
+	 */
+	@Test
+	public void testCancelReservationEntiteNull() throws TechnicalException {
+
+		//Assert that an exception has thrown
+		thrown.expect(TechnicalException.class);
+		thrown.expectMessage(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL);
+
+		// Call service
+		reservationService.cancelReservation(null);
+	}
+	
+	
+	/**
+	 * Test l'annulation de réservation
+	 * Cas d'un statut de réservation invalide.
+	 * 
+	 * @throws FunctionalException
+	 * @throws TechnicalException
+	 */
+	@Test
+	public void testCancelReservationStatutKO() throws FunctionalException, TechnicalException {
+		//Assert that an exception has thrown
+		thrown.expect(FunctionalException.class);
+		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT);
+		
+		//Init réservation
+		
+		AdresseDto adresse = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
+		
+		// Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		
+		//Appartements
+		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Clients
+		ClientDto client = createClient("Maiga", "Amadou", "amai@gmail.com", 
+				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse);
+		
+		//Création de la réservation avec une date checkin null
+		ReservationDto resa = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Avec lit bébé svp", 
+						true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1),
+						50D, new LocalDateTime(), null, client, null);
+		
+		resa.setStatut(EnumStatutReservation.FACTUREE.getStatut());
+		// Call service
+		reservationService.cancelReservation(resa);
+	}
+	
+	
+	/**
+	 * Test l'annulation de réservation
+	 * Cas d'une note non saisie.
+	 * 
+	 * @throws FunctionalException
+	 * @throws TechnicalException
+	 */
+	@Test
+	public void testCancelReservationAnnulationSansNote() throws FunctionalException, TechnicalException {
+		//Assert that an exception has thrown
+		thrown.expect(FunctionalException.class);
+		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE);
+		
+		//Init Adresse
+		AdresseDto adresse = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
+		
+		// Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		
+		//Appartements
+		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Clients
+		ClientDto client = createClient("Maiga", "Amadou", "amai@gmail.com", 
+				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse);
+		
+		//Création de la réservation avec une date checkin null
+		ReservationDto resa = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), null, 
+						true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1),
+						50D, new LocalDateTime(), null, client, null);
+		
+		// Call service
+		reservationService.cancelReservation(resa);
+	}
+	
+	
+	/**
+	 * Test l'annulation de réservation
+	 * Date d'annulation doit être positionnée à la date courante
+	 * le statut de la reservation doit passer à "Annulée".
+	 * 
+	 * @throws FunctionalException
+	 * @throws TechnicalException
+	 */
+	@Test
+	public void testCancelReservation() throws FunctionalException, TechnicalException {
+		//Adresse
+		AdresseDto adresse = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
+		
+		// Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		
+		//Appartements
+		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Clients
+		ClientDto client = createClient("Maiga", "Amadou", "amai@gmail.com", 
+				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse);
+		
+		//Création de la réservation avec une date checkin null
+		ReservationDto resa = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Désistement du client", 
+						true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1),
+						50D, new LocalDateTime(), null, client, null);
+		
+		// Call service
+		ReservationDto reservtationAnnulee = reservationService.cancelReservation(resa);
+		
+		//Vérification de l'annulation
+		assertThat(reservtationAnnulee, is(not(nullValue())));
+		assertThat(reservtationAnnulee.getDateAnnulation(), is(not(nullValue())));
+		assertThat(CustomDateUtil.isSameDay(reservtationAnnulee.getDateAnnulation(), LocalDateTime.now()), is(true));
+		assertThat(reservtationAnnulee.getStatut(), is(EnumStatutReservation.ANNULEE.getStatut()));
+	}
 }

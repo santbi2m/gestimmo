@@ -234,26 +234,8 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationParAppart.forEach((key, values) -> {
 			List<UniteReservation> planning = new ArrayList<>();
 			
-			nuitees.forEach(nuitee -> {
-			 List<Long> dailyResa = values
-					 .stream()
-					 .filter(resa -> 
-							 	CustomDateUtil.isPeriodBetweenInclusive(
-								resa.getDateCheckin(), 
-								resa.getDateCheckout(), 
-								nuitee.dateCheckin(), 
-								nuitee.dateCheckout()))
-					.map(reservation -> reservation.getId())
-					.collect(Collectors.toList());
-			// Création d'une unité de réservation qui correspond 
-			// à une cellule dans le tableau de réservation
-			UniteReservation cellule = new UniteReservation();
-			cellule.setIdAppartement(key);
-			cellule.setNuite(nuitee);
-			cellule.setIdReservations(dailyResa);
-			cellule.setJournee(nuitee.dateCheckin().toLocalDate());
-			planning.add(cellule);	
-			});
+			//Génération du planning pour les nuitées
+			createScheduleForNuitee(nuitees, key, values, planning);
 			
 			/***********************************************
 			 * Gestion des day-uses:
@@ -262,22 +244,7 @@ public class ReservationServiceImpl implements ReservationService {
 			 * Elles correspondent potentiellement aux 
 			 * day-uses.
 			 ***********************************************/
-			planning.stream().filter(plng -> plng.getIdReservations().isEmpty()).forEach(cellule ->
-			{
-				List<Long> dayUses = values
-						 .stream()
-						 .filter(resa -> 
-								 	CustomDateUtil.isPeriodBetweenInclusive(
-						 			cellule.getNuite().dateCheckin(), 
-						 			cellule.getNuite().dateCheckout(),
-									resa.getDateCheckin(), 
-									resa.getDateCheckout())) 
-						.map(reservation -> reservation.getId())
-						.collect(Collectors.toList());
-				
-				cellule.setIdReservations(dayUses);
-				cellule.setJournee(cellule.getNuite().dateCheckin().toLocalDate());
-			});
+			createScheduleForDayUse(values, planning);
 			
 			
 			//S'il existe un appartement qui ne figure pas sur le 
@@ -288,28 +255,151 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		if(CollectionUtils.isNotEmpty(appartements)) {
 			Set<Long> keysSet = planningParAppart.keySet();
-			appartements.stream().map(app -> app.getId())
-				.filter(idApp -> !keysSet.contains(idApp))
-				.collect(Collectors.toList())
-				.forEach(idAppartementManquant -> {
-					List<UniteReservation> planning = new ArrayList<>();
-					nuitees.forEach(nuitee -> {
-						// Création d'une unité de réservation qui correspond 
-						// à une cellule dans le tableau de réservation
-						UniteReservation cellule = new UniteReservation();
-						cellule.setIdAppartement(idAppartementManquant);
-						cellule.setNuite(nuitee);
-						cellule.setJournee(nuitee.dateCheckin().toLocalDate());
-						cellule.setIdReservations(Arrays.asList());
-						planning.add(cellule);	
-						});
-					
-					planningParAppart.put(idAppartementManquant, planning);
-				});
+			
+			createScheduleForFreeApart(nuitees, planningParAppart, appartements, keysSet);
 		}
 		
 
 		return planningParAppart;
+	}
+
+	
+	@Override
+	@Transactional
+	public ReservationDto cancelReservation(ReservationDto reservationDto) throws TechnicalException {
+		
+		log.debug("Service cancelReservation");
+
+		//statut autorisé pour annuler une réservation
+		List<String> statutAutorisee = Arrays.asList(EnumStatutReservation.ENREGISTREE.getStatut() , 
+				EnumStatutReservation.CONFIRMEE.getStatut(), EnumStatutReservation.EN_ATTENTE.getStatut());
+		
+		//Validations des paramètres d'entrée
+		
+		//L'entité doit exister en BDD
+		Optional.ofNullable(reservationDto)
+		.filter(dto -> dto.getId() != null)
+		.orElseThrow(() 
+		 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL));
+		
+		//La note est obligatoire lors de l'annulation d'une réservation
+		Optional.ofNullable(reservationDto).filter(resa -> StringUtils.isNotEmpty(resa.getNote())).orElseThrow(() 
+					 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE));
+		
+		// statut de résa différent de « Enregistrée » , « Confirmée » et « En attente »
+		//pour pouvoir être annulé.
+		if(!statutAutorisee.contains(reservationDto.getStatut())) {
+			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT);
+		}
+		
+		//Si tous les paramètres sont ok, on passe à l'annulation 
+		reservationDto.setStatut(EnumStatutReservation.ANNULEE.getStatut());
+		
+		//Positionner une date d'annulation à la date du jour
+		reservationDto.setDateAnnulation(LocalDateTime.now());
+		
+		//Transformation en entité Reservation
+		Reservation entite = mapper.reservationDtoToReservation(reservationDto);
+		
+		//Sauvegarde de l'annulation de la réservation
+		reservationDao.saveOrUpdate(entite);
+		
+		//Transformation de l'entité enresgistré en ReservationDto
+		return mapper.reservationToReservationDto(entite);
+	}
+	
+	
+	/**
+	 * Création de cellules du planning pour 
+	 * les dates sans réservations
+	 * 
+	 * @param nuitees
+	 * @param planningParAppart
+	 * @param appartements
+	 * @param keysSet
+	 */
+	private void createScheduleForFreeApart(List<Nuitee> nuitees, Map<Long, List<UniteReservation>> planningParAppart,
+			List<Appartement> appartements, Set<Long> keysSet) {
+		appartements.stream().map(app -> app.getId())
+			.filter(idApp -> !keysSet.contains(idApp))
+			.collect(Collectors.toList())
+			.forEach(idAppartementManquant -> {
+				List<UniteReservation> planning = new ArrayList<>();
+				nuitees.forEach(nuitee -> {
+					// Création d'une unité de réservation qui correspond 
+					// à une cellule dans le tableau de réservation
+					UniteReservation cellule = new UniteReservation();
+					cellule.setIdAppartement(idAppartementManquant);
+					cellule.setNuite(nuitee);
+					cellule.setJournee(nuitee.dateCheckin().toLocalDate());
+					cellule.setIdReservations(Arrays.asList());
+					planning.add(cellule);	
+					});
+				
+				planningParAppart.put(idAppartementManquant, planning);
+			});
+	}
+
+	
+	/**
+	 * Création d'une cellule de planning pour chaque
+	 * chaque day-use.
+	 * 
+	 * @param values
+	 * @param planning
+	 */
+	private void createScheduleForDayUse(List<Reservation> values, List<UniteReservation> planning) {
+		planning.stream().filter(plng -> plng.getIdReservations().isEmpty()).forEach(cellule ->
+		{
+			List<Long> dayUses = values
+					 .stream()
+					 .filter(resa -> 
+							 	CustomDateUtil.isPeriodBetweenInclusive(
+					 			cellule.getNuite().dateCheckin(), 
+					 			cellule.getNuite().dateCheckout(),
+								resa.getDateCheckin(), 
+								resa.getDateCheckout())) 
+					.map(reservation -> reservation.getId())
+					.collect(Collectors.toList());
+			
+			cellule.setIdReservations(dayUses);
+			cellule.setJournee(cellule.getNuite().dateCheckin().toLocalDate());
+		});
+	}
+	
+
+	/**
+	 * Création d'une cellule de planning pour chaque
+	 * chaque nuitées
+	 * 
+	 * @param nuitees
+	 * @param key
+	 * @param values
+	 * @param planning
+	 */
+	private void createScheduleForNuitee(List<Nuitee> nuitees, Long key, List<Reservation> values,
+			List<UniteReservation> planning) {
+		
+		nuitees.forEach(nuitee -> {
+		 List<Long> dailyResa = values
+				 .stream()
+				 .filter(resa -> 
+						 	CustomDateUtil.isPeriodBetweenInclusive(
+							resa.getDateCheckin(), 
+							resa.getDateCheckout(), 
+							nuitee.dateCheckin(), 
+							nuitee.dateCheckout()))
+				.map(reservation -> reservation.getId())
+				.collect(Collectors.toList());
+		// Création d'une unité de réservation qui correspond 
+		// à une cellule dans le tableau de réservation
+		UniteReservation cellule = new UniteReservation();
+		cellule.setIdAppartement(key);
+		cellule.setNuite(nuitee);
+		cellule.setIdReservations(dailyResa);
+		cellule.setJournee(nuitee.dateCheckin().toLocalDate());
+		planning.add(cellule);	
+		});
 	}
 
 	/**
@@ -384,8 +474,6 @@ public class ReservationServiceImpl implements ReservationService {
 	 */
 	private ReservationDto controlMapAndSave(ReservationDto reservationDto) throws TechnicalException {
 		
-		ReservationDto result = null;
-			
 		//statut autorisé pour la réservation
 		List<String> statutAutorisee = Arrays.asList(EnumStatutReservation.ENREGISTREE.getStatut() , 
 				EnumStatutReservation.CONFIRMEE.getStatut(), EnumStatutReservation.EN_ATTENTE.getStatut());
@@ -414,10 +502,7 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationDao.saveOrUpdate(entite);
 		
 		//Transformation de l'entité enresgistré en ReservationDto
-		result = mapper.reservationToReservationDto(entite);
-			
-		
-		return result;
+		return mapper.reservationToReservationDto(entite);
 	}
 	
 	
