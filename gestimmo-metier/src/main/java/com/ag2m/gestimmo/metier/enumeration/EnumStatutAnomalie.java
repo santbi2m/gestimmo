@@ -19,4 +19,14 @@ public enum EnumStatutAnomalie {
 	
 	private String statut;
 	
+	public static boolean isStatutAnomalie(String statutAnomalie) {
+		
+		for(EnumStatutAnomalie value : EnumStatutAnomalie.values()) {
+			 if(value.getStatut().equals(statutAnomalie)) {
+				 return true;
+			 }
+		 }
+		 return false;
+	}
+	
 }

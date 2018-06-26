@@ -19,8 +19,8 @@ import lombok.ToString;
 /**
  * @author mombaye
  * 
- * Classe commune contenant les attribut
- * commune des entités, comme l'id par exemple
+ * Classe commune contenant les attributs
+ * communes des entités, comme l'id par exemple
  */
 @MappedSuperclass
 @Getter @Setter @ToString

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ag2m.gestimmo.metier.dto.AnomalieDto;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.service.AnomalieService;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 
@@ -24,14 +25,14 @@ public class AnomalieController {
 	private AnomalieService anomalieService;
 	
 	
-	/**
-	 * Retourne toutes les anomalies sous format Json
-	 * 
-	 * @return
-	 */
+		/**
+		 * Retourne toutes les anomalies sous format Json
+		 * 
+		 * @return
+		 */
 		@RequestMapping(value = "/anomalies", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public @ResponseBody List<AnomalieDto> findAllAnomalie() {
-	        List<AnomalieDto> anomalies = anomalieService.findAll();
+	        List<AnomalieDto> anomalies = anomalieService.findAllAnomalie();
 	        return anomalies;
 	    }
 	  
@@ -40,17 +41,18 @@ public class AnomalieController {
 		 * Retourne l'anomalie dont l'id est en paramètre, sous format Json
 		 * 
 		 * @return
+		 * @throws FunctionalException 
 		 */
 	    @RequestMapping(value = "/anomalies/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	    public @ResponseBody AnomalieDto getAnomalie(@PathVariable("id") long id) {
+	    public @ResponseBody AnomalieDto getAnomalie(@PathVariable("id") long id) throws FunctionalException {
 
-	    	AnomalieDto anomalie = anomalieService.findById(id);
+	    	AnomalieDto anomalie = anomalieService.findAnomalieById(id);
 	     
 	    	return anomalie;
 	    }
 	    
 	    /**
-		 * Crée un nouvel appartement
+		 * Crée un nouvel anomalie 
 		 * 
 		 */
 //	    @RequestMapping(value = "/anomalies/save/idBien/{id}", method = RequestMethod.POST)
@@ -75,4 +77,5 @@ public class AnomalieController {
 //		    	appartementService.delete(appartement);
 //		     
 //		    }
+	    
 }

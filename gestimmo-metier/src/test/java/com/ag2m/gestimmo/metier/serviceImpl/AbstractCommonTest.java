@@ -317,10 +317,11 @@ public abstract class AbstractCommonTest {
 	 * @param statut
 	 * @param titre
 	 * @return
+	 * @throws FunctionalException 
 	 */
 	protected AnomalieDto createAnomalie(AppartementDto appartement, String commentaire, 
 			LocalDateTime dateOuverture, LocalDateTime dateTraitement, 
-			String description, String statut, String titre){
+			String description, String statut, String titre) throws FunctionalException{
 		
 		AnomalieDto anomalie = new AnomalieDto();
 		anomalie.setAppartement(appartement);
@@ -331,7 +332,7 @@ public abstract class AbstractCommonTest {
 		anomalie.setStatut(statut);
 		anomalie.setTitre(titre);
 		
-		anomalie = anomalieService.saveOrUpdate(anomalie);
+		anomalie = anomalieService.createAnomalie(anomalie);
 		 return anomalie;
 	}
 	
