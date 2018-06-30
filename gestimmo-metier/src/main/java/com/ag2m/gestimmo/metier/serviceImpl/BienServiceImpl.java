@@ -1,6 +1,7 @@
 package com.ag2m.gestimmo.metier.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.BienService;
 
@@ -43,9 +45,8 @@ public class BienServiceImpl implements BienService {
 
 
 		logger.info("Methode de recherche de bien par id " + id);
-		if (id == null) {
-			throw new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL);
-		}
+		Optional.ofNullable(id).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 
 		final Bien bien = bienDao.findById(Bien.class, id);
 
@@ -87,9 +88,8 @@ public class BienServiceImpl implements BienService {
 		logger.debug("Creation bien");
 
 		// Le bien à créer ne peut pas être null
-		if (bienDto == null) {
-			throw new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_CREATION_NULL);
-		}
+		Optional.ofNullable(bienDto).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 		// map and save
 		return mapAndSave(bienDto);
 	}
@@ -100,9 +100,11 @@ public class BienServiceImpl implements BienService {
 
 		logger.debug("Mise à jour Bien");
 		// Le bien à modifier doit exister en BDD
-		if (bienDt == null || bienDt.getId() == null) {
-			throw new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL);
-		}
+		Optional.ofNullable(bienDt)
+		.filter(dto -> dto.getId() != null)
+		.orElseThrow(() 
+		 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL));
+
 		// map and save
 		return mapAndSave(bienDt);
 	}
@@ -113,9 +115,8 @@ public class BienServiceImpl implements BienService {
 		
 		logger.debug("SUppression Bien");
 		// Bien à supprimer ne peut pas être null
-		if (bienDto == null) {
-			throw new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_SUPP_NULL);
-		}
+		Optional.ofNullable(bienDto).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 		// Transformation en entité Bien
 		Bien bien = mapper.bienDtoToBien(bienDto);
 
@@ -129,14 +130,13 @@ public class BienServiceImpl implements BienService {
 	 */
 	@Override
 	@Transactional
-	public List<BienDto> findBienByCriteria(String libelle, String adresse, String complement,
-			Integer codePostal, String ville, String pays) throws FunctionalException {
+	public List<BienDto> findBienByCriteria(BienCriteria bienCriteria) throws FunctionalException {
 		
 		logger.debug("Recherche Par critere");
 		
 		
 		//Chargement des biens en fonction des critères d'entrée.
-		List<Bien> biens = bienDao.findBienByCriteria(libelle, adresse, complement, codePostal, ville, pays);
+		List<Bien> biens = bienDao.findBienByCriteria(bienCriteria);
 		//Transformation de tous les biens en BienDto
 		return biens.stream()
 							.map(bien 

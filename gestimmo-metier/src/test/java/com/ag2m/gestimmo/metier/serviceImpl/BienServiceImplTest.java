@@ -14,6 +14,7 @@ import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -85,7 +86,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		bien.setLibelle("updated libelle");
 		bien = bienService.updateBien(bien);
 		
-		//Check results
+		//Check results ,65
 		assertThat(bien.getId(), is(1L));
 		assertThat(bien.getLibelle(), is("updated libelle"));
 	}
@@ -148,7 +149,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	}
 	
 	/**
-	 * Tester le service findAppartementByCriteria
+	 * Tester le service findBienByCriteria
 	 * sans critères d'entrée
 	 * @throws TechnicalException 
 	 * 
@@ -158,6 +159,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	@Test
 	public void testFindBienByCriteriaAllCriteriaNull() throws TechnicalException{
 		
+		BienCriteria bienCriteria = new BienCriteria();
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		
@@ -170,7 +172,8 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		
 		
 		//Call service
-		List<BienDto> result = bienService.findBienByCriteria(null, null, null, 0, null, null);
+		//bienCriteria = null;
+		List<BienDto> result = bienService.findBienByCriteria(bienCriteria);
 		
 		//Check
 		assertThat(result, is(notNullValue()));
@@ -179,7 +182,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	}
 	
 	/**
-	 * Tester le service findAppartementByCriteria
+	 * Tester le service findBientByCriteria
 	 * avec le libellé comme critère d'entrée
 	 * @throws TechnicalException 
 	 * 
@@ -189,6 +192,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	@Test
 	public void testFindBienByCriteriaLibelle() throws TechnicalException{
 
+		BienCriteria bienCriteria = new BienCriteria();
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 
@@ -201,7 +205,8 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		 * ************ Case parametter repected * *
 		 ************/
 		// Call service
-		List<BienDto> result = bienService.findBienByCriteria("Wakeur Meissa", null, null, 0, null, null);
+		bienCriteria.setLibelle("Wakeur Meissa");
+		List<BienDto> result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -216,7 +221,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		 * ************ Parametter in Lower case * *
 		 ************/
 		// Call service
-		result = bienService.findBienByCriteria("bien1", null, null, 0, null, null);
+		bienCriteria = new BienCriteria();
+		bienCriteria.setLibelle("bien1");
+		result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -230,8 +237,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = bienService.findBienByCriteria("bien2", null, null, 0, null, null);
+		bienCriteria = new BienCriteria();
+		bienCriteria.setLibelle("bien2");
+		result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -244,7 +252,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	}
 	
 	/**
-	 * Tester le service findAppartementByCriteria
+	 * Tester le service findBienByCriteria
 	 * avec les champs dde l' adresse comme critère d'entrée
 	 * @throws TechnicalException 
 	 * 
@@ -254,6 +262,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 	@Test
 	public void testFindBienByCriteriaAdresse() throws TechnicalException {
 
+		BienCriteria bienCriteria = new BienCriteria();
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		assertThat(adresse.getId(), is(notNullValue()));
@@ -265,7 +274,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		 * ************ Case parametter repected * *
 		 ************/
 		// Call service
-		List<BienDto> result = bienService.findBienByCriteria(null, adresse.getAdresse(), null, 0, null, null);
+		bienCriteria = new BienCriteria();
+		bienCriteria.setAdresse("12 cité Fadia");
+		List<BienDto> result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -281,7 +292,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		 * ************ Parametter in Lower case * *
 		 ************/
 		// Call service
-		result = bienService.findBienByCriteria(null, null, null, adresse.getCodePostal(), null, null);
+		bienCriteria = new BienCriteria();
+		bienCriteria.setCodePostal(adresse.getCodePostal());
+		result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -296,8 +309,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = bienService.findBienByCriteria(null, null, null, 0, adresse.getVille(), null);
+		bienCriteria = new BienCriteria();
+		bienCriteria.setVille(adresse.getVille());
+		result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -312,8 +326,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = bienService.findBienByCriteria(null, null, null, 0, null, adresse.getPays());
+		bienCriteria = new BienCriteria();
+		bienCriteria.setPays(adresse.getPays());
+		result = bienService.findBienByCriteria(bienCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));

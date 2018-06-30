@@ -6,6 +6,7 @@ import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
 
 /**
  * 
@@ -28,7 +29,6 @@ public interface BienDao extends CommonDao<Long, Bien> {
 	 * @return
 	 * @throws FunctionalException
 	 */
-	List<Bien> findBienByCriteria(String libelle, 
-			String adresse, String complement, Integer codePostal, String ville, String pays) throws FunctionalException;
+	List<Bien> findBienByCriteria(BienCriteria bienCriteria) throws FunctionalException;
 
 }

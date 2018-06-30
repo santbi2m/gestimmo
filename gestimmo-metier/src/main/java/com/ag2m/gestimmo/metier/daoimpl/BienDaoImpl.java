@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.ag2m.gestimmo.metier.dao.BienDao;
 import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
 
 /**
  * @author mombaye
@@ -25,8 +26,7 @@ public class BienDaoImpl extends AbstractDao<Long, Bien> implements BienDao {
 
 	@Override
 	@Cacheable
-	public List<Bien> findBienByCriteria(String libelle, String adresse, String complement, Integer codePostal,
-			String ville, String pays) throws FunctionalException {
+	public List<Bien> findBienByCriteria(BienCriteria bienCriteria) throws FunctionalException {
 		
 			List<Predicate> predicates = new ArrayList<>();
 			//Initialiser un builder de requête
@@ -38,38 +38,31 @@ public class BienDaoImpl extends AbstractDao<Long, Bien> implements BienDao {
 			criteria.select(biens);
 			
 			//Conditions de filtre sur les paramètres d'entrée
-			if(StringUtils.isNotEmpty(libelle)) {
-				Predicate libelleCondition = criteriaBuilder.like(criteriaBuilder.upper(biens.get("libelle")), libelle.toUpperCase());
+			if(StringUtils.isNotEmpty(bienCriteria.getLibelle())) {
+				Predicate libelleCondition = criteriaBuilder.like(criteriaBuilder.upper(biens.get("libelle")), bienCriteria.getLibelle().toUpperCase());
 				predicates.add(libelleCondition);
 			}
 			
-			
-			if(StringUtils.isNotEmpty(adresse)) {
-				Predicate adresseCondition = criteriaBuilder.and(criteriaBuilder.equal(biens.get("adresse").get("adresse"), adresse));
+			if(StringUtils.isNotEmpty(bienCriteria.getAdresse())) {
+				Predicate adresseCondition = criteriaBuilder.like(criteriaBuilder.upper(biens.get("adresse").get("adresse")), bienCriteria.getAdresse().toUpperCase());
 				predicates.add(adresseCondition);
 			}
 			
-			if(StringUtils.isNotEmpty(complement)) {
-				Predicate complementCondition = criteriaBuilder.and(criteriaBuilder.equal(biens.get("adresse").get("complement_adresse"), complement));
-				predicates.add(complementCondition);
-			}
-
-			
-			if(codePostal != 0) {
-				Predicate codePostalCondition = criteriaBuilder.and(criteriaBuilder.equal(biens.get("adresse").get("codePostal"), codePostal));
+			if(bienCriteria.getCodePostal() != null) {
+				Predicate codePostalCondition = criteriaBuilder.and(criteriaBuilder.equal(biens.get("adresse").get("codePostal"), bienCriteria.getCodePostal()));
 				predicates.add(codePostalCondition);
 			}
 			
-			if(StringUtils.isNotEmpty(ville)) {
-				Predicate villeCondition = criteriaBuilder.and(criteriaBuilder.equal(biens.get("adresse").get("ville"), ville));
+			if(StringUtils.isNotEmpty(bienCriteria.getVille())) {
+				Predicate villeCondition = criteriaBuilder.like(criteriaBuilder.upper(biens.get("adresse").get("ville")), bienCriteria.getVille().toUpperCase());
 				predicates.add(villeCondition);
 			}
 			
-			if(StringUtils.isNotEmpty(pays)) {
-				Predicate paysCondition = criteriaBuilder.and(criteriaBuilder.equal(biens.get("adresse").get("pays"), pays));
+			if(StringUtils.isNotEmpty(bienCriteria.getPays())) {
+				Predicate paysCondition = criteriaBuilder.like(criteriaBuilder.upper(biens.get("adresse").get("pays")), bienCriteria.getPays().toUpperCase());
 				predicates.add(paysCondition);
 			}
-			//where  condition1 and condition2 and condition3
+			//where 
 			if(!predicates.isEmpty()) {
 				Predicate[] allConditions = predicates.toArray(new Predicate[predicates.size()]);
 				criteria.where(allConditions);

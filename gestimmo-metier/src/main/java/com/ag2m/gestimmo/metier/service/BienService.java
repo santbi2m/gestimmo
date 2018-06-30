@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
 
 /**
  * 
@@ -60,16 +61,9 @@ public interface BienService {
 	 *  Permet de combiner tous les critères possibles
 	 *  de recherche d’appartements, de retourner 
 	 *  le résultat et de le mettre dans le cache.
-	 *  
-	 * @param libelle
-	 * @param adresse
-	 * @param complement
-	 * @param codePostal
-	 * @param ville
-	 * @param pays
+	 * @param bienCriteria
 	 * @return
 	 */
-	List<BienDto> findBienByCriteria(String libelle, 
-			String adresse, String complement, Integer codePostal, String ville, String pays);
+	List<BienDto> findBienByCriteria(BienCriteria bienCriteria);
 
 }

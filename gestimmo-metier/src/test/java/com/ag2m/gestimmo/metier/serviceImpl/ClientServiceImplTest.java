@@ -26,6 +26,7 @@ import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumStatutReservation;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.ClientCriteria;
 
 /**
  * @author mombaye
@@ -88,7 +89,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		assertThat(client, is(notNullValue()));
 		assertThat(client.getId(), is(222L));
 		
-		//Call service for updating bien
+		//Call service for updating client
 		client.setNom("Dieng");
 		client.setPrenom("Moussa");
 		client.setAdresseEmail("moussa@hotmail.fr");
@@ -176,7 +177,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 
 	@Test
 	public void testFindClientByCriteriaAllCriteriaNull() throws TechnicalException {
-		
+		ClientCriteria clientCriteria = new ClientCriteria();
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		
@@ -186,7 +187,8 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		
 		
 		//Call service
-		List<ClientDto> result = clientService.findClientByCriteria(null, null, null, null, null, null, null, null, 0, null, null);
+		clientCriteria = new ClientCriteria();;
+		List<ClientDto> result = clientService.findClientByCriteria(clientCriteria);
 		//Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));
@@ -202,7 +204,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 
 	@Test
 	public void testFindClientByCriteria() throws TechnicalException {
-
+		ClientCriteria clientCriteria = new ClientCriteria();
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 
@@ -214,8 +216,8 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		 * ************ Case parametter repected * *
 		 ************/
 		// Call service
-		List<ClientDto> result = clientService.findClientByCriteria("Boubakh", null, null, null, null, 
-				null, null, null, 0, null, null);
+		clientCriteria.setNom("Boubakh");
+		List<ClientDto> result = clientService.findClientByCriteria(clientCriteria);
 		// Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));
@@ -229,8 +231,9 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		 * ************ Parametter in Lower case * *
 		 ************/
 		// Call service
-		result = clientService.findClientByCriteria(null, "Adja", null, null, null, 
-				null, null, null, 0, null, null);
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setPrenom("Adja");
+		result = clientService.findClientByCriteria(clientCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -244,9 +247,9 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = clientService.findClientByCriteria(null, null, "adja@gmail.com", null, null, 
-				null, null, null, 0, null, null);
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setAdresseEmail("adja@gmail.com");;
+		result = clientService.findClientByCriteria(clientCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -262,9 +265,9 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = clientService.findClientByCriteria(null, null, null, "145ZERT", null, 
-				null, null, null, 0, null, null);
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setNom("Boubakh");
+		result = clientService.findClientByCriteria(clientCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -277,8 +280,9 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 			assertThat(app.getNumeroPieceIdentite(), is("145ZERT"));
 		});
 		
-		result = clientService.findClientByCriteria(null, null, null, null, "CNI", 
-				null, null, null, 0, null, null);
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setTypePiece("CNI");;
+		result = clientService.findClientByCriteria(clientCriteria);
 
 		// Check
 		assertThat(result, is(notNullValue()));
@@ -300,6 +304,7 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 	@Test
 	public void testFindClientByCriteriaAdresse() throws TechnicalException {
 
+		ClientCriteria clientCriteria = new ClientCriteria();
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		assertThat(adresse.getId(), is(notNullValue()));
@@ -312,8 +317,8 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		 * ************ Case parametter repected * *
 		 ************/
 		// Call service
-		List<ClientDto> result = clientService.findClientByCriteria(null, null, null, null, null, 
-				null, adresse.getAdresse(), null, 0, null, null);
+		clientCriteria.setAdresse(adresse.getAdresse());
+		List<ClientDto> result = clientService.findClientByCriteria(clientCriteria);
 		// Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));
@@ -328,8 +333,9 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		 * ************ Parametter in Lower case * *
 		 ************/
 		// Call service
-		result = clientService.findClientByCriteria(null, null, null, null, null, 
-				null, null, null, 9900, null, null);
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setCodePostal(9900);
+		result = clientService.findClientByCriteria(clientCriteria);
 		// Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));
@@ -343,9 +349,9 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = clientService.findClientByCriteria(null, null, null, null, null, 
-				null, null, null, 0, "Sacré coeur", null);
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setVille("Sacré coeur");
+		result = clientService.findClientByCriteria(clientCriteria);
 		// Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));
@@ -359,9 +365,10 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		/************
 		 * ************ Parametter in any case * *
 		 ************/
-
-		result = clientService.findClientByCriteria(null, null, null, null, null, 
-				null, null, null, 0, "Sacré coeur", "Sénégal");
+		clientCriteria = new ClientCriteria();
+		clientCriteria.setVille("Sacré coeur");
+		clientCriteria.setPays("Sénégal");
+		result = clientService.findClientByCriteria(clientCriteria);
 		// Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));

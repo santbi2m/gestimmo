@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.ag2m.gestimmo.metier.dao.ClientDao;
 import com.ag2m.gestimmo.metier.entite.Client;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.ioparam.ClientCriteria;
 
 @Repository
 public class ClientDaoImpl extends AbstractDao<Long, Client> implements ClientDao{
@@ -25,9 +26,7 @@ public class ClientDaoImpl extends AbstractDao<Long, Client> implements ClientDa
 	 */
 	@Override
 	@Cacheable
-	public List<Client> findClientByCriteria(String nom, String prenom, String adresseEmail, String numeroPiece,
-			String typePiece, String telephone, String adresse, String complement, Integer codePostal, String ville,
-			String pays) throws FunctionalException {
+	public List<Client> findClientByCriteria(ClientCriteria clientCriteria) throws FunctionalException {
 		List<Predicate> predicates = new ArrayList<>();
 		//Initialiser un builder de requête
 		CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
@@ -38,59 +37,54 @@ public class ClientDaoImpl extends AbstractDao<Long, Client> implements ClientDa
 		criteria.select(clients);
 		
 		//Conditions de filtre sur les paramètres d'entrée
-		if(StringUtils.isNotEmpty(nom)) {
-			Predicate nomCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("nom")), nom.toUpperCase());
+		if(StringUtils.isNotEmpty(clientCriteria.getNom())) {
+			Predicate nomCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("nom")), clientCriteria.getNom().toUpperCase());
 			predicates.add(nomCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(prenom)) {
-			Predicate prenomCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("prenom")), prenom.toUpperCase());
+		if(StringUtils.isNotEmpty(clientCriteria.getPrenom())) {
+			Predicate prenomCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("prenom")), clientCriteria.getPrenom().toUpperCase());
 			predicates.add(prenomCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(adresseEmail)) {
-			Predicate adresseEmailCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("adresseEmail")), adresseEmail.toUpperCase());
+		if(StringUtils.isNotEmpty(clientCriteria.getAdresseEmail())) {
+			Predicate adresseEmailCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("adresseEmail")), clientCriteria.getAdresseEmail().toUpperCase());
 			predicates.add(adresseEmailCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(numeroPiece)) {
-			Predicate numeroPieceCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("numeroPieceIdentite")), numeroPiece.toUpperCase());
+		if(StringUtils.isNotEmpty(clientCriteria.getNumeroPiece())) {
+			Predicate numeroPieceCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("numeroPieceIdentite")), clientCriteria.getNumeroPiece().toUpperCase());
 			predicates.add(numeroPieceCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(typePiece)) {
-			Predicate typePieceCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("typePieceIdentite")), typePiece.toUpperCase());
+		if(StringUtils.isNotEmpty(clientCriteria.getTypePiece())) {
+			Predicate typePieceCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("typePieceIdentite")), clientCriteria.getTypePiece().toUpperCase());
 			predicates.add(typePieceCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(telephone)) {
-			Predicate telephoneCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("telephone")), telephone.toUpperCase());
+		if(StringUtils.isNotEmpty(clientCriteria.getTelephone())) {
+			Predicate telephoneCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("telephone")), clientCriteria.getTelephone().toUpperCase());
 			predicates.add(telephoneCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(adresse)) {
-			Predicate adresseCondition = criteriaBuilder.and(criteriaBuilder.equal(clients.get("adresse").get("adresse"), adresse));
+		if(StringUtils.isNotEmpty(clientCriteria.getAdresse())) {
+			Predicate adresseCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("adresse").get("adresse")), clientCriteria.getAdresse().toUpperCase());
 			predicates.add(adresseCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(complement)) {
-			Predicate complementCondition = criteriaBuilder.and(criteriaBuilder.equal(clients.get("adresse").get("complement_adresse"), complement));
-			predicates.add(complementCondition);
-		}
-
 		
-		if(codePostal != 0) {
-			Predicate codePostalCondition = criteriaBuilder.and(criteriaBuilder.equal(clients.get("adresse").get("codePostal"), codePostal));
+		if(clientCriteria.getCodePostal() != null) {
+			Predicate codePostalCondition = criteriaBuilder.and(criteriaBuilder.equal(clients.get("adresse").get("codePostal"), clientCriteria.getCodePostal()));
 			predicates.add(codePostalCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(ville)) {
-			Predicate villeCondition = criteriaBuilder.and(criteriaBuilder.equal(clients.get("adresse").get("ville"), ville));
+		if(StringUtils.isNotEmpty(clientCriteria.getVille())) {
+			Predicate villeCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("adresse").get("ville")), clientCriteria.getVille().toUpperCase());
 			predicates.add(villeCondition);
 		}
 		
-		if(StringUtils.isNotEmpty(pays)) {
-			Predicate paysCondition = criteriaBuilder.and(criteriaBuilder.equal(clients.get("adresse").get("pays"), pays));
+		if(StringUtils.isNotEmpty(clientCriteria.getPays())) {
+			Predicate paysCondition = criteriaBuilder.like(criteriaBuilder.upper(clients.get("adresse").get("pays")), clientCriteria.getPays().toUpperCase());
 			predicates.add(paysCondition);
 		}
 		//where  condition1 and condition2 and condition3

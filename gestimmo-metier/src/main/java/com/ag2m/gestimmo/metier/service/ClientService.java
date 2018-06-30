@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.ClientDto;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.ClientCriteria;
 
 public interface ClientService {
 
@@ -54,22 +55,10 @@ public interface ClientService {
 	 *  Permet de combiner tous les critères possibles
 	 *  de recherche de client, de retourner 
 	 *  le résultat et de le mettre dans le cache.
-	 * @param nom
-	 * @param prenom
-	 * @param adresseEmail
-	 * @param numeroPiece
-	 * @param typePiece
-	 * @param telephone
-	 * @param adresse
-	 * @param complement
-	 * @param codePostal
-	 * @param ville
-	 * @param pays
+	 * @param clientCriteria
 	 * @return
-	 * @throws TechnicalException 
+	 * @throws TechnicalException
 	 */
-	List<ClientDto> findClientByCriteria(String nom, 
-			String prenom, String adresseEmail, String numeroPiece, String typePiece, String telephone,
-			String adresse, String complement, Integer codePostal, String ville, String pays) throws TechnicalException;
+	List<ClientDto> findClientByCriteria(ClientCriteria clientCriteria) throws TechnicalException;
 
 }

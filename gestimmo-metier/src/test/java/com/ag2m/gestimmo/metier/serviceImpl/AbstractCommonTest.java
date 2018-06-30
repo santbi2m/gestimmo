@@ -177,9 +177,11 @@ public abstract class AbstractCommonTest {
 	 * @param tva
 	 * @param remise
 	 * @return
+	 * @throws TechnicalException 
+	 * @throws FunctionalException 
 	 */
 	protected FactureDto createFacture(ClientDto client, Double taxeSejour,
-			AdresseDto adresseFacturation, Double tva, Double remise) {
+			AdresseDto adresseFacturation, Double tva, Double remise) throws FunctionalException, TechnicalException {
 		
 		FactureDto facture = new FactureDto();
 		facture.setAdresseFacturation(adresseFacturation);
@@ -188,7 +190,7 @@ public abstract class AbstractCommonTest {
 		facture.setTaxeSejour(taxeSejour);
 		facture.setTva(tva);
 		
-		facture = factureService.saveOrUpdate(facture);
+		facture = factureService.createFacture(facture);
 		
 		return facture;
 		
