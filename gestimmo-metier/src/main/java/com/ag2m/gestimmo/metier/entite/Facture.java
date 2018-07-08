@@ -52,4 +52,6 @@ public class Facture extends Identifiant<Long> implements Serializable{
 	@Column(name="remise")
 	private Double remise;
 	
+//	numeroFacture
+	
 }

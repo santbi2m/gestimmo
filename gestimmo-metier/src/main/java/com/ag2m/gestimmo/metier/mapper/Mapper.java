@@ -1,10 +1,17 @@
 package com.ag2m.gestimmo.metier.mapper;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Map;
 
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.lang.StringUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 import com.ag2m.gestimmo.metier.config.ParamConfig;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
@@ -12,6 +19,7 @@ import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.dto.ClientDto;
+import com.ag2m.gestimmo.metier.dto.DevisDto;
 import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.dto.RoleDto;
@@ -21,15 +29,18 @@ import com.ag2m.gestimmo.metier.entite.Anomalie;
 import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.entite.Client;
+import com.ag2m.gestimmo.metier.entite.Devis;
 import com.ag2m.gestimmo.metier.entite.Facture;
 import com.ag2m.gestimmo.metier.entite.Reservation;
 import com.ag2m.gestimmo.metier.entite.Role;
 import com.ag2m.gestimmo.metier.entite.Utilisateur;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface Mapper {
 
-	
 	/**
 	 * Map un Objet Utilisateur en UtilisateurDto
 	 * Ignore le mapping de Utilisateur dans les objets Role afin d'éviter 
@@ -76,7 +87,7 @@ public interface Mapper {
 	 * @param utilisateur
 	 */
 	 @AfterMapping
-		default void processRoleForUtilisateur(@MappingTarget Utilisateur utilisateur) {
+	default void processRoleForUtilisateur(@MappingTarget Utilisateur utilisateur) {
 			 if(utilisateur.getRoles() != null) {
 				 utilisateur.getRoles().forEach(app -> app.setUtilisateur(utilisateur));
 			 }
@@ -100,6 +111,69 @@ public interface Mapper {
 		 */
 		Role roleDtoToRole(RoleDto roleDto);
 	 
+		
+		/**
+		 * Map un Objet Devis en DevisDto
+		 * Ignore le mapping de Facture.
+		 * Ce mapping sera géré par processFactureForDevisDto
+		 * 
+		 * @param devis
+		 * @return
+		 */
+		@Mapping(target = "facture", qualifiedByName = {"processFactureForDevisDto"})
+		public abstract DevisDto devisToDevisDto(Devis devis);
+		
+		
+		
+		/**
+		 * Permet de gérer le mapping de l'objet FactureDto
+		 * contenu dans Devis. Cet objet sera tranformé en json,
+		 * puis en Bytes pour la sauvegarde en base.
+		 * 
+		 * @param devisDto
+		 * @throws IOException 
+		 */
+		 @Named(value = "processFactureForDevisDto")
+		default FactureDto processFactureForDevisDto(byte[] facture) throws IOException {
+			 
+			 if(facture != null) {
+				 //Transform bytes to json
+				 String json = new String(facture);
+				 ObjectMapper mapper = new ObjectMapper();
+				 return mapper.readValue(json, FactureDto.class);
+			 }
+			 return null;
+		 }
+		 
+	 	/**
+		 *  Map un Objet DevisDto en Devis
+		 *  
+		 * @param devisDto
+		 * @return
+		 */
+		 @Mapping(target = "facture", qualifiedByName = {"processFactureForDevis"})
+		 Devis devisDtoToDevis(DevisDto devisDto);
+		 
+		 	/**
+			 * Gère le mapping de l'objet Facture contenu dans Devis.
+			 * Elle sera appelée par devisToDevisDto
+			 * 
+			 * @param devis
+		 	 * @throws JsonProcessingException 
+			 */
+		 @Named(value = "processFactureForDevis")
+		default byte[] processFactureForDevis(FactureDto factureDto) throws JsonProcessingException {
+				
+				 if(factureDto != null) {
+					 //Transform Dto to json
+					 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					 String json = ow.writeValueAsString(factureDto);
+					 //return bytes for blob save
+					 return json.getBytes();
+				}
+					return null;        
+		}
+		 
 		
 		/**
 		 * Map un Objet Client en ClientDto

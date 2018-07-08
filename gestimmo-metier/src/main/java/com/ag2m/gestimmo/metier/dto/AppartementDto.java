@@ -3,7 +3,6 @@
  */
 package com.ag2m.gestimmo.metier.dto;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

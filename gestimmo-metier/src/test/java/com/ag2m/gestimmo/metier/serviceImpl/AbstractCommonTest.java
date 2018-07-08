@@ -20,6 +20,7 @@ import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.dto.ClientDto;
+import com.ag2m.gestimmo.metier.dto.DevisDto;
 import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.dto.RoleDto;
@@ -32,6 +33,7 @@ import com.ag2m.gestimmo.metier.service.AnomalieService;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 import com.ag2m.gestimmo.metier.service.BienService;
 import com.ag2m.gestimmo.metier.service.ClientService;
+import com.ag2m.gestimmo.metier.service.DevisService;
 import com.ag2m.gestimmo.metier.service.FactureService;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 import com.ag2m.gestimmo.metier.service.RoleService;
@@ -79,6 +81,9 @@ public abstract class AbstractCommonTest {
 	
 	@Autowired
 	protected FactureService factureService;
+	
+	@Autowired
+	protected DevisService devisService;
 	
 	@Autowired
 	protected BCryptPasswordEncoder passwordEncoder;
@@ -193,6 +198,28 @@ public abstract class AbstractCommonTest {
 		facture = factureService.createFacture(facture);
 		
 		return facture;
+		
+	}
+	
+	
+	/**
+	 * Permet de créer un Devis en BDD
+	 * 
+	 */
+	protected DevisDto createDevis(String nom, String prenom, String adresseEmail,
+			String telephone, FactureDto facture) {
+		
+		DevisDto devis = new DevisDto();
+		devis.setAdresseEmail(adresseEmail);
+		devis.setNom(nom);
+		devis.setPrenom(prenom);
+		devis.setTelephone(telephone);
+		
+		devis.setFacture(facture);
+		
+		devis = devisService.saveOrUpdate(devis);
+		
+		return devis;
 		
 	}
 	

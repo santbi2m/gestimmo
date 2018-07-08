@@ -3,8 +3,6 @@
  */
 package com.ag2m.gestimmo.metier.utils;
 
-import java.time.LocalDate;
-
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;

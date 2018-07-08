@@ -197,7 +197,7 @@ public class ReservationServiceImpl implements ReservationService {
 	@Cacheable
 	@Transactional(readOnly = true)
 	public Map<Long, List<UniteReservation>> loadSchedule(LocalDateTime dateDebut, 
-			LocalDateTime dateFin, Long idBien) throws FunctionalException, TechnicalException{
+			LocalDateTime dateFin, Long idBien) throws FunctionalException, TechnicalException {
 		
 		log.debug("Service loadSchedule");
 		
