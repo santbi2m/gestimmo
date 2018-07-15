@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -38,12 +41,20 @@ public class Devis extends Identifiant<Long> implements Serializable{
 	@Column(name="telephone")
 	private String telephone;
 	
-//	dateChekin
+	@Column(name="numero_devis", nullable = false)
+	private String numeroDevis;
 	
-//	dateCheckout
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	@Column(name="dateChekin", nullable = false)
+	private LocalDateTime dateChekin;
 	
-//	numeroDevis
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	@Column(name="dateCheckout", nullable = false)
+	private LocalDateTime dateCheckout;
 	
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	@Column(name="dateCreation", nullable = false)
+	private LocalDateTime dateCreation;
 	
 	@Lob
 	@Column(nullable = false)

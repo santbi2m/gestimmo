@@ -13,7 +13,6 @@ import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.ClientDao;
 import com.ag2m.gestimmo.metier.dto.ClientDto;
 import com.ag2m.gestimmo.metier.entite.Client;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.ioparam.ClientCriteria;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
@@ -21,6 +20,10 @@ import com.ag2m.gestimmo.metier.service.ClientService;
 
 import lombok.extern.log4j.Log4j;
 
+/**
+ * @author mombaye
+ *
+ */
 @Service("clientService")
 @Log4j
 public class ClientServiceImpl implements ClientService {
@@ -31,13 +34,18 @@ public class ClientServiceImpl implements ClientService {
 	@Autowired
 	Mapper mapper;
 	
+	
+	
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.ClientService#findClientById(java.lang.Long)
+	 */
 	@Transactional(readOnly = true)
 	public ClientDto findClientById(Long id) throws TechnicalException {
 		
 		log.info("Methode de recherche de client par id " + id);
 		
 		Optional.ofNullable(id).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
+				 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 
 		final Client client = clientDao.findById(Client.class, id);
 	
@@ -47,9 +55,14 @@ public class ClientServiceImpl implements ClientService {
 		return null;
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.ClientService#loadAllClient()
+	 */
 	@Transactional(readOnly = true)
 	public List<ClientDto> loadAllClient() {
 		
+		log.info("Methode de recherche de tous les clients en BDD");
 		List<Client> results = clientDao.findAll(Client.class);
 		
 		return results.stream().map(client -> 
@@ -59,15 +72,19 @@ public class ClientServiceImpl implements ClientService {
 
 	
 
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.ClientService#deleteClient(com.ag2m.gestimmo.metier.dto.ClientDto)
+	 */
 	@Transactional
 	public boolean deleteClient(ClientDto entiteDto) throws TechnicalException {
 		
 		log.debug("Suppression Client");
 
-		// Bien à supprimer ne peut pas être null
-		Optional.ofNullable(entiteDto).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
-		// Transformation en entité Bien
+		// Le client à supprimer ne peut pas être null
+		Optional.ofNullable(entiteDto).
+		filter(dto -> dto.getId() != null).orElseThrow(() 
+				 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
+		// Transformation en entité Client
 		Client entite = mapper.clientDtoToClient(entiteDto);
 		// Appel du service
 		return clientDao.delete(entite);
@@ -84,7 +101,7 @@ public class ClientServiceImpl implements ClientService {
 		log.debug("Creation client");
 		// Le client à créer ne peut pas être null
 		Optional.ofNullable(clientDto).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
+				 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 		// map and save
 		return mapAndSave(clientDto);
 	}
@@ -119,7 +136,7 @@ public class ClientServiceImpl implements ClientService {
 		log.debug("Recherche Par critere ce client");
 		//Chargement des clients en fonction des critères d'entrée.
 		List<Client> clients = clientDao.findClientByCriteria(clientCriteria);
-		//Transformation de tous les clients en BienDto
+		//Transformation de tous les clients en CLientDto
 		return clients.stream()
 							.map(client 
 							-> mapper.clientToClientDto(client))
@@ -134,7 +151,7 @@ public class ClientServiceImpl implements ClientService {
 	 * @return
 	 */
 	private ClientDto mapAndSave(ClientDto clientDto) {
-			// Transformation en entité Bien
+			// Transformation en entité Client
 			Client client = mapper.clientDtoToClient(clientDto);
 			// Appel du service
 			clientDao.saveOrUpdate(client);

@@ -46,7 +46,7 @@ public class BienServiceImpl implements BienService {
 
 		logger.info("Methode de recherche de bien par id " + id);
 		Optional.ofNullable(id).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
+				 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 
 		final Bien bien = bienDao.findById(Bien.class, id);
 
@@ -73,6 +73,13 @@ public class BienServiceImpl implements BienService {
 				.collect(Collectors.<BienDto>toList());
 	}
 
+	/**
+	 * Map le BienDto en entité Bien 
+	 * puis sauvegarde celle-ci en BDD
+	 * 
+	 * @param bienDto
+	 * @return
+	 */
 	private BienDto mapAndSave(BienDto bienDto) {
 			// Transformation en entité Bien
 			Bien bien = mapper.bienDtoToBien(bienDto);
@@ -81,6 +88,10 @@ public class BienServiceImpl implements BienService {
 			return mapper.bienToBienDto(bien);
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.BienService#createBien(com.ag2m.gestimmo.metier.dto.BienDto)
+	 */
 	@Override
 	@Transactional
 	public BienDto createBien(BienDto bienDto) throws TechnicalException {
@@ -88,25 +99,30 @@ public class BienServiceImpl implements BienService {
 		logger.debug("Creation bien");
 
 		// Le bien à créer ne peut pas être null
-		Optional.ofNullable(bienDto).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
+		Optional.ofNullable(bienDto).
+		orElseThrow(() 
+				 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 		// map and save
 		return mapAndSave(bienDto);
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.BienService#updateBien(com.ag2m.gestimmo.metier.dto.BienDto)
+	 */
 	@Override
 	@Transactional
-	public BienDto updateBien(BienDto bienDt) throws TechnicalException {
+	public BienDto updateBien(BienDto bienDto) throws TechnicalException {
 
 		logger.debug("Mise à jour Bien");
 		// Le bien à modifier doit exister en BDD
-		Optional.ofNullable(bienDt)
+		Optional.ofNullable(bienDto)
 		.filter(dto -> dto.getId() != null)
 		.orElseThrow(() 
 		 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL));
 
 		// map and save
-		return mapAndSave(bienDt);
+		return mapAndSave(bienDto);
 	}
 
 	@Override
@@ -116,7 +132,7 @@ public class BienServiceImpl implements BienService {
 		logger.debug("SUppression Bien");
 		// Bien à supprimer ne peut pas être null
 		Optional.ofNullable(bienDto).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
+				 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 		// Transformation en entité Bien
 		Bien bien = mapper.bienDtoToBien(bienDto);
 
@@ -133,8 +149,6 @@ public class BienServiceImpl implements BienService {
 	public List<BienDto> findBienByCriteria(BienCriteria bienCriteria) throws FunctionalException {
 		
 		logger.debug("Recherche Par critere");
-		
-		
 		//Chargement des biens en fonction des critères d'entrée.
 		List<Bien> biens = bienDao.findBienByCriteria(bienCriteria);
 		//Transformation de tous les biens en BienDto
@@ -142,6 +156,5 @@ public class BienServiceImpl implements BienService {
 							.map(bien 
 							-> mapper.bienToBienDto(bien))
 							.collect(Collectors.<BienDto> toList());
-		
 	}
 }

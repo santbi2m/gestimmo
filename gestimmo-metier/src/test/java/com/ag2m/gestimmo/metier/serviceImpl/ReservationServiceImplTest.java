@@ -169,7 +169,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 				"987654321", EnumTypePieceIdentite.PERMIS_CONDUIRE.getType(), "+33756487921", adresse3);
 		
 		//Facture
-		FactureDto facture = createFacture(client2, 2D, adresse2, 20D, 15D);
+		FactureDto facture = createFacture(client2, 2D, adresse2, 20D, 15D, "AG2MGI2018F3");
 		
 		//Reservations
 		ReservationDto reservation1 = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Avec lit bébé svp", 
@@ -645,7 +645,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 				"987654321", EnumTypePieceIdentite.PERMIS_CONDUIRE.getType(), "+33756487921", adresse3);
 		
 		//Facture
-		FactureDto facture = createFacture(client2, 2D, adresse2, 20D, 15D);
+		FactureDto facture = createFacture(client2, 2D, adresse2, 20D, 15D, "AG2MGI2018F3");
 		
 		//Reservations
 		ReservationDto reservation1 = createReservation(new LocalDateTime().plusDays(10), new LocalDateTime().plusDays(15), "Avec lit bébé svp", 
@@ -1170,7 +1170,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 				"987654321", EnumTypePieceIdentite.PERMIS_CONDUIRE.getType(), "+33756487921", adresse2);
 		
 		//Facture
-		FactureDto facture = createFacture(client2, 2D, adresse2, 20D, 15D);
+		FactureDto facture = createFacture(client2, 2D, adresse2, 20D, 15D, "AG2MGI2018F2");
 		
 		ReservationDto reservation = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(3), "RAS", 
 				true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app2, app3), 

@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -52,6 +55,10 @@ public class Facture extends Identifiant<Long> implements Serializable{
 	@Column(name="remise")
 	private Double remise;
 	
-//	numeroFacture
+	@Column(name="numero_facture", nullable = false)
+	private String numeroFacture;
 	
+	@Column(name="date_creation", nullable = false)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	private LocalDateTime dateCreation;
 }

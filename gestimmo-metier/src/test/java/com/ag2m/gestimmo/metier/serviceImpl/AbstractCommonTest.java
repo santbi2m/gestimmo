@@ -186,16 +186,18 @@ public abstract class AbstractCommonTest {
 	 * @throws FunctionalException 
 	 */
 	protected FactureDto createFacture(ClientDto client, Double taxeSejour,
-			AdresseDto adresseFacturation, Double tva, Double remise) throws FunctionalException, TechnicalException {
+			AdresseDto adresseFacturation, Double tva, Double remise, String numeroFacture) throws FunctionalException, TechnicalException {
 		
 		FactureDto facture = new FactureDto();
 		facture.setAdresseFacturation(adresseFacturation);
 		facture.setClient(client);
 		facture.setRemise(remise);
 		facture.setTaxeSejour(taxeSejour);
+		facture.setDateCreation(LocalDateTime.now());
+		facture.setNumeroFacture(numeroFacture);
 		facture.setTva(tva);
 		
-		facture = factureService.createFacture(facture);
+		facture = factureService.saveOrUpdate(facture);
 		
 		return facture;
 		
@@ -203,17 +205,30 @@ public abstract class AbstractCommonTest {
 	
 	
 	/**
-	 * Permet de créer un Devis en BDD
+	 * Permet de créer un Devis en BDD 
 	 * 
+	 * @param nom
+	 * @param prenom
+	 * @param adresseEmail
+	 * @param telephone
+	 * @param numeroDevis
+	 * @param dateChekin
+	 * @param dateCheckout
+	 * @param facture
+	 * @return
 	 */
 	protected DevisDto createDevis(String nom, String prenom, String adresseEmail,
-			String telephone, FactureDto facture) {
+			String telephone, String numeroDevis, LocalDateTime dateChekin, LocalDateTime dateCheckout, FactureDto facture) {
 		
 		DevisDto devis = new DevisDto();
 		devis.setAdresseEmail(adresseEmail);
 		devis.setNom(nom);
 		devis.setPrenom(prenom);
 		devis.setTelephone(telephone);
+		devis.setNumeroDevis(numeroDevis);
+		devis.setDateChekin(dateChekin);
+		devis.setDateCheckout(dateCheckout);
+		devis.setDateCreation(LocalDateTime.now());
 		
 		devis.setFacture(facture);
 		

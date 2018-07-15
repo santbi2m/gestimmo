@@ -56,7 +56,7 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse2);
 		
 		//Facture
-		FactureDto facture = createFacture(client, 2D, adresse2, 20D, 15D);
+		FactureDto facture = createFacture(client, 2D, adresse2, 20D, 15D, "AG2MGI2018F6");
 		
 		//Reservations
 		ReservationDto reservation1 = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Avec lit bébé svp", 
@@ -84,7 +84,10 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 		
 		
 		//Création de devis 
-		DevisDto devisDto = createDevis(client.getNom(), client.getPrenom(), client.getAdresseEmail(), client.getTelephone(), facture);
+		DevisDto devisDto = createDevis(client.getNom(), client.getPrenom(), 
+				client.getAdresseEmail(), client.getTelephone(), "AG2MGI2018FP1", 
+				new LocalDateTime(), new LocalDateTime().plusDays(3),
+				facture);
 		assertThat(devisDto, is(notNullValue()));
 		assertThat(devisDto.getId(), is(notNullValue()));
 	}

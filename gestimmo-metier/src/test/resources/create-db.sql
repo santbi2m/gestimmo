@@ -44,6 +44,8 @@ CREATE TABLE IF NOT EXISTS `client` (
 CREATE TABLE IF NOT EXISTS `facture` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `remise` double NOT NULL,
+  `numero_facture` varchar(38) NOT NULL,
+  `date_creation` datetime NOT NULL,
   `id_adresse_facturation` bigint(20) NOT NULL,
   `id_client` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
@@ -156,6 +158,36 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `id_user` (`id`)
+);
+
+
+--
+-- Structure de la table `taxe`
+--
+
+CREATE TABLE IF NOT EXISTS `taxe` (
+  `tva` double NOT NULL,
+  `taxe_sejour` double NOT NULL,
+  `date_debut_validite` datetime NOT NULL,
+  `date_fin_valite` datetime,
+  PRIMARY KEY (`tva`)
+);
+
+--
+-- Structure de la table `devis`
+--	
+CREATE TABLE IF NOT EXISTS `devis` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(38) NOT NULL,
+  `prenom` varchar(38) NOT NULL,
+  `adresse_email` varchar(70) NOT NULL,
+  `telephone` varchar(38) NOT NULL,
+  `facture` blob NOT NULL,
+  `numero_devis` varchar(38) NOT NULL,
+  `dateChekin` datetime NOT NULL,
+  `dateCheckout` datetime NOT NULL,
+  `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 );
 
 --

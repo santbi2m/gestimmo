@@ -6,7 +6,14 @@ package com.ag2m.gestimmo.metier.dto;
 import java.io.Serializable;
 import java.util.List;
 
+
+import org.joda.time.LocalDateTime;
+
+import com.ag2m.gestimmo.metier.utils.CustomDateJsonDeserializer;
+import com.ag2m.gestimmo.metier.utils.CustomDateSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +39,13 @@ public class FactureDto extends IdentifiantDto implements Serializable{
 	
 	private Double remise;
 	
+	private String numeroFacture;
+	
+	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonDeserialize(using = CustomDateJsonDeserializer.class)
+	private LocalDateTime dateCreation;
+	
 	@JsonIgnore
 	private List<ReservationDto> reservations;
+	
 }

@@ -58,8 +58,8 @@ INSERT INTO client (id, nom, prenom, adresse_email, numero_piece, type_piece, te
 -------------------------------------------
 -- Jeu de données pour la table  Facture	
 -------------------------------------------
-INSERT INTO facture (id, remise, id_adresse_facturation, id_client) VALUES
-(100, 5, 1, 1);
+INSERT INTO facture (id, remise, numero_facture, date_creation, id_adresse_facturation, id_client) VALUES
+(100, 5, 'AG2MGI2018F1','2018-06-01 12:00:00',1, 1);
 
 --------------------------------------------
 -- Jeu de données pour la table  Reservation
@@ -144,3 +144,10 @@ INSERT INTO assoc_resa_appart (id_appartement, id_reservation) VALUES
 
 -- Client
 insert into CLIENT (id, nom, prenom, adresse_email, numero_piece, type_piece, telephone, id_adresse) values (222, 'Gassama', 'Mamadou', 'mamadou@gmail.com', '111100AZ', 'CNI', '0011223344', 1);
+
+--
+-- Contenu de la table `taxe`
+--
+
+INSERT INTO taxe (tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
+(20, 2, '2018-06-13 00:00:00', null);
