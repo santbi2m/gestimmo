@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.ag2m.gestimmo.metier.serviceImpl;
 
 import static org.junit.Assert.assertThat;
@@ -16,11 +14,11 @@ import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.enumeration.EnumStatutAnomalie;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
 /**
@@ -43,10 +41,22 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 
 
 	@Test
-	public void testDelete() throws FunctionalException {
+	public void testDelete() throws FunctionalException, TechnicalException {
 		
-		//Create and save ano
-		AnomalieDto anomalie = createNewAnomalie();
+				//Adresse
+				AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
+				
+				//Bien
+				BienDto bien = createBien("Wakeur Meissa", adresse);
+				
+				//Appartement
+				AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+				
+				//Anomalie
+				String description =  "le lavabo est mal fixé";
+				String titre =  "Pb de lavabo";
+				AnomalieDto anomalie = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
+						new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre);
 		
 		//Assert
 		assertThat(anomalie, is(notNullValue()));
@@ -59,34 +69,17 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 		assertThat(anomalie, is(nullValue()));
 	}	
 	
-		//Adresse
-		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		
-		//Bien
-		BienDto bien = createBien("Wakeur Meissa", adresse);
-		
-		//Appartement
-		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
-		
-		//Anomalie
-		String description =  "le lavabo est mal fixé";
-		String titre =  "Pb de lavabo";
-		AnomalieDto anomalie = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
-				new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre);
-		//Call service
-		//anomalie = anomalieService.findAnomalieById(anomalie.getId());
-		
-		return anomalie;
-	}
 	
 	/**
 	 * Tester le service findAnomalieByCriteria
 	 * sans critères d'entrée. Les données sont nulls.	 
 	 *  
 	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 	@Test
-	public void testFindAnomalieByCriteriaAllCriteriaNull() throws FunctionalException {
+	public void testFindAnomalieByCriteriaAllCriteriaNull() throws FunctionalException, TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -119,10 +112,11 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 	 * avec le titre comme critère d'entrée
 	 * 
 	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 
 	@Test
-	public void testFindAnomalieByCriteriaTitre() throws FunctionalException {
+	public void testFindAnomalieByCriteriaTitre() throws FunctionalException, TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -198,10 +192,11 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 	 * avec le statut comme critère d'entrée
 	 * 
 	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 
 	@Test
-	public void testFindAnomalieByCriteriaStatut() throws FunctionalException {
+	public void testFindAnomalieByCriteriaStatut() throws FunctionalException, TechnicalException {
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		
@@ -258,10 +253,11 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 	 * avec la date d'ouverture comme critère d'entrée
 	 * 
 	 * @throws FunctionalException
+	 * @throws TechnicalException 
 	 */
 
 	@Test
-	public void testFindAnomalieByCriteriaDateOuverture() throws FunctionalException {
+	public void testFindAnomalieByCriteriaDateOuverture() throws FunctionalException, TechnicalException {
 		
 		//Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -294,7 +290,6 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 		//Check
 		assertThat(result, is(notNullValue()));
 		assertThat(result, is(not(empty())));
-		//assertThat(result.size(), is(greaterThanOrEqualTo(2)));
 
 		result.forEach(app -> {
 			assertThat(app.getStatut(), is(EnumStatutAnomalie.EN_TRAITEMENT.getStatut()));
