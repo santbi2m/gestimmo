@@ -942,7 +942,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		//Vérification des résultats
 		assertThat(results, is(notNullValue()));
 		assertThat(results, is(not(empty())));
-		assertThat(results.size(), is(2));
+		assertThat(results.size(), is(greaterThanOrEqualTo(2)));
 		
 		
 		// Call service : Periode avec au moins 3 reservations
