@@ -43,20 +43,20 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 	@Test
 	public void testDelete() throws FunctionalException, TechnicalException {
 		
-				//Adresse
-				AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
-				
-				//Bien
-				BienDto bien = createBien("Wakeur Meissa", adresse);
-				
-				//Appartement
-				AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
-				
-				//Anomalie
-				String description =  "le lavabo est mal fixé";
-				String titre =  "Pb de lavabo";
-				AnomalieDto anomalie = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
-						new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre);
+		//Adresse
+		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
+		
+		//Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		
+		//Appartement
+		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Anomalie
+		String description =  "le lavabo est mal fixé";
+		String titre =  "Pb de lavabo";
+		AnomalieDto anomalie = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
+				new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre);
 		
 		//Assert
 		assertThat(anomalie, is(notNullValue()));
@@ -215,7 +215,7 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 		 * 												   *
 		 ************ 							************/
 		//Call service
-		AnomalieDto anomalie = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
+		createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
 				new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre);
 		
 		//Call service
@@ -274,14 +274,14 @@ public class AnomalieServiceImplTest extends AbstractCommonTest{
 		String titre2 =  "Pb de lumiére";
 		
 		/************   		   				************
-		 * 		statut existant         			   *
+		 * 		statut existant         			   	   *
 		 * 												   *
 		 ************ 							************/
 		//Call service
-		AnomalieDto anomalie1 = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
+		createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(15), 
 				new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre1);
 		
-		AnomalieDto anomalie2 = createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(5), 
+		createAnomalie(appartement, "Responsabilité client", new LocalDateTime().minusDays(5), 
 				new LocalDateTime(), description, EnumStatutAnomalie.EN_TRAITEMENT.getStatut(), titre2);
 		LocalDateTime dateOuverture = new LocalDateTime().minusDays(15);
 		//Call service

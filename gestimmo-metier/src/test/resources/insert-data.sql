@@ -150,7 +150,7 @@ insert into CLIENT (id, nom, prenom, adresse_email, numero_piece, type_piece, te
 --
 
 INSERT INTO taxe (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
-(1, 20, 2, '2018-06-13 00:00:00', null)
+(1, 20, 2, '2018-06-13 00:00:00', null);
 INSERT INTO taxe (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
 (2, 18, 5, '2018-01-01 00:00:00', '2018-06-12 23:59:59');
 
