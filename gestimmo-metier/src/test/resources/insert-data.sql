@@ -149,8 +149,12 @@ insert into CLIENT (id, nom, prenom, adresse_email, numero_piece, type_piece, te
 -- Contenu de la table `taxe`
 --
 
-INSERT INTO taxe (tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
-(20, 2, '2018-06-13 00:00:00', null);--ANOMALIE
+INSERT INTO taxe (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
+(1, 20, 2, '2018-06-13 00:00:00', null)
+INSERT INTO taxe (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
+(2, 18, 5, '2018-01-01 00:00:00', '2018-06-12 23:59:59');
+
+--ANOMALIE
 --insert into ANOMALIE (id, titre, description, status_anomalie, date_ouverture, date_traitement, id_appartement, commentaire) values (1234,'Cuvette non stable', 'Responsabilité réceptioniste', 'Déclarée', '2018-01-01 00:00:00','2018-06-01 00:00:00', 9999, 'A traiter au plus vite');
 
 --INSERT INTO anomalie (id, titre, description, statut_anomalie, date_ouverture, date_traitement, id_appartement, commentaire) VALUES

@@ -61,4 +61,8 @@ public class FunctionnalErrorMessageConstants {
 	public static final String ERREUR_RESERVATION_BIEN_NULL =
 			"L'id du bien ne peut pas être nul";
 	
+	/** Constante ERREUR_RESERVATION_BIEN_NULL */
+	public static final String ERREUR_PARAMETRAGE_DATE_NULL =
+			"Date nulle passée pour le chargement de la taxe.";
+	
 }

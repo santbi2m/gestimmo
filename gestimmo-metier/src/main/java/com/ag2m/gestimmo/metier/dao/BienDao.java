@@ -2,8 +2,6 @@ package com.ag2m.gestimmo.metier.dao;
 
 import java.util.List;
 
-import com.ag2m.gestimmo.metier.dto.BienDto;
-import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.ioparam.BienCriteria;

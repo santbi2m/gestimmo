@@ -6,9 +6,7 @@ package com.ag2m.gestimmo.metier.serviceImpl;
 
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
 
@@ -41,7 +39,7 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		AdresseDto adresse2 = createAdresse("18 rue carnot", null, 9900, "Plateau", "Sénégal");
-		AdresseDto adresse3 = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
+		createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);

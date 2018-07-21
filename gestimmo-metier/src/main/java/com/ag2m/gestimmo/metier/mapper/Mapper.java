@@ -1,13 +1,7 @@
 package com.ag2m.gestimmo.metier.mapper;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Map;
-
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.commons.lang.StringUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -346,10 +340,6 @@ public interface Mapper {
 			 */
 			 @AfterMapping
 			default void processReservationForFactureDto(@MappingTarget FactureDto factureDto) {
-				 
-				 // Init tva et taxe de séjour
-				 factureDto.setTaxeSejour(ParamConfig.TAXE_SEJOUR);
-				 factureDto.setTva(ParamConfig.TVA);
 				 
 				 	if(factureDto.getReservations() != null) {
 				 		

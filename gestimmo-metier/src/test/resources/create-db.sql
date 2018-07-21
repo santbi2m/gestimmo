@@ -166,11 +166,12 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 CREATE TABLE IF NOT EXISTS `taxe` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tva` double NOT NULL,
   `taxe_sejour` double NOT NULL,
   `date_debut_validite` datetime NOT NULL,
   `date_fin_valite` datetime,
-  PRIMARY KEY (`tva`)
+  PRIMARY KEY (`id`)
 );
 
 --

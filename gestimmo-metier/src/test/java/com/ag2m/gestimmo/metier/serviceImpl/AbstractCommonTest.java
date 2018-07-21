@@ -35,6 +35,7 @@ import com.ag2m.gestimmo.metier.service.BienService;
 import com.ag2m.gestimmo.metier.service.ClientService;
 import com.ag2m.gestimmo.metier.service.DevisService;
 import com.ag2m.gestimmo.metier.service.FactureService;
+import com.ag2m.gestimmo.metier.service.ParametrageService;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 import com.ag2m.gestimmo.metier.service.RoleService;
 import com.ag2m.gestimmo.metier.service.UtilisateurService;
@@ -84,6 +85,9 @@ public abstract class AbstractCommonTest {
 	
 	@Autowired
 	protected DevisService devisService;
+	
+	@Autowired
+	protected ParametrageService parametrageService;
 	
 	@Autowired
 	protected BCryptPasswordEncoder passwordEncoder;

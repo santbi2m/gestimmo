@@ -21,7 +21,7 @@ public class GestimmoContextLoadedListener implements ApplicationListener<Contex
 	 */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		parametrageService.loadTaxe();
+		parametrageService.loadCurrentTaxe();
 		
 	}
 	

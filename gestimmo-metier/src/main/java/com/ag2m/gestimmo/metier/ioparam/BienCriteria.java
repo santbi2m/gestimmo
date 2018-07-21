@@ -1,8 +1,5 @@
 package com.ag2m.gestimmo.metier.ioparam;
 
-import java.util.List;
-
-import org.joda.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -72,7 +72,7 @@ public final class CustomDateUtil {
 		if(date1 == null && date2 == null) {
 			return true;
 		}
-		//Formatage des dates à 0h:00:00
+		//Formatage des dates à 00:00:00
 		date1 =  formatDateByFormatOption(date1, EnumOptionFormatDate.START_OF_DAY_FROMAT);
 		date2 = formatDateByFormatOption(date2, EnumOptionFormatDate.START_OF_DAY_FROMAT);
 		

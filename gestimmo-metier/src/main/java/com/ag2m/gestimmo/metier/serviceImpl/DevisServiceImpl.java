@@ -1,22 +1,15 @@
 package com.ag2m.gestimmo.metier.serviceImpl;
 
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ag2m.gestimmo.metier.dao.DevisDao;
-import com.ag2m.gestimmo.metier.dao.FactureDao;
 import com.ag2m.gestimmo.metier.dto.DevisDto;
-import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.entite.Devis;
-import com.ag2m.gestimmo.metier.entite.Facture;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.DevisService;
-import com.ag2m.gestimmo.metier.service.FactureService;
 
 import lombok.extern.log4j.Log4j;
 
