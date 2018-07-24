@@ -20,7 +20,8 @@ import lombok.ToString;
 /**
  * @author mombaye
  *
- * Classe représentant une facture
+ * Classe représentant une facture proforma
+ * (un Devis)
  */
 @Entity
 @Table(name="DEVIS")

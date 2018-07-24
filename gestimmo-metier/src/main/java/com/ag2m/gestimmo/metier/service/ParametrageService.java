@@ -1,32 +1,30 @@
 package com.ag2m.gestimmo.metier.service;
 
-import org.joda.time.LocalDateTime;
-
-import com.ag2m.gestimmo.metier.entite.referentiel.Taxe;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 public interface ParametrageService {
 
 	/**
-	 * Charge l'objet taxe.
-	 * Cette fonction est appelée au démarrage de 
-	 * l'application afin de charger la Taxe en 
-	 * en cours de validité en mémoire.
+	 * Charge toutes les remises en BDD.
 	 * 
-	 * @return La taxe paamétrée dans la table 
-	 * de référence Taxe.
-	 * 
-	 * @throws FunctionalException 
 	 */
-	void loadCurrentTaxe() throws FunctionalException;
+	void loadAllRemise();
+	
 	
 	/**
-	 * Retourne la taxe valide à la date en entrée en paramètre.
+	 * Recherche et charge le pourcentage de pénalité à appliquer lors d'une 
+	 * annulation tardive de réservations.
+	 * @throws TechnicalException 
 	 * 
-	 * @param date
-	 * @return La taxe valide à date
-	 * 
-	 * * @throws FunctionalException 
 	 */
-	Taxe loadTaxeByDate(LocalDateTime date) throws FunctionalException;
+	void loadPourcentagePenanlite() throws TechnicalException;
+
+
+	/**
+	 * Recherche et charge le délai limite au-delà duquel, 
+	 * tout annulation de réservation est pénalisable.
+	 * 
+	 * @throws TechnicalException
+	 */
+	void loadSeuilAnnulationGratuite() throws TechnicalException;
 }

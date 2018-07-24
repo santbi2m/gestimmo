@@ -1,19 +1,23 @@
 package com.ag2m.gestimmo.metier.daoimpl;
 
 
+
+import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.ParametrageDao;
-import com.ag2m.gestimmo.metier.entite.referentiel.Taxe;
+import com.ag2m.gestimmo.metier.entite.referentiel.Parametrage;
+import com.ag2m.gestimmo.metier.entite.referentiel.Remise;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
 @Repository
@@ -24,60 +28,43 @@ public class ParametrageDaoImpl implements ParametrageDao {
 	
 
 	/* (non-Javadoc)
-	 * @see com.ag2m.gestimmo.metier.dao.ParametrageDao#loadCurrentTaxe()
+	 * @see com.ag2m.gestimmo.metier.dao.ParametrageDao#loadAllRemise()
 	 */
 	@Override
-	public Taxe loadCurrentTaxe() {
-
+	public List<Remise> loadAllRemise() {
 		//Initialiser un builder de requête
 		CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
-		CriteriaQuery<Taxe> criteria = criteriaBuilder.createQuery(Taxe.class);
+		CriteriaQuery<Remise> criteria = criteriaBuilder.createQuery(Remise.class);
 		
-		//select from Reservation
-		Root<Taxe> taxe = criteria.from(Taxe.class);
-		criteria.select(taxe);
+		//select from Remise
+		Root<Remise> remise = criteria.from(Remise.class);
+		criteria.select(remise);
 		
-		//Conditions de filtre sur les paramètres d'entrée
-		
-		//Date de validité
-		LocalDateTime currentDate = LocalDateTime.now();
-		Predicate periodeValidite = criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(taxe.get("dateDebutValidite"), 
-				currentDate), taxe.get("dateFinValite").isNull());
-			
-			criteria.where(periodeValidite);
-			
-		return  getCurrentSession().createQuery(criteria).uniqueResult();
+		return  getCurrentSession().createQuery(criteria).list();
 	}
 	
 	
-	
-
 	/* (non-Javadoc)
-	 * @see com.ag2m.gestimmo.metier.dao.ParametrageDao#loadTaxeByDate(org.joda.time.LocalDateTime)
+	 * @see com.ag2m.gestimmo.metier.dao.ParametrageDao#loadParametrageByType(java.lang.String)
 	 */
 	@Override
-	public Taxe loadTaxeByDate(LocalDateTime date) throws FunctionalException {
+	public Parametrage loadParametrageByType(String type) {
 		
+		//Il faut que le type soit renseigné
+		Optional.ofNullable(type).filter(typ -> !typ.isEmpty()).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.PARAMETRAGE_TYPE_NULL));
+
 		//Initialiser un builder de requête
 		CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
-		CriteriaQuery<Taxe> criteria = criteriaBuilder.createQuery(Taxe.class);
+		CriteriaQuery<Parametrage> criteria = criteriaBuilder.createQuery(Parametrage.class);
 		
-		//select from Reservation
-		Root<Taxe> taxe = criteria.from(Taxe.class);
-		criteria.select(taxe);
+		//select from Parametrage
+		Root<Parametrage> parametrage = criteria.from(Parametrage.class);
+		criteria.select(parametrage);
+		criteria.where(criteriaBuilder.like(parametrage.get("type"), type));
 		
-		//Conditions de filtre sur les paramètres d'entrée
-		
-		//Date de validité
-		Predicate periodeValidite = criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(taxe.get("dateDebutValidite"), 
-				date), criteriaBuilder.greaterThanOrEqualTo(taxe.get("dateFinValite"), 
-						date));
-			
-			criteria.where(periodeValidite);
-			
 		return  getCurrentSession().createQuery(criteria).uniqueResult();
 	}
-	
 	
 	/**
 	 * Retourne la seesion courrante

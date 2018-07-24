@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.Days;
+import org.joda.time.Hours;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -23,7 +24,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ag2m.gestimmo.metier.constants.FunctionnalErrorMessageConstants;
+import com.ag2m.gestimmo.metier.config.ParamConfig;
+import com.ag2m.gestimmo.metier.constants.FunctionalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.AppartementDao;
 import com.ag2m.gestimmo.metier.dao.ReservationDao;
@@ -150,7 +152,7 @@ public class ReservationServiceImpl implements ReservationService {
 		Optional.ofNullable(reservationCriteria)
 				.filter(criteria -> (criteria.getDateCheckin() != null && criteria.getDateCheckout() != null))
 				.orElseThrow(() 
-				 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_INCORRECTE));
+				 -> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_INCORRECTE));
 		
 			//Chargement des réservations en fonction des critères d'entrée.
 		List<Reservation> reservations = reservationDao.findReservationByCriteria(reservationCriteria);
@@ -274,22 +276,22 @@ public class ReservationServiceImpl implements ReservationService {
 		List<String> statutAutorisee = Arrays.asList(EnumStatutReservation.ENREGISTREE.getStatut() , 
 				EnumStatutReservation.CONFIRMEE.getStatut(), EnumStatutReservation.EN_ATTENTE.getStatut());
 		
-		//Validations des paramètres d'entrée
+		/** Validation des paramètres d'entrée */
 		
 		//L'entité doit exister en BDD
-		Optional.ofNullable(reservationDto)
-		.filter(dto -> dto.getId() != null)
-		.orElseThrow(() 
-		 -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL));
+		Optional.ofNullable(reservationDto).filter(dto -> dto.getId() != null).orElseThrow(() 
+					-> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL));
 		
 		//La note est obligatoire lors de l'annulation d'une réservation
 		Optional.ofNullable(reservationDto).filter(resa -> StringUtils.isNotEmpty(resa.getNote())).orElseThrow(() 
-					 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE));
+					 -> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE));
 		
-		// statut de résa différent de « Enregistrée » , « Confirmée » et « En attente »
-		//pour pouvoir être annulé.
+		/**
+		 *  statut de résa différent de « Enregistrée » , « Confirmée » et « En attente »
+		 *  pour pouvoir être annulé.
+		 */  
 		if(!statutAutorisee.contains(reservationDto.getStatut())) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT);
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT);
 		}
 		
 		//Si tous les paramètres sont ok, on passe à l'annulation 
@@ -297,6 +299,16 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		//Positionner une date d'annulation à la date du jour
 		reservationDto.setDateAnnulation(LocalDateTime.now());
+		
+		//Vérifier si une pénalidé doit être appliquée, et l'appliqueer si besoin.
+		int delaiAnnulation = Hours.hoursBetween(LocalDateTime.now(), reservationDto.getDateCheckin()).getHours();
+		if(delaiAnnulation > 0 && delaiAnnulation < ParamConfig.SEUIL_ANNULATION_GRATUITE) {
+			//Le délai paramétré n'est pas respecté, l'annulation est donc tardive
+			//la première nuitée doit être payée.
+			initBookingPrice(reservationDto, 1);
+		}else {
+			reservationDto.setPrix(0D);
+		}
 		
 		//Transformation en entité Reservation
 		Reservation entite = mapper.reservationDtoToReservation(reservationDto);
@@ -320,24 +332,24 @@ public class ReservationServiceImpl implements ReservationService {
 	 */
 	private void createScheduleForFreeApart(List<Nuitee> nuitees, Map<Long, List<UniteReservation>> planningParAppart,
 			List<Appartement> appartements, Set<Long> keysSet) {
-		appartements.stream().map(app -> app.getId())
-			.filter(idApp -> !keysSet.contains(idApp))
-			.collect(Collectors.toList())
-			.forEach(idAppartementManquant -> {
-				List<UniteReservation> planning = new ArrayList<>();
-				nuitees.forEach(nuitee -> {
-					// Création d'une unité de réservation qui correspond 
-					// à une cellule dans le tableau de réservation
-					UniteReservation cellule = new UniteReservation();
-					cellule.setIdAppartement(idAppartementManquant);
-					cellule.setNuite(nuitee);
-					cellule.setJournee(nuitee.dateCheckin().toLocalDate());
-					cellule.setIdReservations(Arrays.asList());
-					planning.add(cellule);	
+		
+				appartements.stream().map(app -> app.getId()).filter(idApp -> !keysSet.contains(idApp))
+									 .collect(Collectors.toList()).forEach(idAppartementManquant -> {
+										
+											 	List<UniteReservation> planning = new ArrayList<>();
+											 	nuitees.forEach(nuitee -> {
+												// Création d'une unité de réservation qui correspond 
+												// à une cellule dans le tableau de réservation
+												UniteReservation cellule = new UniteReservation();
+												cellule.setIdAppartement(idAppartementManquant);
+												cellule.setNuite(nuitee);
+												cellule.setJournee(nuitee.dateCheckin().toLocalDate());
+												cellule.setIdReservations(Arrays.asList());
+												planning.add(cellule);	
+											});
+						
+						planningParAppart.put(idAppartementManquant, planning);
 					});
-				
-				planningParAppart.put(idAppartementManquant, planning);
-			});
 	}
 
 	
@@ -349,22 +361,20 @@ public class ReservationServiceImpl implements ReservationService {
 	 * @param planning
 	 */
 	private void createScheduleForDayUse(List<Reservation> values, List<UniteReservation> planning) {
-		planning.stream().filter(plng -> plng.getIdReservations().isEmpty()).forEach(cellule ->
-		{
-			List<Long> dayUses = values
-					 .stream()
-					 .filter(resa -> 
-							 	CustomDateUtil.isPeriodBetweenInclusive(
-					 			cellule.getNuite().dateCheckin(), 
-					 			cellule.getNuite().dateCheckout(),
-								resa.getDateCheckin(), 
-								resa.getDateCheckout())) 
-					.map(reservation -> reservation.getId())
-					.collect(Collectors.toList());
-			
-			cellule.setIdReservations(dayUses);
-			cellule.setJournee(cellule.getNuite().dateCheckin().toLocalDate());
-		});
+		
+				planning.stream().filter(plng -> plng.getIdReservations().isEmpty()).forEach(cellule -> {
+						List<Long> dayUses = values.stream().filter(resa -> 
+														 	CustomDateUtil.isPeriodBetweenInclusive(
+												 			cellule.getNuite().dateCheckin(), 
+												 			cellule.getNuite().dateCheckout(),
+															resa.getDateCheckin(), 
+															resa.getDateCheckout())) 
+													.map(reservation -> reservation.getId())
+													.collect(Collectors.toList());
+						
+						cellule.setIdReservations(dayUses);
+						cellule.setJournee(cellule.getNuite().dateCheckin().toLocalDate());
+					});
 	}
 	
 
@@ -380,26 +390,26 @@ public class ReservationServiceImpl implements ReservationService {
 	private void createScheduleForNuitee(List<Nuitee> nuitees, Long key, List<Reservation> values,
 			List<UniteReservation> planning) {
 		
-		nuitees.forEach(nuitee -> {
-		 List<Long> dailyResa = values
-				 .stream()
-				 .filter(resa -> 
-						 	CustomDateUtil.isPeriodBetweenInclusive(
-							resa.getDateCheckin(), 
-							resa.getDateCheckout(), 
-							nuitee.dateCheckin(), 
-							nuitee.dateCheckout()))
-				.map(reservation -> reservation.getId())
-				.collect(Collectors.toList());
-		// Création d'une unité de réservation qui correspond 
-		// à une cellule dans le tableau de réservation
-		UniteReservation cellule = new UniteReservation();
-		cellule.setIdAppartement(key);
-		cellule.setNuite(nuitee);
-		cellule.setIdReservations(dailyResa);
-		cellule.setJournee(nuitee.dateCheckin().toLocalDate());
-		planning.add(cellule);	
-		});
+					nuitees.forEach(nuitee -> {
+					 List<Long> dailyResa = values
+							 .stream()
+							 .filter(resa -> 
+									 	CustomDateUtil.isPeriodBetweenInclusive(
+										resa.getDateCheckin(), 
+										resa.getDateCheckout(), 
+										nuitee.dateCheckin(), 
+										nuitee.dateCheckout()))
+							.map(reservation -> reservation.getId())
+							.collect(Collectors.toList());
+					// Création d'une unité de réservation qui correspond 
+					// à une cellule dans le tableau de réservation
+					UniteReservation cellule = new UniteReservation();
+					cellule.setIdAppartement(key);
+					cellule.setNuite(nuitee);
+					cellule.setIdReservations(dailyResa);
+					cellule.setJournee(nuitee.dateCheckin().toLocalDate());
+					planning.add(cellule);	
+					});
 	}
 
 	/**
@@ -478,8 +488,19 @@ public class ReservationServiceImpl implements ReservationService {
 		List<String> statutAutorisee = Arrays.asList(EnumStatutReservation.ENREGISTREE.getStatut() , 
 				EnumStatutReservation.CONFIRMEE.getStatut(), EnumStatutReservation.EN_ATTENTE.getStatut());
 		
-		//Vérification de la validité de la réservation
-		validateReservation(reservationDto, statutAutorisee);
+		//Vérification des paramètres obligatoires.
+		checkParamsNull(reservationDto);
+		
+		//Initialisation du prix de la réservation s'il n'est pas renseigné.
+		if(reservationDto.getPrix() == null) {
+			//Calcul du nombre de nuitées.
+			int nbreNuitees = Days.daysBetween(reservationDto.getDateCheckin(), reservationDto.getDateCheckout()).getDays();
+			//Calcul du prix total des appartements en cours de réservation
+			initBookingPrice(reservationDto, nbreNuitees);
+		}
+		
+		//Vérification de la validité des paramétres
+		checkBadParameters(reservationDto, statutAutorisee);
 		
 		//Vérifier s'il existe une réservation enregistrée, Confirmée ou en attente dans la période
 		boolean hasValideBookingInPeriod = hasValideBookingInPeriod(reservationDto, statutAutorisee);
@@ -504,35 +525,34 @@ public class ReservationServiceImpl implements ReservationService {
 		//Transformation de l'entité enresgistré en ReservationDto
 		return mapper.reservationToReservationDto(entite);
 	}
-	
-	
+
 	/**
-	 * <p>
-	 * Vérification de la réservation.
-	 * Les points suivants sont vérifiés:
+	 * Calcul du prix total des appartements en cours de réservation,
+	 * en prenant en compte le nombre de nuitées réservées.
 	 * 
-	 * - Paramètres obligatoires non nulls
-	 * - statut de résa doit être « Enregistrée » ou « Confirmée »
-	 * - « dateCheckin » >= date du jour
-	 * - « dateChekout » >  « dateCheckin ».
-	 * - Non existance d'une résa « Enregistrée » ou « Confirmée » dans la période.
-	 * - Note différent de null, si le prix de la réservation < à celui de l’appartement. 
-	 * </p>
-	 * 
-	 * <p>
 	 * @param reservationDto
-	 * @param statutAutorisee
-	 * @throws TechnicalException 
-	 * </p>
 	 */
-	private void validateReservation(ReservationDto reservationDto, 
-			List<String> statutAutorisee) throws FunctionalException, TechnicalException {
+	private void initBookingPrice(ReservationDto reservationDto, int nbreNuitees) {
 		
-		//Vérification des paramètres obligatoires.
-		checkParamsNull(reservationDto);
-		//Vérification de la validité des paramétres
-		checkBadParameters(reservationDto, statutAutorisee);
+		double prixNuitee = 0D;
+		
+		//Calcul du prix total des appartements en cours de réservation pour une nuitée.
+		if(reservationDto.getAppartements() == null) {
+			List<Appartement> appartements = appartementDao.findAppartByReservation(reservationDto.getId());
+			prixNuitee = appartements.stream().mapToDouble(app -> app.getPrix().longValue()).sum();
+			
+		}else {
+		prixNuitee = reservationDto.getAppartements().stream()
+				.mapToDouble(app -> app.getPrix().longValue()).sum();
+		}
+		//Calcul du prix total HT de la réservation de toutes les nuitées.
+		double prixTotal = prixNuitee * nbreNuitees;
+		
+		//Set le prix
+		reservationDto.setPrix(prixTotal);
 	}
+	
+	
 
 	/**
 	 * Contrôle de la validité fonctionnelle des
@@ -552,26 +572,26 @@ public class ReservationServiceImpl implements ReservationService {
 				EnumOptionFormatDate.START_OF_DAY_FROMAT);
 		
 		if(reservationDto.getDateAnnulation() != null){
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_ANNULATION_NON_NULL);
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_ANNULATION_NON_NULL);
 		}
 		
 		// statut de résa différent de « Enregistrée » , « Confirmée » et « En attente »
 		if(!statutAutorisee.contains(reservationDto.getStatut())) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_STATUT_INCORRECT);
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_STATUT_INCORRECT);
 		}
 		//dateCheckin doit être supérieure à date du jour
 		if(now.isAfter(reservationDto.getDateCheckin())) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_INCORRECT);
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_INCORRECT);
 		}
 		// dateChekout doit être supérieure dateCheckin.
 		if(reservationDto.getDateCheckin().isAfter(reservationDto.getDateCheckout())) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);		
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);		
 		}
 		
 		// La note est obligatoire, si le prix de la réservation n'est pas cohérent
 		boolean isPriceConsistent = isPriceConsistent(reservationDto);
 		if(!isPriceConsistent && StringUtils.isEmpty(reservationDto.getNote())) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE);
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE);
 		}
 		
 	}
@@ -593,15 +613,15 @@ public class ReservationServiceImpl implements ReservationService {
 		Optional.ofNullable(reservationDto.getStatut())
 			.filter(statut -> !statut.isEmpty())
 			.orElseThrow(() 
-				 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_STATUT_NULL));
+				 -> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_STATUT_NULL));
 		
 		// Date checkin ne doit pas être nulle
 		Optional.ofNullable(reservationDto.getDateCheckin()).orElseThrow(() 
-					 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL));
+					 -> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL));
 		
 		// Date checkout ne doit pas être nulle
 		Optional.ofNullable(reservationDto.getDateCheckout()).orElseThrow(() 
-				 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL));
+				 -> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL));
 	}
 
 	/**
@@ -619,24 +639,24 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// Date checkin ne doit pas être nulle
 		 Optional.ofNullable(dateDebut).orElseThrow(() 
-				 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL));
+				 -> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL));
 	
 		// Date checkout ne doit pas être nulle
 		 Optional.ofNullable(dateFin).orElseThrow(() 
-				-> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL));
+				-> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL));
 
 		// dateChekout doit être supérieure dateCheckin.
 		if(dateDebut.isAfter(dateFin)) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);		
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);		
 		}
 		
 		// l'id du bien ne doit pas être nulle
 		 Optional.ofNullable(idBien).orElseThrow(() 
-				-> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_BIEN_NULL));
+				-> new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_BIEN_NULL));
 	
 		// La période ne doit pas couvrir plus de 30 jours.
 		if(Days.daysBetween(dateDebut, dateFin).getDays() > 30) {
-			throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_SUP_30_JOURS);		
+			throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_SUP_30_JOURS);		
 		}
 	}
 	
@@ -678,13 +698,15 @@ public class ReservationServiceImpl implements ReservationService {
 	 * @throws FunctionalException
 	 */
 	private boolean isPriceConsistent(ReservationDto reservationDto) throws FunctionalException{
-		//Calcul du prix total des appartements en cours de réservation
-		double prixTotal = reservationDto.getAppartements()
-				.stream()
-				.mapToDouble(app -> app.getPrix().longValue())
-				.sum();
 		
-		boolean isntIt = (reservationDto.getPrix() >= prixTotal);
-		return isntIt;
+		//Calcul du prix total des appartements en cours de réservation
+		double prixNuitee = reservationDto.getAppartements().stream()
+				.mapToDouble(app -> app.getPrix().longValue()).sum();
+		
+		//Calcul du prix total HT de la réservation de toutes les nuitées.
+		int nbreNuitees = Days.daysBetween(reservationDto.getDateCheckin(), reservationDto.getDateCheckout()).getDays();
+		 double prixTotal = prixNuitee * nbreNuitees;
+		
+		return (reservationDto.getPrix() >= prixTotal);
 	}
 }

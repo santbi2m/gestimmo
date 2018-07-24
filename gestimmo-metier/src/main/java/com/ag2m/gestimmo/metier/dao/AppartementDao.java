@@ -28,4 +28,13 @@ public interface AppartementDao extends CommonDao<Long, Appartement>{
 	 */
 	List<Appartement> findAppartementByCriteria(String libelle, 
 			String type, Long idBien);
+
+	/**
+	 * Recherche les appartements liés 
+	 * à la réservation passée en paramètres
+	 * 
+	 * @param idReservation
+	 * @return
+	 */
+	List<Appartement> findAppartByReservation(Long idReservation);
 }

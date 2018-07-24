@@ -15,8 +15,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum EnumTypePieceIdentite {
 
+	/** Enum CARTE_IDENTITE*/
 	CARTE_IDENTITE("Carte d'identité"),
+	
+	/** Enum PERMIS_CONDUIRE*/
 	PERMIS_CONDUIRE("Permis de conduire"),
+	
+	/** Enum PASSEPORT*/
 	PASSEPORT("Passeport");
 	
 	private String type;

@@ -11,7 +11,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-import com.ag2m.gestimmo.metier.constants.FunctionnalErrorMessageConstants;
+import com.ag2m.gestimmo.metier.constants.FunctionalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
@@ -266,7 +266,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationStatutNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_STATUT_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_STATUT_NULL);
 		
 		
 		//Init réservation
@@ -304,7 +304,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationDateCheckinNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL);
 		
 		
 		//Init réservation
@@ -343,7 +343,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationDateCheckoutNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL);
 		
 		
 		//Init réservation
@@ -382,7 +382,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationDateAnnulationNonNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_ANNULATION_NON_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_ANNULATION_NON_NULL);
 		
 		
 		//Init réservation
@@ -421,7 +421,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationAvecUnStatutKO() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_STATUT_INCORRECT);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_STATUT_INCORRECT);
 		
 		//Init réservation
 		
@@ -459,7 +459,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationAvecDateCkeckinAuPassee() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_INCORRECT);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_INCORRECT);
 		
 		//Init réservation
 		
@@ -496,7 +496,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationDateCkeckoutAnterieureDateCheckin() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);
 		
 		//Init réservation
 		
@@ -534,7 +534,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCreateReservationTarifNonCoherentSansNoteExplicative() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_REMISE_NON_JUSTIFIEE);
 		
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
@@ -552,10 +552,14 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		ClientDto client2 = createClient("Souane", "Amadou", "asoua@gmail.com", 
 				"987654321", EnumTypePieceIdentite.PERMIS_CONDUIRE.getType(), "+33756487921", adresse3);
 	
-		//Le tarif total des 3 appartements en cours de réservation est de:
-		//50 + 70 + 45 = 165 euros
-		//Si on essaie de reserver avec 100 euros par exemple comme tarif, sans saisir de note
-		//Une exception fonctionnele doit être lancée
+		/**
+		 * Le tarif total des 3 appartements en cours de réservation est de:
+		 * 50 + 70 + 45 = 165 euros
+		 * 3 nuitées réservervée le tarif est donc de 3*165 = 495
+		 *Si on essaie de reserver avec 100 euros par exemple comme tarif, sans saisir de note
+		 *Une exception fonctionnele doit être lancée
+		 */
+		
 		createReservation(new LocalDateTime(), new LocalDateTime().plusDays(3), null, 
 				true, EnumStatutReservation.ENREGISTREE.getStatut(), Arrays.asList(app1, app2, app3), 
 				100D, new LocalDateTime(), null, client2, null);
@@ -592,7 +596,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		//Première réservation
 		ReservationDto resa1 = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(3), null, 
 				true, EnumStatutReservation.ENREGISTREE.getStatut(), Arrays.asList(app1, app2, app3), 
-				165D, new LocalDateTime(), null, client2, null);
+				495D, new LocalDateTime(), null, client2, null);
 		
 		//Check results
 		assertThat(resa1.getId(), is(notNullValue()));
@@ -674,6 +678,45 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		assertThat(true, is(CustomDateUtil.isSameDay(reservation1.getDateCreation(), LocalDateTime.now())));
 		assertThat(true, is(CustomDateUtil.isSameDay(reservation2.getDateCreation(), LocalDateTime.now())));
 		
+	}
+	
+	/**
+	 * Tester la reservation sans saisie de prix
+	 * Vérifier que par défaut le prix normal est appliqué automatiquement
+	 * 
+	 * @throws FunctionalException
+	 * @throws TechnicalException
+	 */
+	@Test
+	public void testCreateReservationSansSurchargerPrix() throws FunctionalException, TechnicalException {
+		
+		// Adresse
+		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
+		AdresseDto adresse3 = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
+		
+		// Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		
+		//Appartements
+		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		AppartementDto app2 = createAppartement("Dem Deloussi", bien, EnumTypeAppartement.T3.getType(), 70D);
+		AppartementDto app3 = createAppartement("Tawfekh", bien, EnumTypeAppartement.STUDIO.getType(), 45D);
+		
+		//Clients
+		ClientDto client2 = createClient("Souane", "Amadou", "asoua@gmail.com", 
+				"987654321", EnumTypePieceIdentite.PERMIS_CONDUIRE.getType(), "+33756487921", adresse3);
+	
+		ReservationDto resa = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(3), null, 
+				true, EnumStatutReservation.ENREGISTREE.getStatut(), Arrays.asList(app1, app2, app3), 
+				null, new LocalDateTime(), null, client2, null);
+		/**
+		 * Le tarif total des 3 appartements en cours de réservation est de:
+		 * 50 + 70 + 45 = 165 euros
+		 * 3 nuitées réservervée le tarif est donc de 3*165 = 495
+		 *Si on ne saisit de prix, par défaut le tarif de la reservation doit être de 495 euros.
+		 */
+		assertThat(resa.getPrix(), is(notNullValue()));
+		assertThat(resa.getPrix(), is(495D));
 	}
 	
 	
@@ -903,7 +946,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testfindReservationByCriteriaAllCriteriaNull() throws TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_INCORRECTE);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_INCORRECTE);
 
 		// Call service : Une exception doit être lancée car la période 
 		//de réservation est obligatoire
@@ -979,7 +1022,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		//Vérification des résultats
 		assertThat(results, is(notNullValue()));
 		assertThat(results, is(not(empty())));
-		assertThat(results.size(), is(2));
+		assertThat(results.size(), greaterThanOrEqualTo(2));
 
 		results.forEach(resa -> {
 			
@@ -1232,7 +1275,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testFindReservationByPeriodAndBienDateDebutNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKIN_NULL);
 		
 		//Call service: la date de début étant obligatoie, une exception doit être lancée
 		reservationService.findReservationByPeriodAndBien(null, new LocalDateTime(), 1L);
@@ -1252,7 +1295,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testFindReservationByPeriodAndBienDateFinNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_NULL);
 		
 		//Call service: la date de début étant obligatoie, une exception doit être lancée
 		reservationService.findReservationByPeriodAndBien(new LocalDateTime(), null, 1L);
@@ -1272,7 +1315,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testFindReservationByPeriodAndBienDateDebutPosterieureDateFin() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_DATE_CHECKOUT_INCORRECT);
 		
 		//Call service: la date de début étant obligatoie, une exception doit être lancée
 		reservationService.findReservationByPeriodAndBien(new LocalDateTime(), new LocalDateTime().minusDays(5), 1L);
@@ -1290,7 +1333,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testFindReservationByPeriodAndBienIdBienNull() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_BIEN_NULL);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_BIEN_NULL);
 		
 		//Call service: la date de début étant obligatoie, une exception doit être lancée
 		reservationService.findReservationByPeriodAndBien(new LocalDateTime(), new LocalDateTime().plusDays(5), null);
@@ -1308,7 +1351,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testFindReservationByPeriodAndBienPeriodeTropLarge() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_SUP_30_JOURS);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_PERIODE_SUP_30_JOURS);
 		
 		//Call service: la date de début étant obligatoie, une exception doit être lancée
 		reservationService.findReservationByPeriodAndBien(new LocalDateTime(), new LocalDateTime().plusDays(31), 1L);
@@ -1597,7 +1640,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCancelReservationStatutKO() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_ANNULATION_RESERVATION_STATUT_INCORRECT);
 		
 		//Init réservation
 		
@@ -1635,7 +1678,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 	public void testCancelReservationAnnulationSansNote() throws FunctionalException, TechnicalException {
 		//Assert that an exception has thrown
 		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE);
+		thrown.expectMessage(FunctionalErrorMessageConstants.ERREUR_RESERVATION_ANNULATION_NON_JUSTIFIEE);
 		
 		//Init Adresse
 		AdresseDto adresse = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
@@ -1653,7 +1696,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		//Création de la réservation avec une date checkin null
 		ReservationDto resa = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), null, 
 						true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1),
-						50D, new LocalDateTime(), null, client, null);
+						null, new LocalDateTime(), null, client, null);
 		
 		// Call service
 		reservationService.cancelReservation(resa);
@@ -1684,7 +1727,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse);
 		
 		//Création de la réservation avec une date checkin null
-		ReservationDto resa = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Désistement du client", 
+		ReservationDto resa = createReservation(new LocalDateTime().plusDays(2), new LocalDateTime().plusDays(10), "Désistement du client", 
 						true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1),
 						50D, new LocalDateTime(), null, client, null);
 		
@@ -1696,5 +1739,51 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		assertThat(reservtationAnnulee.getDateAnnulation(), is(not(nullValue())));
 		assertThat(CustomDateUtil.isSameDay(reservtationAnnulee.getDateAnnulation(), LocalDateTime.now()), is(true));
 		assertThat(reservtationAnnulee.getStatut(), is(EnumStatutReservation.ANNULEE.getStatut()));
+		assertThat(reservtationAnnulee.getPrix(), is(0D));
 	}
+	
+	/**
+	 * Test l'annulation tardive de réservation.
+	 * C'est à dire après le délai autorisé.
+	 * Vérifier qu'une pénalité est bien appliquée.
+	 * 
+	 * @throws FunctionalException
+	 * @throws TechnicalException
+	 */
+	@Test
+	public void testCancelReservationAvecPenalite() throws FunctionalException, TechnicalException {
+		//Adresse
+		AdresseDto adresse = createAdresse("25 avec Jean Jaures", null, 9900, "Plateau", "Sénégal");
+		
+		// Bien
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		
+		//Appartements
+		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
+		
+		//Clients
+		ClientDto client = createClient("Maiga", "Amadou", "amai@gmail.com", 
+				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse);
+		
+		//Création de la réservation avec une date checkin null
+		ReservationDto resa = createReservation(new LocalDateTime().plusHours(13), new LocalDateTime().plusDays(10), "Désistement du client", 
+						true, EnumStatutReservation.CONFIRMEE.getStatut(), Arrays.asList(app1),
+						null, new LocalDateTime(), null, client, null);
+		
+		app1.setReservations(Arrays.asList(resa));
+		appartementService.createAppartement(app1);
+		
+		// Call service
+		ReservationDto reservtationAnnulee = reservationService.cancelReservation(resa);
+		
+		
+		//Vérification de l'annulation
+		assertThat(reservtationAnnulee, is(not(nullValue())));
+		assertThat(reservtationAnnulee.getDateAnnulation(), is(not(nullValue())));
+		assertThat(CustomDateUtil.isSameDay(reservtationAnnulee.getDateAnnulation(), LocalDateTime.now()), is(true));
+		assertThat(reservtationAnnulee.getStatut(), is(EnumStatutReservation.ANNULEE.getStatut()));
+		//Tarif correspond à la 1ere nuitée
+		assertThat(reservtationAnnulee.getPrix(), is(50D));
+	}	
+	
 }

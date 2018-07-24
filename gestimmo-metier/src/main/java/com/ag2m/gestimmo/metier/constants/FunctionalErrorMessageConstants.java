@@ -1,6 +1,6 @@
 package com.ag2m.gestimmo.metier.constants;
 
-public class FunctionnalErrorMessageConstants {
+public class FunctionalErrorMessageConstants {
 
 	/************* Réservation *************/
 	

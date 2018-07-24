@@ -26,4 +26,20 @@ public class TechnicalErrorMessageConstants {
 	public static final String ERREUR_FORMATTER_DATE_NULLE =
 			"La date à formatter ne doit pas être nulle.";
 	
+	/** Constante TAXE_NON_PARAMETREE */
+	public static final String REMISE_NON_PARAMETREE =
+			"Aucune remise n'est paramétrée en base de données.";
+	
+	/** Constante PARAMETRAGE_TYPE_NULL */
+	public static final String PARAMETRAGE_TYPE_NULL =
+			"Le type de paramétrage à charger doit être renseigné";
+	
+	/** Constante PARAMETRAGE_TYPE_NULL */
+	public static final String PARAMETRAGE_NON_TROUVE =
+			"Aucun paramétrage trouvé avec le type saisi";
+	
+	/** Constante PARAMETRAGE_TYPE_NULL */
+	public static final String PARAMETRAGE_NON_VALIDE =
+			"La valleur paramétrée n'est pas valide";
+	
 }

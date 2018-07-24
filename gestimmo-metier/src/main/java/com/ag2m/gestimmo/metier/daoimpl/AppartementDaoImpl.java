@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -59,5 +60,28 @@ public class AppartementDaoImpl extends AbstractDao<Long, Appartement> implement
 		
 		return getCurrentSession().createQuery(criteria).getResultList();
 	}
+	
+	
+	@Override
+	@Cacheable
+	public List<Appartement> findAppartByReservation(Long idReservation){
+		
+		//Initialiser un builder de requête
+		CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<Appartement> criteria = criteriaBuilder.createQuery(Appartement.class);
+		
+		//select from appartement
+		Root<Appartement> appartements = criteria.from(Appartement.class);
+		criteria.select(appartements);
+		
+		//Join Reservations
+		Join<Object, Object> reservations = appartements.join("reservations");
+		
+		//Conditions de filtre sur les paramètres d'entrée
+		criteria.where(criteriaBuilder.equal(reservations.get("id"), idReservation));
+		
+		return getCurrentSession().createQuery(criteria).getResultList();
+	}
+	
 
 }

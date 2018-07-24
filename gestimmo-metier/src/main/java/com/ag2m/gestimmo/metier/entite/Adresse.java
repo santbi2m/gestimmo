@@ -19,7 +19,7 @@ import lombok.ToString;
 /**
  * @author mombaye
  *
- * Classe représentant un bien immobiler
+ * Classe représentant une adresse.
  */
 @Entity
 @Table(name="ADRESSE")

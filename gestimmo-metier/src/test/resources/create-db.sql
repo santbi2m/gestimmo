@@ -4,6 +4,18 @@
 
 -- --------------------------------------------------------
 
+
+--
+-- Structure de la table `parametrage`
+--
+
+CREATE TABLE IF NOT EXISTS `parametrage` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` varchar(38) NOT NULL,
+  `valeur` varchar(38) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`));
+
 --
 -- Structure de la table `adresse`
 --
@@ -165,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 -- Structure de la table `taxe`
 --
 
-CREATE TABLE IF NOT EXISTS `taxe` (
+CREATE TABLE IF NOT EXISTS `REF_TAXE` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tva` double NOT NULL,
   `taxe_sejour` double NOT NULL,
@@ -188,6 +200,17 @@ CREATE TABLE IF NOT EXISTS `devis` (
   `dateChekin` datetime NOT NULL,
   `dateCheckout` datetime NOT NULL,
   `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+
+
+--
+-- Structure de la table `ref_remise`
+--
+CREATE TABLE IF NOT EXISTS `ref_remise` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `remise` int(2) NOT NULL,
+  `libelle` varchar(38) NOT NULL,
   PRIMARY KEY (`id`)
 );
 

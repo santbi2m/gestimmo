@@ -22,10 +22,10 @@ import lombok.ToString;
 /**
  * @author mombaye
  *
- * Classe représentant un bien immobiler
+ * Classe représentant une Taxe (taxe de séjour, tva par exemple)
  */
 @Entity
-@Table(name="TAXE")
+@Table(name="REF_TAXE")
 @Getter @Setter @ToString
 public class Taxe extends Identifiant<Long> implements Serializable{
 

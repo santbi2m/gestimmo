@@ -3,20 +3,21 @@
  */
 package com.ag2m.gestimmo.metier.serviceImpl;
 
-import static org.junit.Assert.assertThat;
-
-import org.joda.time.LocalDateTime;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.Test;
 
 import com.ag2m.gestimmo.metier.config.ParamConfig;
-import com.ag2m.gestimmo.metier.constants.FunctionnalErrorMessageConstants;
-import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
-import com.ag2m.gestimmo.metier.entite.referentiel.Taxe;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
-import com.ag2m.gestimmo.metier.utils.CustomDateUtil;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 /**
  * @author mombaye
@@ -25,78 +26,59 @@ import com.ag2m.gestimmo.metier.utils.CustomDateUtil;
  */
 public class ParametrageServiceTest extends AbstractCommonTest {
 	
-	/**
-	 * Test le chargement de la taxe en cours de 
-	 * validité
-	 */
-	@Test
-	public void loadCurrentTaxeTest() {
-		
-		parametrageService.loadCurrentTaxe();
-		
-		assertThat(ParamConfig.TVA , is(Double.valueOf("20")));
-		assertThat(ParamConfig.TAXE_SEJOUR , is(Double.valueOf("2")));
-	}
-
 	
 	/**
-	 * Test le chargement d'une taxe valide à date.
-	 * Cas d'une date null
-	 * @return
+	 * Test le chargement des remises
 	 */
 	@Test
-	public void loadTaxeByDateNullTest() {
+	public void loadRemisesTest() {
 		
-		//Assert that an exception has thrown
-		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(FunctionnalErrorMessageConstants.ERREUR_PARAMETRAGE_DATE_NULL);
+		//Chargement des remises
+		parametrageService.loadAllRemise();
 		
-		//Call
-		parametrageService.loadTaxeByDate(null);
+		//Vérification que les remises sont bien initialisées dans ParamConfig
+		assertThat(ParamConfig.REMISES , is(notNullValue()));
+		assertThat(ParamConfig.REMISES , is(not(empty())));
+		
+		//Vérification que toutes les remises de la BDD sont bien chargées.
+		List<Integer> remises = ParamConfig.REMISES.stream()
+													.map(remise -> remise.getRemsie())
+													.collect(Collectors.toList());
+		assertThat(remises , containsInAnyOrder (5, 10, 15, 20));
 	}
 	
 	
-	/**
-	 * Test le chargement d'une taxe valide à date.
-	 * Cas d'une date sans taxe.
-	 * @return
-	 */
-	@Test
-	public void loadTaxeByDateNoResultFoundTest() {
-		
-		//Assert that an exception has thrown
-		thrown.expect(FunctionalException.class);
-		thrown.expectMessage(TechnicalErrorMessageConstants.TAXE_NON_PARAMETREE);
-		
-		//Date d'appel (hors période taxe)
-		String date = "01-01-2017";
-		LocalDateTime paramDate = CustomDateUtil.DD_MM_YYYY.parseLocalDateTime(date);
-		
-		//Appel
-		parametrageService.loadTaxeByDate(paramDate);
-	}
 	
 	/**
-	 * Test le chargement d'une taxe valide à date.
-	 * Cas d'une période avec présence de taxe.
-	 * @return
+	 * Test le chargement du paramètre PENALITE
+	 * @throws TechnicalException 
 	 */
 	@Test
-	public void loadTaxeByDateTest() {
+	public void loadPenaliteTest() throws TechnicalException {
 		
-		//Date d'appel (valide à la période taxe)
-		String date = "01-05-2018";
-		LocalDateTime paramDate = CustomDateUtil.DD_MM_YYYY.parseLocalDateTime(date);
-		//Appel
-		Taxe taxe = parametrageService.loadTaxeByDate(paramDate);
+		//Chargement des remise
+		parametrageService.loadPourcentagePenanlite();
 		
-		//Vérifications
-		assertThat(taxe, is(notNullValue()));
-		assertThat(taxe.getDateDebutValidite(), is(notNullValue()));
-		assertThat(taxe.getDateFinValite(), is(notNullValue()));
-		boolean isDateBetween = CustomDateUtil.isBetweenInclusive(taxe.getDateDebutValidite(), taxe.getDateFinValite(), paramDate);
-		assertThat(isDateBetween, is(true));
-		assertThat(taxe.getTva() , is(Double.valueOf("18")));
-		assertThat(taxe.getTaxeSejour() , is(Double.valueOf("5")));
+		//Vérification que les remises sont bien initialisées dans ParamConfig
+		assertThat(ParamConfig.POURCENTAGE_PENALITE , is(notNullValue()));
+		assertThat(ParamConfig.POURCENTAGE_PENALITE , is(100));
+		
+	}
+	
+	
+	/**
+	 * Test le chargement du paramètre SEUIL_NON_PENALISABLE
+	 * @throws TechnicalException 
+	 */
+	@Test
+	public void loadSeuilAnnulationGratuiteTest() throws TechnicalException {
+		
+		//Chargement des remise
+		parametrageService.loadSeuilAnnulationGratuite();
+		
+		//Vérification que les remises sont bien initialisées dans ParamConfig
+		assertThat(ParamConfig.SEUIL_ANNULATION_GRATUITE , is(notNullValue()));
+		assertThat(ParamConfig.SEUIL_ANNULATION_GRATUITE , is(24));
+		
 	}
 }

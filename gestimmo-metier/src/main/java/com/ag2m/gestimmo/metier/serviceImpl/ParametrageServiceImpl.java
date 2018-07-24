@@ -1,18 +1,20 @@
 package com.ag2m.gestimmo.metier.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ag2m.gestimmo.metier.config.ParamConfig;
-import com.ag2m.gestimmo.metier.constants.FunctionnalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.ParametrageDao;
-import com.ag2m.gestimmo.metier.entite.referentiel.Taxe;
+import com.ag2m.gestimmo.metier.entite.referentiel.Parametrage;
+import com.ag2m.gestimmo.metier.entite.referentiel.Remise;
+import com.ag2m.gestimmo.metier.enumeration.EnumTypeParametrage;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.service.ParametrageService;
 
 import lombok.extern.log4j.Log4j;
@@ -27,41 +29,66 @@ public class ParametrageServiceImpl implements ParametrageService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public void loadCurrentTaxe() throws FunctionalException {
+	public void loadAllRemise() {
 		
-		log.info("Chargement du paramétrage des Taxes " );
+		log.info("Chargement du paramétrage des remises " );
 		
-		Taxe taxe = parametrageDao.loadCurrentTaxe();
+		List<Remise> remises = parametrageDao.loadAllRemise();
 		
-		//Il faut que la taxe soit paramétrée ne BDD
-		Optional.ofNullable(taxe).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.TAXE_NON_PARAMETREE));
+		//Il faut que la taxe soit paramétrée en BDD
+		Optional.ofNullable(remises).filter(r -> !r.isEmpty()).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.REMISE_NON_PARAMETREE));
 
-		//initialiser la tva et la taxe de séjour
-		ParamConfig.TVA = taxe.getTva();
-		ParamConfig.TAXE_SEJOUR = taxe.getTaxeSejour();
+		//initialiser la liste des remises.
+		ParamConfig.REMISES = remises;
 	}
 
 
-	/* 
-	 * (non-Javadoc)
-	 * @see com.ag2m.gestimmo.metier.service.ParametrageService#loadTaxeByDate(org.joda.time.LocalDateTime)
-	 */
 	@Override
 	@Transactional(readOnly = true)
-	public Taxe loadTaxeByDate(LocalDateTime date) throws FunctionalException {
+	public void loadPourcentagePenanlite() throws TechnicalException {
+
+		log.info("Chargement du paramétarge de type PENALITE");
 		
-		log.info("Chargement du paramétrage des Taxes à date" );
+		//Appel
+		Parametrage parametrage = parametrageDao.loadParametrageByType(EnumTypeParametrage.POURCENTAGE_PENALITE.getType());
 		
-		Optional.ofNullable(date).orElseThrow(() 
-				 -> new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_PARAMETRAGE_DATE_NULL));
+		//Exception si aucun paramétrage trouvé
+		Optional.ofNullable(parametrage).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.PARAMETRAGE_NON_TROUVE));
 		
-		Taxe taxe = parametrageDao.loadTaxeByDate(date);
+		//initialiser la valeur du pourcentage de pénalité.
+		try{
+			
+			ParamConfig.POURCENTAGE_PENALITE = Integer.valueOf(parametrage.getValeur());
 		
-		//Il faut que la taxe soit paramétrée ne BDD
-		Optional.ofNullable(taxe).orElseThrow(() 
-				 -> new FunctionalException(TechnicalErrorMessageConstants.TAXE_NON_PARAMETREE));
-		
-		return taxe;
+		}catch (NumberFormatException e) {
+			throw new TechnicalException(TechnicalErrorMessageConstants.PARAMETRAGE_NON_VALIDE, e);
+		}
 	}
+	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public void loadSeuilAnnulationGratuite() throws TechnicalException {
+
+		log.info("Chargement du paramétarge de type SEUIL_NON_PENALISABLE");
+		
+		//Appel
+		Parametrage parametrage = parametrageDao.loadParametrageByType(EnumTypeParametrage.SEUIL_NON_PENALISABLE.getType());
+		
+		//Exception si aucun paramétrage trouvé
+		Optional.ofNullable(parametrage).orElseThrow(() 
+				 -> new FunctionalException(TechnicalErrorMessageConstants.PARAMETRAGE_NON_TROUVE));
+		
+		//initialiser la valeur du pourcentage de pénalité.
+		try{
+			
+			ParamConfig.SEUIL_ANNULATION_GRATUITE = Integer.valueOf(parametrage.getValeur());
+		
+		}catch (NumberFormatException e) {
+			throw new TechnicalException(TechnicalErrorMessageConstants.PARAMETRAGE_NON_VALIDE, e);
+		}
+	}
+	
 }

@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ag2m.gestimmo.metier.dao.ReservationDao;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
@@ -38,6 +39,7 @@ import com.ag2m.gestimmo.metier.service.FactureService;
 import com.ag2m.gestimmo.metier.service.ParametrageService;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 import com.ag2m.gestimmo.metier.service.RoleService;
+import com.ag2m.gestimmo.metier.service.TaxeService;
 import com.ag2m.gestimmo.metier.service.UtilisateurService;
 
 
@@ -88,6 +90,9 @@ public abstract class AbstractCommonTest {
 	
 	@Autowired
 	protected ParametrageService parametrageService;
+	
+	@Autowired
+	protected TaxeService taxeService;
 	
 	@Autowired
 	protected BCryptPasswordEncoder passwordEncoder;

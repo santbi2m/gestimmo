@@ -6,6 +6,18 @@
 -- --------------------------------------------------------
 
 
+--
+-- Contenu de la table `parametrage`
+--
+
+INSERT INTO `parametrage` (`id`, `type`, `valeur`, `description`) VALUES
+(1, 'PENALITE', '100', 'Pourcentage de pénalité à appliquer lors d''une annulation tardive de réservation. Exemple 50 représente 50% de la première nuitée');
+
+INSERT INTO `parametrage` (`id`, `type`, `valeur`, `description`) VALUES
+(2, 'SEUIL_NON_PENALISABLE', '24', 'Délai limite (en heure) avant lequel l''annulation d''une réservation est totalement gratuite, et sans aucune pénalité. Ce délai représente l''écart entre la date d''annulation et la date de checkin prévue à la base.');
+
+
+
 -- Jeu de données pour la table Adresse
 insert into ADRESSE (id, adresse, complement_adresse, code_postal, ville, pays) 
 	values (1, 'Avenue Antoine Becquerel', null, '33600', 'Pessac', 'France');
@@ -149,10 +161,26 @@ insert into CLIENT (id, nom, prenom, adresse_email, numero_piece, type_piece, te
 -- Contenu de la table `taxe`
 --
 
-INSERT INTO taxe (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
+INSERT INTO REF_TAXE (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
 (1, 20, 2, '2018-06-13 00:00:00', null);
-INSERT INTO taxe (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
+
+INSERT INTO REF_TAXE (id, tva, taxe_sejour, date_debut_validite, date_fin_valite) VALUES
 (2, 18, 5, '2018-01-01 00:00:00', '2018-06-12 23:59:59');
+
+--
+-- Contenu de la table `ref_remise`
+--
+INSERT INTO `ref_remise` (`id`, `remise`, `libelle`) VALUES
+(1, 5, 'Bienvenue');
+
+INSERT INTO `ref_remise` (`id`, `remise`, `libelle`) VALUES
+(2, 15, 'Fidélité');
+
+INSERT INTO `ref_remise` (`id`, `remise`, `libelle`) VALUES
+(3, 10, 'Evènementielle');
+
+INSERT INTO `ref_remise` (`id`, `remise`, `libelle`) VALUES
+(4, 20, 'Quantitative');
 
 --ANOMALIE
 --insert into ANOMALIE (id, titre, description, status_anomalie, date_ouverture, date_traitement, id_appartement, commentaire) values (1234,'Cuvette non stable', 'Responsabilité réceptioniste', 'Déclarée', '2018-01-01 00:00:00','2018-06-01 00:00:00', 9999, 'A traiter au plus vite');

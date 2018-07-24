@@ -1,9 +1,10 @@
 package com.ag2m.gestimmo.metier.dao;
 
-import org.joda.time.LocalDateTime;
+import java.util.List;
 
-import com.ag2m.gestimmo.metier.entite.referentiel.Taxe;
-import com.ag2m.gestimmo.metier.exception.FunctionalException;
+import com.ag2m.gestimmo.metier.entite.referentiel.Parametrage;
+import com.ag2m.gestimmo.metier.entite.referentiel.Remise;
+import com.ag2m.gestimmo.metier.enumeration.EnumTypeParametrage;
 
 /**
  * @author mombaye
@@ -14,22 +15,20 @@ import com.ag2m.gestimmo.metier.exception.FunctionalException;
 public interface ParametrageDao {
 
 	/**
-	 * Charge l'objet taxe valide à la date
-	 * courante.
+	 * Charge toutes les remises en BDD.
 	 * 
-	 * @return La taxe paramétrée dans la table 
-	 * de référence Taxe.
+	 * @return La liste des remises disponible en BDD.
 	 */
-	Taxe loadCurrentTaxe();
-	
-	
+	List<Remise> loadAllRemise();
+
 	/**
-	 * Retourne la taxe valide à la date en entrée en paramètre.
+	 * Recherche et charge la paramétrage en BDD, dont le type est
+	 * passé en paramètre 
 	 * 
-	 * @param date
-	 * @return La taxe valide à date
+	 * @param type : type de paramétrage (la liste des types de paramétrage est disponible dans 
+	 * {@link EnumTypeParametrage}
 	 * 
-	 * * @throws FunctionalException 
+	 * @return Le paramétrage éligible.
 	 */
-	Taxe loadTaxeByDate(LocalDateTime date) throws FunctionalException;
+	Parametrage loadParametrageByType(String type);
 }
