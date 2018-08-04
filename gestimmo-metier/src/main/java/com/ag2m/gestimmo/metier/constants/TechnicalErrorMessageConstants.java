@@ -57,4 +57,8 @@ public class TechnicalErrorMessageConstants {
 	/** Constante ERREUR_DEVIS_FACTURE_NULL */
 	public static final String ERREUR_DEVIS_RESERVATION_NULL =
 			"Il faut au moins une réservation lors de la création d'un devis";
+
+	/** Constante ERREUR_DATES_RESERV */
+	public static final String ERREUR_DATES_RESERV =
+			"Vérifier es dates de la réservation";
 }

@@ -1,9 +1,13 @@
 package com.ag2m.gestimmo.metier.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.FactureDto;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.FactureCriteria;
 
 public interface FactureService {
 
@@ -12,30 +16,45 @@ public interface FactureService {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public FactureDto findById(Long id);
+	public FactureDto findFactureById(Long id) throws FunctionalException, TechnicalException;
 	
 	/**
 	 * Retourne une liste d'entités
 	 * 
 	 * @return
 	 */
-	public List<FactureDto> findAll();
+	public List<FactureDto> loadAllFactures();
 	
 	/**
-	 * Sauvegarde ou met à jour l'entité en paramètre
+	 * Créer l'entité en paramètre
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws FunctionalException 
 	 * @throws TechnicalException 
 	 */
-	public FactureDto saveOrUpdate(FactureDto entite) throws TechnicalException;
+	public FactureDto createFacture(FactureDto entite) throws FunctionalException, TechnicalException;
 	
 	/**
-	 * Permet de supprimer l'entité en entrée
+	 * Générer un fichier PDF
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws FunctionalException 
+	 * @throws TechnicalException 
 	 */
-	public boolean delete(FactureDto entite);
+	public ByteArrayOutputStream genererFacture(FactureDto entite) throws FunctionalException, TechnicalException;
+	
+	/**
+	 *  Permet de combiner tous les critères possibles
+	 *  de recherche de facture, de retourner 
+	 *  le résultat et de le mettre dans le cache.
+	 * @param factureCriteria
+	 * @return
+	 */
+	List<FactureDto> findFactureByCriteria(FactureCriteria factureCriteria);
+	
 }
