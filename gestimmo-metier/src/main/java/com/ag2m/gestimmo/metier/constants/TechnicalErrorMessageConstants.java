@@ -40,6 +40,13 @@ public class TechnicalErrorMessageConstants {
 	
 	/** Constante PARAMETRAGE_TYPE_NULL */
 	public static final String PARAMETRAGE_NON_VALIDE =
-			"La valleur paramétrée n'est pas valide";
+			"La valeur paramétrée n'est pas valide";
 	
+	/** Constante ERREUR_GEN_NUM_FACTURE */
+	public static final String ERREUR_GEN_NUM_FACTURE =
+			"Erreur lors de la généraiton du numéro de facture ou devis.";
+	
+	/** Constante ERREUR_GEN_NUM_FACTURE */
+	public static final String ERREUR_FORMAT_NUM_FACTURE_INCORRECT =
+			"Le format du numéro de facture ou devis est incorrect.";
 }

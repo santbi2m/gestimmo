@@ -15,7 +15,9 @@ import org.joda.time.LocalDateTime;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ag2m.gestimmo.metier.dao.DevisDao;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
@@ -34,6 +36,9 @@ import com.ag2m.gestimmo.metier.exception.TechnicalException;
  */
 public class DevisServiceImplTest extends AbstractCommonTest{
 
+	@Autowired
+	DevisDao devisDao;
+	
 	@Test
 	public void createDevis() throws TechnicalException {
 		// Adresse
@@ -54,7 +59,7 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 				"123456789", EnumTypePieceIdentite.CARTE_IDENTITE.getType(), "+33645897456", adresse2);
 		
 		//Facture
-		FactureDto facture = createFacture(client, 2D, adresse2, 20D, 15D, "AG2MGI2018F6");
+		FactureDto facture = createFacture(client, 2D, adresse2, 20D, 15D);
 		
 		//Reservations
 		ReservationDto reservation1 = createReservation(new LocalDateTime(), new LocalDateTime().plusDays(10), "Avec lit bébé svp", 
@@ -83,9 +88,10 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 		
 		//Création de devis 
 		DevisDto devisDto = createDevis(client.getNom(), client.getPrenom(), 
-				client.getAdresseEmail(), client.getTelephone(), "AG2MGI2018FP1", 
+				client.getAdresseEmail(), client.getTelephone(), 
 				new LocalDateTime(), new LocalDateTime().plusDays(3),
 				facture);
+		
 		assertThat(devisDto, is(notNullValue()));
 		assertThat(devisDto.getId(), is(notNullValue()));
 	}

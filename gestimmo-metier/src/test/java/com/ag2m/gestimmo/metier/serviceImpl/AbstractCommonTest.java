@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ag2m.gestimmo.metier.dao.ReservationDao;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AnomalieDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
@@ -195,7 +194,7 @@ public abstract class AbstractCommonTest {
 	 * @throws FunctionalException 
 	 */
 	protected FactureDto createFacture(ClientDto client, Double taxeSejour,
-			AdresseDto adresseFacturation, Double tva, Double remise, String numeroFacture) throws FunctionalException, TechnicalException {
+			AdresseDto adresseFacturation, Double tva, Double remise) throws FunctionalException, TechnicalException {
 		
 		FactureDto facture = new FactureDto();
 		facture.setAdresseFacturation(adresseFacturation);
@@ -203,7 +202,6 @@ public abstract class AbstractCommonTest {
 		facture.setRemise(remise);
 		facture.setTaxeSejour(taxeSejour);
 		facture.setDateCreation(LocalDateTime.now());
-		facture.setNumeroFacture(numeroFacture);
 		facture.setTva(tva);
 		
 		facture = factureService.saveOrUpdate(facture);
@@ -225,16 +223,16 @@ public abstract class AbstractCommonTest {
 	 * @param dateCheckout
 	 * @param facture
 	 * @return
+	 * @throws TechnicalException 
 	 */
 	protected DevisDto createDevis(String nom, String prenom, String adresseEmail,
-			String telephone, String numeroDevis, LocalDateTime dateChekin, LocalDateTime dateCheckout, FactureDto facture) {
+			String telephone, LocalDateTime dateChekin, LocalDateTime dateCheckout, FactureDto facture) throws TechnicalException {
 		
 		DevisDto devis = new DevisDto();
 		devis.setAdresseEmail(adresseEmail);
 		devis.setNom(nom);
 		devis.setPrenom(prenom);
 		devis.setTelephone(telephone);
-		devis.setNumeroDevis(numeroDevis);
 		devis.setDateChekin(dateChekin);
 		devis.setDateCheckout(dateCheckout);
 		devis.setDateCreation(LocalDateTime.now());

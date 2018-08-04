@@ -71,7 +71,7 @@ INSERT INTO client (id, nom, prenom, adresse_email, numero_piece, type_piece, te
 -- Jeu de données pour la table  Facture	
 -------------------------------------------
 INSERT INTO facture (id, remise, numero_facture, date_creation, id_adresse_facturation, id_client) VALUES
-(100, 5, 'AG2MGI2018F1','2018-06-01 12:00:00',1, 1);
+(100, 5, 'GI20180802FT0004','2018-06-01 12:00:00',1, 1);
 
 --------------------------------------------
 -- Jeu de données pour la table  Reservation

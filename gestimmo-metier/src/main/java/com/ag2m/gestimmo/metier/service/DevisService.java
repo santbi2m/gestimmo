@@ -1,6 +1,7 @@
 package com.ag2m.gestimmo.metier.service;
 
 import com.ag2m.gestimmo.metier.dto.DevisDto;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 public interface DevisService {
 
@@ -24,8 +25,9 @@ public interface DevisService {
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws TechnicalException 
 	 */
-	public DevisDto saveOrUpdate(DevisDto entite);
+	public DevisDto saveOrUpdate(DevisDto entite) throws TechnicalException;
 	
 	/**
 	 * Permet de supprimer l'entité en entrée

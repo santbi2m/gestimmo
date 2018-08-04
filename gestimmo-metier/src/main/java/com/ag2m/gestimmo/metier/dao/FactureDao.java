@@ -9,4 +9,10 @@ import com.ag2m.gestimmo.metier.entite.Facture;
  */
 public interface FactureDao extends CommonDao<Long, Facture> {
 
+	/**
+	 * Recherche le numéro de la dernière facture enregistrée en BDD
+	 * @return
+	 */
+	String findLastNumFacture();
+
 }

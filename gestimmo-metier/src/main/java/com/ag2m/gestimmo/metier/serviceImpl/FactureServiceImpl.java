@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ag2m.gestimmo.metier.dao.FactureDao;
 import com.ag2m.gestimmo.metier.dto.FactureDto;
 import com.ag2m.gestimmo.metier.entite.Facture;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.FactureService;
+import com.ag2m.gestimmo.metier.utils.NumeroFactureUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -47,8 +49,11 @@ public class FactureServiceImpl implements FactureService {
 	}
 
 	@Transactional
-	public FactureDto saveOrUpdate(FactureDto entiteDto) {
+	public FactureDto saveOrUpdate(FactureDto entiteDto) throws TechnicalException {
 		Facture entite = mapper.factureDtoToFacture(entiteDto);
+		String numeroFacture = factureDao.findLastNumFacture();
+		String nextNumFacture = NumeroFactureUtil.generateNexFactureNumberByActual(numeroFacture, NumeroFactureUtil.SUFFIXE_FT);
+		entite.setNumeroFacture(nextNumFacture);
 		factureDao.saveOrUpdate(entite);
 		return mapper.factureToFactureDto(entite);
 	}

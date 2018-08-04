@@ -27,6 +27,9 @@ public class ParametrageServiceImpl implements ParametrageService {
 	ParametrageDao parametrageDao;
 	
 	
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.ParametrageService#loadAllRemise()
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public void loadAllRemise() {
@@ -44,6 +47,9 @@ public class ParametrageServiceImpl implements ParametrageService {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.ParametrageService#loadPourcentagePenanlite()
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public void loadPourcentagePenanlite() throws TechnicalException {
@@ -68,6 +74,9 @@ public class ParametrageServiceImpl implements ParametrageService {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see com.ag2m.gestimmo.metier.service.ParametrageService#loadSeuilAnnulationGratuite()
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public void loadSeuilAnnulationGratuite() throws TechnicalException {

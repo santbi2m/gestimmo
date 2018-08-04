@@ -3,6 +3,7 @@ package com.ag2m.gestimmo.metier.service;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.FactureDto;
+import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 public interface FactureService {
 
@@ -26,8 +27,9 @@ public interface FactureService {
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws TechnicalException 
 	 */
-	public FactureDto saveOrUpdate(FactureDto entite);
+	public FactureDto saveOrUpdate(FactureDto entite) throws TechnicalException;
 	
 	/**
 	 * Permet de supprimer l'entité en entrée

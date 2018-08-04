@@ -158,14 +158,14 @@ public interface Mapper {
 		 @Named(value = "processFactureForDevis")
 		default byte[] processFactureForDevis(FactureDto factureDto) throws JsonProcessingException {
 				
-				 if(factureDto != null) {
-					 //Transform Dto to json
-					 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-					 String json = ow.writeValueAsString(factureDto);
-					 //return bytes for blob save
-					 return json.getBytes();
-				}
-					return null;        
+			 if(factureDto != null) {
+				 //Transform Dto to json
+				 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+				 String json = ow.writeValueAsString(factureDto);
+				 //return bytes for blob save
+				 return json.getBytes();
+			}
+				return null;        
 		}
 		 
 		
