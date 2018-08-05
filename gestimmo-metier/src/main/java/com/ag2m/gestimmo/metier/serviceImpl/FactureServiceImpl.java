@@ -52,7 +52,7 @@ public class FactureServiceImpl implements FactureService {
 	public FactureDto saveOrUpdate(FactureDto entiteDto) throws TechnicalException {
 		Facture entite = mapper.factureDtoToFacture(entiteDto);
 		String numeroFacture = factureDao.findLastNumFacture();
-		String nextNumFacture = NumeroFactureUtil.generateNexFactureNumberByActual(numeroFacture, NumeroFactureUtil.SUFFIXE_FT);
+		String nextNumFacture = NumeroFactureUtil.generateNextFactureNumberByActual(numeroFacture, NumeroFactureUtil.SUFFIXE_FT);
 		entite.setNumeroFacture(nextNumFacture);
 		factureDao.saveOrUpdate(entite);
 		return mapper.factureToFactureDto(entite);

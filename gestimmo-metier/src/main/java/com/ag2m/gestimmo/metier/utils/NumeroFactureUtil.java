@@ -42,6 +42,7 @@ public class NumeroFactureUtil {
 	/** Sufixe des numéro de facture et devis*/
 	public static final String SUFFIXE_DV = "DV";
 	
+	/** FORMAT DATE yyyyMMdd */
 	private static final String FORMAT_DATE = "yyyyMMdd";
 	
 	
@@ -83,7 +84,7 @@ public class NumeroFactureUtil {
 	 * 
 	 * @throws TechnicalException 
 	 */
-	public static String generateNexFactureNumberByActual(String lastFactureNumber, String suffixe) throws TechnicalException {
+	public static String generateNextFactureNumberByActual(String lastFactureNumber, String suffixe) throws TechnicalException {
 		
 		DateTimeFormatter dtf = DateTimeFormat.forPattern(FORMAT_DATE);
 		String currentDate =  LocalDateTime.now().toString(dtf);

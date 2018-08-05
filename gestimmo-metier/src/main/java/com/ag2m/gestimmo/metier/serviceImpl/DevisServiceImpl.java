@@ -126,7 +126,7 @@ public class DevisServiceImpl implements DevisService {
 		
 		//Génération du numéro de devis suivant, à associer avec le devis en cours de création.
 		String nextNumDevis = NumeroFactureUtil
-					.generateNexFactureNumberByActual(numeroDevis, NumeroFactureUtil.SUFFIXE_DV);
+					.generateNextFactureNumberByActual(numeroDevis, NumeroFactureUtil.SUFFIXE_DV);
 		
 		/*** Initialiser la période de réservation 
 		 * 	 celle-ci correspond à la plus petite 
