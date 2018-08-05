@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import com.ag2m.gestimmo.metier.dao.AnomalieDao;
 import com.ag2m.gestimmo.metier.entite.Anomalie;
-import com.ag2m.gestimmo.metier.enumeration.EnumStatutAnomalie;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 
 

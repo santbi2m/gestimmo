@@ -40,7 +40,7 @@ public class DevisDto extends IdentifiantDto implements Serializable{
 	
 	@JsonSerialize(using = CustomDateSerializer.class)
 	@JsonDeserialize(using = CustomDateJsonDeserializer.class)
-	private LocalDateTime dateChekin;
+	private LocalDateTime dateCheckin;
 	
 	@JsonSerialize(using = CustomDateSerializer.class)
 	@JsonDeserialize(using = CustomDateJsonDeserializer.class)

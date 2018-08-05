@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `devis` (
   `telephone` varchar(38) NOT NULL,
   `facture` blob NOT NULL,
   `numero_devis` varchar(38) NOT NULL,
-  `dateChekin` datetime NOT NULL,
+  `dateCheckin` datetime NOT NULL,
   `dateCheckout` datetime NOT NULL,
   `dateCreation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

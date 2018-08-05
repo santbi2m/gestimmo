@@ -11,7 +11,6 @@ import org.joda.time.LocalDateTime;
 
 import com.ag2m.gestimmo.metier.utils.CustomDateJsonDeserializer;
 import com.ag2m.gestimmo.metier.utils.CustomDateSerializer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -45,7 +44,6 @@ public class FactureDto extends IdentifiantDto implements Serializable{
 	@JsonDeserialize(using = CustomDateJsonDeserializer.class)
 	private LocalDateTime dateCreation;
 	
-	@JsonIgnore
 	private List<ReservationDto> reservations;
 	
 }

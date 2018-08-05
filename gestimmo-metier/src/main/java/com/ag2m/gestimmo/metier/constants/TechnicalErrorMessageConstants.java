@@ -49,4 +49,12 @@ public class TechnicalErrorMessageConstants {
 	/** Constante ERREUR_GEN_NUM_FACTURE */
 	public static final String ERREUR_FORMAT_NUM_FACTURE_INCORRECT =
 			"Le format du numéro de facture ou devis est incorrect.";
+	
+	/** Constante ERREUR_DEVIS_FACTURE_NULL */
+	public static final String ERREUR_DEVIS_FACTURE_NULL =
+			"L'objet facture contenu dans le devis ne doit pas être null";
+	
+	/** Constante ERREUR_DEVIS_FACTURE_NULL */
+	public static final String ERREUR_DEVIS_RESERVATION_NULL =
+			"Il faut au moins une réservation lors de la création d'un devis";
 }

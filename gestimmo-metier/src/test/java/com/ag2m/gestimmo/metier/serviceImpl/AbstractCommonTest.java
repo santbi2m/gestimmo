@@ -134,17 +134,32 @@ public abstract class AbstractCommonTest {
 	protected AdresseDto createAdresse(String adresse, String complementAdresse,
 			Integer codePostal,  String ville, String pays) {
 		
+		AdresseDto adr = initAdresse(adresse, complementAdresse, codePostal, ville, pays);
+		
+		adr = adresseService.saveOrUpdate(adr);
+		
+		return adr;
+		
+	}
+
+
+	/**
+	 * @param adresse
+	 * @param complementAdresse
+	 * @param codePostal
+	 * @param ville
+	 * @param pays
+	 * @return
+	 */
+	protected AdresseDto initAdresse(String adresse, String complementAdresse, Integer codePostal, String ville,
+			String pays) {
 		AdresseDto adr = new AdresseDto();
 		adr.setAdresse(adresse);
 		adr.setCodePostal(codePostal);
 		adr.setComplementAdresse(complementAdresse);
 		adr.setVille(ville);
 		adr.setPays(pays);
-		
-		adr = adresseService.saveOrUpdate(adr);
-		
 		return adr;
-		
 	}
 	
 	
@@ -166,6 +181,27 @@ public abstract class AbstractCommonTest {
 			String numeroPieceIdentite, String typePieceIdentite, String telephone,
 			AdresseDto adresse) throws TechnicalException {
 		
+		ClientDto client = initClient(nom, prenom, adresseEmail, numeroPieceIdentite, typePieceIdentite, telephone,
+				adresse);
+		
+		client = clientService.createClient(client);
+		
+		return client;
+	}
+
+
+	/**
+	 * @param nom
+	 * @param prenom
+	 * @param adresseEmail
+	 * @param numeroPieceIdentite
+	 * @param typePieceIdentite
+	 * @param telephone
+	 * @param adresse
+	 * @return
+	 */
+	protected ClientDto initClient(String nom, String prenom, String adresseEmail, String numeroPieceIdentite,
+			String typePieceIdentite, String telephone, AdresseDto adresse) {
 		ClientDto client = new ClientDto();
 		client.setAdresse(adresse);
 		client.setAdresseEmail(adresseEmail);
@@ -174,9 +210,6 @@ public abstract class AbstractCommonTest {
 		client.setTelephone(telephone);
 		client.setNumeroPieceIdentite(numeroPieceIdentite);
 		client.setTypePieceIdentite(typePieceIdentite);
-		
-		client = clientService.createClient(client);
-		
 		return client;
 	}
 	
@@ -196,6 +229,27 @@ public abstract class AbstractCommonTest {
 	protected FactureDto createFacture(ClientDto client, Double taxeSejour,
 			AdresseDto adresseFacturation, Double tva, Double remise) throws FunctionalException, TechnicalException {
 		
+		FactureDto facture = initFacture(client, taxeSejour, adresseFacturation, tva, remise);
+		
+		facture = factureService.saveOrUpdate(facture);
+		
+		return facture;
+		
+	}
+
+
+	/**
+	 * Initialise un nouvel objet facture
+	 * 
+	 * @param client
+	 * @param taxeSejour
+	 * @param adresseFacturation
+	 * @param tva
+	 * @param remise
+	 * @return
+	 */
+	protected FactureDto initFacture(ClientDto client, Double taxeSejour, AdresseDto adresseFacturation, Double tva,
+			Double remise) {
 		FactureDto facture = new FactureDto();
 		facture.setAdresseFacturation(adresseFacturation);
 		facture.setClient(client);
@@ -203,11 +257,7 @@ public abstract class AbstractCommonTest {
 		facture.setTaxeSejour(taxeSejour);
 		facture.setDateCreation(LocalDateTime.now());
 		facture.setTva(tva);
-		
-		facture = factureService.saveOrUpdate(facture);
-		
 		return facture;
-		
 	}
 	
 	
@@ -233,13 +283,13 @@ public abstract class AbstractCommonTest {
 		devis.setNom(nom);
 		devis.setPrenom(prenom);
 		devis.setTelephone(telephone);
-		devis.setDateChekin(dateChekin);
+		devis.setDateCheckin(dateChekin);
 		devis.setDateCheckout(dateCheckout);
 		devis.setDateCreation(LocalDateTime.now());
 		
 		devis.setFacture(facture);
 		
-		devis = devisService.saveOrUpdate(devis);
+		devis = devisService.createDevis(devis);
 		
 		return devis;
 		

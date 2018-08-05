@@ -1,7 +1,11 @@
 package com.ag2m.gestimmo.metier.service;
 
+import java.util.List;
+
 import com.ag2m.gestimmo.metier.dto.DevisDto;
+import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
+import com.ag2m.gestimmo.metier.ioparam.CommonFactureCriteria;
 
 public interface DevisService {
 
@@ -11,29 +15,60 @@ public interface DevisService {
 	 * @param id
 	 * @return
 	 */
-//	public DevisDto findById(Long id);
+	DevisDto findDevisById(Long id) throws TechnicalException;
 	
 	/**
 	 * Retourne une liste d'entités
 	 * 
-	 * @return
+	 * @return tous les devis en BDD
 	 */
-//	public List<DevisDto> findAll();
+	List<DevisDto> findAllDevis();
 	
 	/**
-	 * Sauvegarde ou met à jour l'entité en paramètre
+	 * Sauvegarde un nouveau devis en BDD.
 	 * 
 	 * @param entite
 	 * @return
 	 * @throws TechnicalException 
 	 */
-	public DevisDto saveOrUpdate(DevisDto entite) throws TechnicalException;
+	public DevisDto createDevis(DevisDto entite) throws TechnicalException;
+	
+	
+	/**
+	 * Met à jour un devis en BDD.
+	 * 
+	 * @param entite
+	 * @return
+	 * @throws TechnicalException 
+	 */
+	public DevisDto updateDevis(DevisDto entite) throws TechnicalException;
+
+
+
 	
 	/**
 	 * Permet de supprimer l'entité en entrée
 	 * 
 	 * @param entite
 	 * @return
+	 * @throws TechnicalException 
 	 */
-//	public boolean delete(DevisDto entite);
+	boolean deleteDevis(DevisDto entiteDto) throws TechnicalException;
+
+	
+	/**
+	 * <p>
+	 * Permet de combiner tous les critères possibles
+	 * de recherche de devis et de retourner les
+	 * devis éligibles.
+	 * </p>
+	 * 
+	 * <p>
+	 * @param devisCriteria
+	 * @return
+	 * @throws FunctionalException
+	 * @throws TechnicalException
+	 * </p>
+	 */
+	List<DevisDto> findDevisByCriteria(CommonFactureCriteria devisCriteria) throws FunctionalException, TechnicalException;
 }

@@ -143,7 +143,7 @@ public class AppartementServiceImpl implements AppartementService{
 			 return appartementDao.delete(entite);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<AppartementDto> findAppartementByCriteria(String libelle, 
 			String type, Long idBien){
 		

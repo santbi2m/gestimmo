@@ -46,8 +46,8 @@ public class Devis extends Identifiant<Long> implements Serializable{
 	private String numeroDevis;
 	
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-	@Column(name="dateChekin", nullable = false)
-	private LocalDateTime dateChekin;
+	@Column(name="dateCheckin", nullable = false)
+	private LocalDateTime dateCheckin;
 	
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	@Column(name="dateCheckout", nullable = false)
