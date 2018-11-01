@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="row">
+    <mat-horizontal-stepper>
+      <ng-template matStepperIcon="edit">
+        <mat-icon fontSet="fa" class="fas fa-hotel"></mat-icon>
+      </ng-template>
+      <mat-step label="Reservations">
+
+        <mat-card class="col-8 mx-auto">
+          <mat-card-header>
+          </mat-card-header>
+          <mat-card-title>
+            <mat-icon fontSet="fa" class="fas fa-hotel"></mat-icon>
+            Reservations
+          </mat-card-title>
+          <mat-card-subtitle>Reservations</mat-card-subtitle>
+          <mat-card-content>
+            On sait depuis longtemps que travailler avec du texte lisible et contenant
+            du sens est source de distractions, et empêche de se concentrer sur la mise
+            en page elle-même. L'avantage du Lorem Ipsum sur un texte générique comme 'Du texte.
+            Du texte. Du texte.' est qu'il possède une distribution de lettres plus ou moins normale,
+            et en tout cas comparable avec celle du français standard. De nombreuses suites logicielles de
+            mise en page ou éditeurs de sites Web ont fait du Lorem Ipsum leur faux texte par défaut, et une
+            recherche pour 'Lorem Ipsum' vous conduira vers de nombreux sites qui n'en sont encore qu'à leur
+            phase de construction. Plusieurs versions sont apparues avec le temps, parfois par accident,
+            souvent intentionnellement (histoire d'y rajouter de petits clins d'oeil, voire des phrases embarassantes).
+          </mat-card-content>
+          <img mat-card-image src="https://images.unsplash.com/photo-1540468631372-e962902d7e1c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=55ffd01068c91f892b0a1657db29a442&auto=format&fit=crop&w=668&q=80">
+          <mat-card-footer>
+            Created by Amsoua
+          </mat-card-footer>
+        </mat-card>
+      </mat-step>
+
+
+      <mat-step label="Etape 2">
+        <div class="col-10 mx-auto" style="margin-bottom:100px">
+          <mat-table #table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="dateCheckin">
+              <mat-header-cell *matHeaderCellDef>dateCheckin</mat-header-cell>
+              <mat-cell *matCellDef="let reservation">{{ reservation.dateCkeckin }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="dateCheckout">
+              <mat-header-cell *matHeaderCellDef>dateCheckout</mat-header-cell>
+              <mat-cell *matCellDef="let reservation">{{ reservation.dateCkeckout }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="note">
+              <mat-header-cell *matHeaderCellDef>note</mat-header-cell>
+              <mat-cell *matCellDef="let reservation">{{ reservation.note }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="prix">
+              <mat-header-cell *matHeaderCellDef>prix</mat-header-cell>
+              <mat-cell *matCellDef="let reservation">{{ reservation.prix }}</mat-cell>
+            </ng-container>
+
+           
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>

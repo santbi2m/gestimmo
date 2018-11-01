@@ -1,0 +1,14 @@
+<div class="form_container">
+  <form [formGroup]="loginForm" (ngSubmit) = "onClickSubmit(loginForm.value)" >
+     <header class="mx-auto">AUTHENTICATION GESTIMMO</header>
+     <label>Identifiant <span>*</span></label>
+     <input type="text" name="login" formControlName="login"/>
+     
+     <div class="help">Au moins 6 caractères</div>
+     <label>Mot de Passe <span>*</span></label>
+     <input type="password" class="fortextbox" name="passwd" formControlName="passwd"/>
+     
+     <div class="help">Utilisez bien les lettres majuscules et miniscules</div>
+     <button [disabled]="!loginForm.valid" value="Login">Login</button>
+  </form>
+</div>
