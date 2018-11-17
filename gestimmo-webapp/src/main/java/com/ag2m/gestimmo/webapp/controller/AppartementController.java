@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,7 @@ import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.service.AppartementService;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class AppartementController {
 
@@ -32,6 +34,18 @@ public class AppartementController {
 	        return appartements;
 	    }
 	  
+		
+		/**
+		 * Retourne tous les appartements d'une réservation sous format Json
+		 * 
+		 * @return
+		 */
+			@RequestMapping(value = "/appartements/reservation/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		    public @ResponseBody List<AppartementDto> findAllAppartementOfReservation(@PathVariable("id") long id) {
+		        List<AppartementDto> appartements = appartementService.findAppartByReservation(id);
+		        return appartements;
+		    }
+		  
 	     
 		/**
 		 * Retourne l'appartement dont l'id est en paramètre, sous format Json

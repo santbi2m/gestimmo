@@ -1,0 +1,121 @@
+<div class="container-fluid justify-content-start">
+  <div class="row">
+    <mat-card class="col-8 mx-auto card">
+      <mat-tab-group class="groupe" dynamicHeight mat-align-tabs="center">
+        <mat-tab label="Informations Reservation">
+          <div class="contenu">
+            <div class="container-fluid">
+              <div class="row">
+
+                <mat-card class="col-10 mx-auto card1">
+                  <div class="col-4 mx-auto">
+                    <mat-card-title>
+                      <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                      Réservation
+                    </mat-card-title>
+                  </div>
+                  <div *ngIf="reservation">
+                      <hr>
+                    <div class="row">
+                      <p class="col-3 font-weight-bold">Date CheckIn :</p>
+                      <p class="col-8">{{ reservation.dateCheckin }} </p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-3 font-weight-bold">Date CheckOut :</p>
+                      <p class="col-8">{{ reservation.dateCheckout }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-3 font-weight-bold">Note :</p>
+                      <p class="col-8">{{ reservation.note}}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-3 font-weight-bold">Petit Déjeuner :</p>
+                      <p class="col-8">{{ petitDej }} </p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-3 font-weight-bold">Statut :</p>
+                      <p class="col-8">{{ reservation.statut }} </p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-3 font-weight-bold">Prix :</p>
+                      <p class="col-8">{{ reservation.prix }} </p>
+                    </div>
+                    <hr>
+                    <div class="col-4 mx-auto">
+                      <div class="row mx-auto">
+                        <button type="button" mat-raised-button color="primary" [routerLink]="getUrl()">
+                          Modifier
+                        </button>
+                        &nbsp;&nbsp;&nbsp;
+                        <br>
+                        <button *ngIf="isNotAnnulee" mat-raised-button color="warn" type="button" 
+                          (click)="openDialog()">
+                          Annuler
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card>
+
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Liste Appartement" class="mx-auto">
+          <div class="contenu">
+            <div class="container-fluid">
+              <div class="row">
+
+                <mat-card class="col-8 mx-auto card1">
+                    <div class="col-4 mx-auto">
+                  <mat-card-title>
+                    <mat-icon fontSet="fa" class="fas fa-address-card mx-auto"></mat-icon>
+                    Appartements
+                  </mat-card-title><br />
+                  </div>
+                  <mat-table #table [dataSource]="dataSource" matSort class="table-container mat-elevation-z8">
+
+                    <ng-container matColumnDef="Libellé">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Libellé</mat-header-cell>
+                      <mat-cell *matCellDef="let appartement">{{ appartement.libelle }}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Type">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                      <mat-cell *matCellDef="let appartement">{{ appartement.type }}
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Bien">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Bien</mat-header-cell>
+                      <mat-cell *matCellDef="let appartement">{{ appartement.bien.libelle }}
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Prix">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Prix</mat-header-cell>
+                      <mat-cell *matCellDef="let appartement">{{ appartement.prix }}
+                      </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                  </mat-table>
+                  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]">
+                  </mat-paginator>
+
+                </mat-card>
+
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

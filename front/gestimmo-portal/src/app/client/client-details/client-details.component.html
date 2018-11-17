@@ -1,0 +1,85 @@
+<div class="container-fluid justify-content-start">
+  <div class="row">
+    <mat-card class="col-8 mx-auto card">
+      <mat-tab-group class="groupe" (selectedTabChange)="log($event)" (focusChange)="log($event)" dynamicHeight mat-align-tabs = "center">
+        <mat-tab label="Informations Client" >
+          <div class="contenu">
+            <div class="container-fluid">
+              <div class="row">
+
+                <mat-card class="col-8 mx-auto card1">
+                  <mat-card-title>
+                    <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                    Client
+                  </mat-card-title> <br/>
+                  <div *ngIf="client">
+                    <div class="row">
+                      <p class="font-weight-bold">Nom :</p>
+                      <p class="col-8">{{ client.nom }} {{ client.prenom }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <p class="font-weight-bold">Téléphone :</p>
+                      <p class="col-8">{{ client.telephone }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <p class="font-weight-bold">Email :</p>
+                      <p class="col-8">{{ client.adresseEmail }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <p class="font-weight-bold">Pièce :</p>
+                      <p class="col-8">{{ client.typePieceIdentite }} / {{ client.numeroPieceIdentite }}</p>
+                    </div>
+                    <hr>
+                    <div class="row mx-auto">
+                      <button type="button" class="btn btn-success button" [routerLink]="getUrl()">
+                        Editer le Client
+                      </button>
+                    </div>
+                  </div>
+                </mat-card>
+
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Adresse Client" class="mx-auto">
+          <div class="contenu">
+            <div class="container-fluid">
+              <div class="row">
+
+                <mat-card class="col-8 mx-auto card1">
+                  <mat-card-title>
+                    <mat-icon fontSet="fa" class="fas fa-address-card mx-auto"></mat-icon>
+                    Adresse
+                  </mat-card-title><br/>
+                  <div *ngIf="client">
+                    <div class="row">
+                      <p class="col-8">{{ client.adresse.adresse }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-8">{{ client.adresse.complementAdresse }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-8">{{ client.adresse.codePostal }}</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <p class="col-8">{{ client.adresse.ville }} / {{ client.adresse.pays }}</p>
+                    </div>
+
+                  </div>
+                </mat-card>
+
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

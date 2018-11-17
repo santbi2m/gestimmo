@@ -4,14 +4,42 @@ import { MatCardModule,
         MatStepperModule,
         MatIconModule,
         MatIconRegistry,
-        MatTableModule
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatInputModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MAT_DATE_LOCALE,
+        MatDialogModule,
+        MatButtonModule
          } from '@angular/material';
+
+  import { MatMomentDateModule } from '@angular/material-moment-adapter'
+  import { FlexLayoutModule } from '@angular/flex-layout';
 
 const Material = [
   MatCardModule,
   MatStepperModule,
   MatIconModule,
-  MatTableModule
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatInputModule,
+  MatTabsModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatCheckboxModule,
+  MatMomentDateModule,
+  MatDialogModule,
+  MatButtonModule,
+  FlexLayoutModule
 ]
 
 @NgModule({
@@ -21,7 +49,8 @@ const Material = [
   ],
   declarations: [],
   providers:[
-  MatIconRegistry    
+  MatIconRegistry,
+  {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}   
   ],
   exports: Material
 })

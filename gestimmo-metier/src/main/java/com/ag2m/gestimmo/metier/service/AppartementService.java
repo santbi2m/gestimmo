@@ -3,6 +3,7 @@ package com.ag2m.gestimmo.metier.service;
 import java.util.List;
 
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
+import com.ag2m.gestimmo.metier.entite.Appartement;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 
 /**
@@ -71,4 +72,13 @@ public interface AppartementService {
 	 */
 	List<AppartementDto> findAppartementByCriteria(String libelle, 
 			String type, Long idBien);
+	
+	/**
+	 * Recherche les appartements liés 
+	 * à la réservation passée en paramètres
+	 * 
+	 * @param idReservation
+	 * @return
+	 */
+	List<AppartementDto> findAppartByReservation(Long idReservation);
 }

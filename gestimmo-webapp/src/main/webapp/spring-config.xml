@@ -27,7 +27,11 @@
 				<ref bean="jsonMessageConverter"/>
 			</list>
 		</property>
-	</bean>
+	</bean> 
+	
+	<bean id="httpHandler" class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"> </bean>
+	<!--  <bean id="simpleHandler" class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"> </bean>   -->
+	
 	
 	<!-- Configure bean to convert JSON to POJO and vice versa -->
 	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

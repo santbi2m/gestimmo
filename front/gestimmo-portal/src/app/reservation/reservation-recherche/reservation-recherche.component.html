@@ -1,0 +1,128 @@
+<div class="container-fluid">
+  <div class="row">
+    <mat-card class="col-8 mx-auto card">
+      <mat-tab-group class="groupe"  (focusChange)="changeTab()" dynamicHeight
+        mat-align-tabs="center" [selectedIndex]="selectedTab">
+        <mat-tab label="Recherche...">
+
+          <mat-card class="col-8 mx-auto cardSearch">
+            <mat-card-title>
+              <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+              Recherce Réservation
+            </mat-card-title>
+            <form class="example-form" [formGroup]="resaForm">
+              <div class="mx-auto" fxLayoutAlign="center">
+                <table>
+                  <tr>
+                    <td>
+                      <mat-form-field >
+                        <input matInput [matDatepicker]="pickerIn" required formControlName="dateCheckin" placeholder="Choisir date CheckIn">
+                        <mat-error *ngIf="resaForm.get('dateCheckin').invalid">{{ getErrorMessageDateIN() }}</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="pickerIn"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerIn></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp; 
+                    <td>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="pickerOut" required formControlName="dateCheckout" placeholder="Choisir date CheckOut">
+                        <mat-error *ngIf="resaForm.get('dateCheckout').invalid">{{ getErrorMessageDateOut() }}</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="pickerOut"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerOut></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="prix" placeholder="Prix" value="">
+                      </mat-form-field>
+
+                    </td>
+                    &nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <mat-select formControlName="statut" placeholder="Statut Réservation" multiple>
+                          <mat-option>--</mat-option>
+                          <mat-option *ngFor="let statut of statuts" [value]="statut">
+                            {{ statut }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                        <mat-checkbox formControlName="petitDej" [value]="petitDej">Petit Déj</mat-checkbox>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </form>
+          </mat-card>
+          <br>
+          <div class="mx-auto col-3">
+            <button mat-raised-button color="primary" (click)="rechercher()">Rechercher</button>
+          </div>
+        </mat-tab>
+
+        <mat-tab id="resultat" label="Résultats...">
+            <div class="container-fluid">
+                <div class="row">
+          <mat-card class="col-8 mx-auto cardResult" >
+            <mat-card-title >
+              <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+              Recherce Réservation
+            </mat-card-title>
+            
+            <div class="col-3 mx-auto" fxLayoutAlign="center">
+                <mat-form-field>
+                  <input matInput (keyup)="updateFilter($event.target.value)" placeholder="Recherche une réservation">
+                </mat-form-field>
+              </div>
+
+            <mat-table #table [dataSource]="dataSource" matSort class="table-container mat-elevation-z8">
+
+              <ng-container matColumnDef="Date Check In">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date Check In</mat-header-cell>
+                <mat-cell *matCellDef="let reservation">{{ reservation.dateCheckin }}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="Date Check Out">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date Check Out</mat-header-cell>
+                <mat-cell *matCellDef="let reservation">{{ reservation.dateCheckout }}</mat-cell>
+              </ng-container>
+
+             
+              <ng-container matColumnDef="Prix">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Prix</mat-header-cell>
+                <mat-cell *matCellDef="let reservation">{{ reservation.prix }}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="Client">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Client</mat-header-cell>
+                <mat-cell *matCellDef="let reservation">
+                  <a [routerLink]="['/client/', reservation.client.id]">
+                    {{ reservation.client.nom+' '+reservation.client.prenom }} </a></mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+              <ng-container matColumnDef="Details">
+                  <mat-header-cell *matHeaderCellDef>Détails</mat-header-cell>
+                  <mat-cell *matCellDef="let reservation">
+                    <a [routerLink]="['/reservation/', reservation.id]">
+                      <mat-icon style="font-size: 36px;color:darkgray" fontSet="fa" class="fas fa-info-circle"></mat-icon> </a></mat-cell>
+                </ng-container>
+
+            </mat-table>
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"></mat-paginator>
+          </mat-card>
+          </div></div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

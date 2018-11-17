@@ -158,4 +158,18 @@ public class AppartementServiceImpl implements AppartementService{
 							.collect(Collectors.<AppartementDto> toList());
 	}
 	
+	@Transactional(readOnly = true)
+	public List<AppartementDto> findAppartByReservation( Long idReservation){
+		
+		log.debug("Service findAppartByReservation");
+		
+		//Chargement des appartement en fonction des critères d'entrée.
+		List<Appartement> appartements = appartementDao.findAppartByReservation(idReservation);
+		//Transformation de tous les appartement en AppartementDTO
+		return appartements.stream()
+							.map(appartement 
+							-> mapper.appartementToAppartementDto(appartement))
+							.collect(Collectors.<AppartementDto> toList());
+	}
+	
 }

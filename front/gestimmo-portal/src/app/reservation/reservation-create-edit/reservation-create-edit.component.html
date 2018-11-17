@@ -1,0 +1,202 @@
+<div class="container-fluid">
+  <div class="row">
+    <mat-card class="col-8 mx-auto card">
+      
+        <mat-tab-group class="groupe" dynamicHeight mat-align-tabs="center" [selectedIndex]="selectedTab">
+          <mat-tab label="Reservation">
+              <form class="example-form" *ngIf="resaForm" [formGroup]="resaForm">
+            <mat-card class="col-8 mx-auto cardSearch">
+              <mat-card-title>
+                <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                Réservation
+              </mat-card-title>
+
+              <div class="mx-auto" fxLayoutAlign="center">
+                <table>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="pickerIn"  formControlName="dateCheckin" placeholder="Choisir date CheckIn" >
+                        <mat-error *ngIf="resaForm.get('dateCheckin').invalid">{{ getErrorMessageDateIN() }}</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="pickerIn"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerIn></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field >
+                        <input matInput [matDatepicker]="pickerOut" required formControlName="dateCheckout" placeholder="Choisir date CheckOut">
+                        <mat-error *ngIf="resaForm.get('dateCheckout').invalid">{{ getErrorMessageDateOut() }}</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="pickerOut"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerOut ></mat-datepicker>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="prix" placeholder="Prix" >
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <mat-select formControlName="statut" placeholder="Statut Réservation" >
+                          <mat-option>--</mat-option>
+                          <mat-option *ngFor="let statut of statuts" [value]="statut">
+                            {{ statut }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <mat-select formControlName="appartements" placeholder="Appartements" multiple>
+                          <mat-option>--</mat-option>
+                          <mat-option *ngFor="let appartement of appartements" [value]="appartement.libelle" >
+                            {{ appartement.libelle }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-checkbox formControlName="petitDej" [value]="petitDej">Petit Déj</mat-checkbox>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <br>
+              <div class="mx-auto col-3">
+                <button mat-raised-button color="primary" (click)="suivantResa()">Suivant</button>
+              </div>
+            </mat-card>
+           </form>
+          </mat-tab>
+          <mat-tab label="Client" [disabled]="selectedTabClient">
+              <form class="example-form" *ngIf="clientForm" [formGroup]="clientForm">
+
+            <mat-card class="col-8 mx-auto cardSearch">
+              <mat-card-title>
+                <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                Client
+              </mat-card-title>
+
+              <div class="mx-auto" fxLayoutAlign="center">
+                <table>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="nom" required placeholder="Nom client" >
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="prenom" required placeholder="Pénom client" >
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="adresseEmail" placeholder="Email client" >
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="numeroPieceIdentite" placeholder="Numéro pièce" >
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="typePieceIdentite" placeholder="Type pièce">
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="telephone" placeholder="Téléphone">
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <br>
+              <div class="mx-auto col-5 row">
+                <button mat-raised-button color="primary" (click)="backTabClient()">Précédent</button>
+                &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="primary" (click)="suivantClient()">Suivant</button>
+              </div>
+
+            </mat-card>
+            </form>
+
+          </mat-tab>
+
+          <mat-tab label="Adresse" [disabled]="selectedTabAdress">
+
+              <form class="example-form" *ngIf="adresseForm" [formGroup]="adresseForm">
+            <mat-card class="col-8 mx-auto cardSearch">
+
+                <mat-card-title>
+                    <mat-icon fontSet="fa" class="fas fa-address-card mx-auto"></mat-icon>
+                    Adresse
+                  </mat-card-title>
+              <div class="mx-auto" fxLayoutAlign="center">
+                <table>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="adresse" placeholder="Adresse client" >
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <textarea matInput formControlName="complementAdresse" placeholder="Complément Adresse" ></textarea>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="codePostal" placeholder="Code Postal" >
+                      </mat-form-field>
+                    </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="ville" placeholder="Ville" >
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <mat-form-field>
+                        <input matInput formControlName="pays" placeholder="Pays" >
+                      </mat-form-field>
+                    </td>
+
+                  </tr>
+                </table>
+              </div>
+              <br>
+              <div class="mx-auto col-5 row">
+                <button mat-raised-button color="primary" (click)="backTabAddress()">Précédent</button>
+                &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="primary" (click)="valider()">Valider</button>
+              </div>
+
+            </mat-card>
+            </form>
+          </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+  </div>
+</div>
