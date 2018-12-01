@@ -1,9 +1,9 @@
 package com.ag2m.gestimmo.webapp.controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,16 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ag2m.gestimmo.metier.dto.AdresseDto;
-import com.ag2m.gestimmo.metier.dto.BienDto;
-import com.ag2m.gestimmo.metier.dto.ClientDto;
+import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.FactureDto;
-import com.ag2m.gestimmo.metier.enumeration.EnumTypePieceIdentite;
+import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.ioparam.FactureCriteria;
 import com.ag2m.gestimmo.metier.ioparam.ReservationCriteria;
-import com.ag2m.gestimmo.metier.service.AdresseService;
+import com.ag2m.gestimmo.metier.service.AppartementService;
 import com.ag2m.gestimmo.metier.service.BienService;
 import com.ag2m.gestimmo.metier.service.ClientService;
 import com.ag2m.gestimmo.metier.service.FactureService;
@@ -44,7 +41,7 @@ public class FactureController {
 	private FactureService factureService;
 	
 	@Autowired
-	private BienService bienService;
+	private AppartementService appartementService;
 	
 	@Autowired
 	private ReservationService reservationService;
@@ -95,8 +92,8 @@ public class FactureController {
 	    	FactureDto factureDto = new FactureDto();
 	    	
 	    	FactureCriteria factureCriteria = new FactureCriteria();
-	    	factureCriteria.setLibelle("Mbayenne");
-	    	factureCriteria.setNomClient("MBAYE");
+	    	factureCriteria.setLibelle("Dem Deloussi");
+	    	factureCriteria.setNom("Maiga");
 			//factureDto = factureService.findFactureById(2L);
 	    	factureDto = factureService.findFactureByCriteria(factureCriteria).get(0);
 			
@@ -105,9 +102,21 @@ public class FactureController {
 			reservationCriteria.setDateCheckin(new LocalDateTime(2018,3,2,0,0));
 			reservationCriteria.setDateCheckout(new LocalDateTime(2018,10,20,0,0));
 			
-			factureDto.setReservations(reservationService.findReservationByCriteria(reservationCriteria));
-
+			List<ReservationDto> reservationDtos = new ArrayList<>();
+			List<AppartementDto> appartementDtos = new ArrayList<>();
+			List<AppartementDto> appartementDtos2 = new ArrayList<>();
+			ReservationDto reservationDto =  reservationService.findReservationById(8L);
+			ReservationDto reservationDto2 =  reservationService.findReservationById(9L);
+			appartementDtos.add(appartementService.findAppartementById(8L));
+			appartementDtos2.add(appartementService.findAppartementById(8L));
+			reservationDto.setAppartements(appartementDtos);
+			reservationDto2.setAppartements(appartementDtos2);
 			
+			reservationDtos.add(reservationDto);
+			reservationDtos.add(reservationDto2);
+			
+			factureDto.setReservations(reservationDtos);
+
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 			String filemane = "Facture-"+sdf.format(new Date()) + ".pdf";

@@ -119,7 +119,10 @@ public class ReservationController {
 	@RequestMapping(value = "/reservations/creation", method = RequestMethod.POST)
 	public @ResponseBody ReservationDto createReservation(@RequestBody ReservationDto reservationDto) throws FunctionalException, TechnicalException  {
 
-		log.info("On est ou");
+		Optional.ofNullable(reservationDto).orElseThrow(() 
+				-> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_SUPP_NULL));
+		
+		
 		
 		return reservationService.createReservation(reservationDto);
 	}

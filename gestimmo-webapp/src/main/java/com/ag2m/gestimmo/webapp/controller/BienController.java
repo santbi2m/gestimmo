@@ -1,16 +1,19 @@
 package com.ag2m.gestimmo.webapp.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dto.BienDto;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
@@ -43,7 +46,7 @@ public class BienController {
 		 * @throws FunctionalException 
 		 * @throws TechnicalException 
 		 */
-	    @RequestMapping(value = "/biens/id/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    @RequestMapping(value = "/biens/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public @ResponseBody BienDto getBien(@PathVariable("id") long id) throws TechnicalException {
 
 	    	BienDto bien = bienService.findBienById(id);
@@ -54,18 +57,16 @@ public class BienController {
 	    /**
 		 * Crée un nouveau bien
 	     * @throws FunctionalException 
+	     * @throws TechnicalException 
 		 * 
 		 */
-	    @RequestMapping(value = "/biens/save", method = RequestMethod.POST)
-	    public @ResponseBody void saveBien() throws FunctionalException {
+	    @RequestMapping(value = "/biens/create", method = RequestMethod.POST)
+	    public @ResponseBody BienDto createBien(@RequestBody BienDto bienDto) throws FunctionalException, TechnicalException {
 
-//	    	BienDto bien = new BienDto();
-//	    	bien.setLibelle("Résidence Kheweul");
-//	    	bien.setAdresse("1 av Bourguiba");
-//	    	bien.setCodePostal(99000);
-//	    	bien.setVille("Saint-Louis");
-//	    	bien.setPays("Sénégal");
-//	    	bienService.createBien(bien);
+	    	Optional.ofNullable(bienDto).orElseThrow(() 
+					-> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_SUPP_NULL));
+			
+			return bienService.createBien(bienDto);
 	     
 	    }
 	    

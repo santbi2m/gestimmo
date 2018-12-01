@@ -39,7 +39,7 @@ public class AppartementDaoImpl extends AbstractDao<Long, Appartement> implement
 		
 		//Conditions de filtre sur les paramètres d'entrée
 		if(StringUtils.isNotEmpty(libelle)) {
-			Predicate libelleCondition = criteriaBuilder.like(criteriaBuilder.upper(appartements.get("libelle")), libelle.toUpperCase());
+			Predicate libelleCondition = criteriaBuilder.like(criteriaBuilder.upper(appartements.get("libelle")), "%"+libelle.toUpperCase()+"%");
 			predicates.add(libelleCondition);
 		}
 		
