@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ag2m.gestimmo.metier.constants.FunctionnalErrorMessageConstants;
+import com.ag2m.gestimmo.metier.constants.FunctionalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.FactureDao;
 import com.ag2m.gestimmo.metier.dao.ReservationDao;
@@ -25,7 +25,6 @@ import com.ag2m.gestimmo.metier.enumeration.EnumStatutReservation;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.ioparam.FactureCriteria;
-import com.ag2m.gestimmo.metier.ioparam.ReservationCriteria;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.FactureService;
 import com.ag2m.gestimmo.metier.utils.CustomDateUtil;
@@ -116,7 +115,7 @@ public class FactureServiceImpl implements FactureService {
 	public FactureDto createFacture(FactureDto entiteDto) throws FunctionalException, TechnicalException {
 		log.debug("Creation facture");
 
-		// statut autorisé pour la réservation
+		// statut autorisï¿½ pour la rï¿½servation
 		List<String> statutAutorisee = Arrays.asList(EnumStatutReservation.ENREGISTREE.getStatut(),
 				EnumStatutReservation.CONFIRMEE.getStatut(), EnumStatutReservation.EN_ATTENTE.getStatut(),
 				EnumStatutReservation.ANNULEE.getStatut());
@@ -124,10 +123,10 @@ public class FactureServiceImpl implements FactureService {
 		List<String> statutCOnfirmeEnregistre = Arrays.asList(EnumStatutReservation.ENREGISTREE.getStatut(),
 				EnumStatutReservation.CONFIRMEE.getStatut());
 
-		// Vérification de la validité de la réservation
+		// Vï¿½rification de la validitï¿½ de la rï¿½servation
 		validateFacture(entiteDto, statutAutorisee);
 
-		// La facture à créer ne peut pas être null
+		// La facture ï¿½ crï¿½er ne peut pas ï¿½tre null
 		Optional.ofNullable(entiteDto)
 				.orElseThrow(() -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 
@@ -150,35 +149,35 @@ public class FactureServiceImpl implements FactureService {
 			}
 
 			if (statutCOnfirmeEnregistre.stream().anyMatch(s -> reservationDto.getStatut().contains(s))) {
-				// Mise à jour du statut de la réservation à facture
+				// Mise ï¿½ jour du statut de la rï¿½servation ï¿½ facture
 				reservationDto.setStatut(EnumStatutReservation.FACTUREE.getStatut());
-				// Vérifier si la réservation est un day-use c'est à dire moins
-				// d'une nuité.
+				// Vï¿½rifier si la rï¿½servation est un day-use c'est ï¿½ dire moins
+				// d'une nuitï¿½.
 				if (dayUse) {
-					// Mise à jour date-chechout à 1h de plus
+					// Mise ï¿½ jour date-chechout ï¿½ 1h de plus
 					reservationDto.setDateCheckout(reservationDto.getDateCheckout().plusHours(1));
 				}
 			} else if (reservationDto.getStatut().equals(EnumStatutReservation.EN_ATTENTE.getStatut())) {
-				// Mise à jour du statut de la réservation à facturé
+				// Mise ï¿½ jour du statut de la rï¿½servation ï¿½ facturï¿½
 				reservationDto.setStatut(EnumStatutReservation.EN_ATTENTE_FACTUREE.getStatut());
 
-				// Vérifier si la réservation est un day-use c'est à dire moins
-				// d'une nuité.
+				// Vï¿½rifier si la rï¿½servation est un day-use c'est ï¿½ dire moins
+				// d'une nuitï¿½.
 				if (dayUse) {
-					// Mise à jour date-chechout à 1h de plus
+					// Mise ï¿½ jour date-chechout ï¿½ 1h de plus
 					reservationDto.setDateCheckout(reservationDto.getDateCheckout().plusHours(1));
 				}
 
 			} else {
-				// Mise à jour du statut de la réservation à facturé
+				// Mise ï¿½ jour du statut de la rï¿½servation ï¿½ facturï¿½
 				reservationDto.setStatut(EnumStatutReservation.ANNULEE_FACTUREE.getStatut());
 			}
-			// Mise a jour de la facture dans réservation
+			// Mise a jour de la facture dans rï¿½servation
 			reservationDto.setFacture(fDto);
-			// Transformation en entité Reservation
+			// Transformation en entitï¿½ Reservation
 			Reservation entite = mapper.reservationDtoToReservation(reservationDto);
 
-			// Sauvegarde de la réservation
+			// Sauvegarde de la rï¿½servation
 			reservationDao.saveOrUpdate(entite);
 		});
 		return fDto;
@@ -186,17 +185,17 @@ public class FactureServiceImpl implements FactureService {
 
 	private void validateFacture(FactureDto factureDto, List<String> statutAutorisee) throws TechnicalException {
 
-		// Facture ne doit pas être nulle
+		// Facture ne doit pas ï¿½tre nulle
 		Optional.ofNullable(factureDto)
 				.orElseThrow(() -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_CREATION_NULL));
 
-		// statut de résa différent de « Enregistrée » , « Confirmée » , « En
-		// attente » , « Annulée »
+		// statut de rï¿½sa diffï¿½rent de ï¿½ Enregistrï¿½e ï¿½ , ï¿½ Confirmï¿½e ï¿½ , ï¿½ En
+		// attente ï¿½ , ï¿½ Annulï¿½e ï¿½
 
 		if (factureDto.getReservations() != null && !factureDto.getReservations().isEmpty()) {
 			factureDto.getReservations().forEach(reservationDto -> {
 				if (!statutAutorisee.contains(reservationDto.getStatut())) {
-					throw new FunctionalException(FunctionnalErrorMessageConstants.ERREUR_RESERVATION_STATUT_INCORRECT);
+					throw new FunctionalException(FunctionalErrorMessageConstants.ERREUR_RESERVATION_STATUT_INCORRECT);
 				}
 			});
 		}
@@ -204,7 +203,7 @@ public class FactureServiceImpl implements FactureService {
 	}
 
 	private FactureDto mapAndSave(FactureDto factureDto, FactureDto fDto) throws TechnicalException {
-		// Transformation en entité facture
+		// Transformation en entitï¿½ facture
 		Facture facture = mapper.factureDtoToFacture(factureDto);
 		// Appel du service
 		factureDao.saveOrUpdate(facture);
@@ -223,7 +222,7 @@ public class FactureServiceImpl implements FactureService {
 	public List<FactureDto> findFactureByCriteria(final FactureCriteria factureCriteria) {
 		log.debug("Recherche Par critere");
 
-		// Chargement des factures en fonction des critères d'entrée.
+		// Chargement des factures en fonction des critï¿½res d'entrï¿½e.
 		List<Facture> factures = factureDao.findFactureByCriteria(factureCriteria);
 		// Transformation de tous les biens en FactureDto
 		return factures.stream().map(facture -> mapper.factureToFactureDto(facture))
@@ -287,7 +286,7 @@ public class FactureServiceImpl implements FactureService {
 						libelleAppart = builder.toString();
 					}
 					PdfPCell hcell;
-					hcell = new PdfPCell(new Phrase("Libellé :", headFont));
+					hcell = new PdfPCell(new Phrase("Libellï¿½ :", headFont));
 					hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					table.addCell(hcell);
 
@@ -313,7 +312,7 @@ public class FactureServiceImpl implements FactureService {
 			document.open();
 			document.addTitle("FACTURE");
 
-			Paragraph paragraph = new Paragraph("Facture N° 1",
+			Paragraph paragraph = new Paragraph("Facture Nï¿½ 1",
 					FontFactory.getFont(FontFactory.COURIER, 15f, Font.BOLD));
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			document.add(paragraph);

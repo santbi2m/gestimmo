@@ -93,7 +93,7 @@ public class FactureController {
 	    	
 	    	FactureCriteria factureCriteria = new FactureCriteria();
 	    	factureCriteria.setLibelle("Dem Deloussi");
-	    	factureCriteria.setNom("Maiga");
+	    	factureCriteria.setNomClient("Maiga");
 			//factureDto = factureService.findFactureById(2L);
 	    	factureDto = factureService.findFactureByCriteria(factureCriteria).get(0);
 			
