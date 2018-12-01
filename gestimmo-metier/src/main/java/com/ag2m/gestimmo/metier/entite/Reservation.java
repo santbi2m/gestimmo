@@ -64,11 +64,11 @@ public class Reservation extends Identifiant<Long> implements Serializable {
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="reservations")
 	private List<Appartement> appartements;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE})
 	@JoinColumn(name="id_client", nullable=false)
 	private Client client;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_facture")
 	private Facture facture;
 }

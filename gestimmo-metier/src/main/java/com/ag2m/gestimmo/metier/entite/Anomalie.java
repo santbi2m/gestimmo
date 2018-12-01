@@ -50,7 +50,7 @@ public class Anomalie extends Identifiant<Long> implements Serializable {
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	private LocalDateTime dateTraitement;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_appartement", nullable=false)
 	private Appartement appartement;
 	

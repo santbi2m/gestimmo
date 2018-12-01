@@ -114,7 +114,6 @@ public abstract class AbstractCommonTest {
 		BienDto bien = new BienDto();
 		bien.setLibelle(libelle);
 		bien.setAdresse(adresse);
-		bien = bienService.createBien(bien);
 		
 		return bien;
 	}
@@ -135,8 +134,6 @@ public abstract class AbstractCommonTest {
 			Integer codePostal,  String ville, String pays) {
 		
 		AdresseDto adr = initAdresse(adresse, complementAdresse, codePostal, ville, pays);
-		
-		adr = adresseService.saveOrUpdate(adr);
 		
 		return adr;
 		
@@ -231,7 +228,7 @@ public abstract class AbstractCommonTest {
 		
 		FactureDto facture = initFacture(client, taxeSejour, adresseFacturation, tva, remise);
 		
-		facture = factureService.saveOrUpdate(facture);
+		facture = factureService.createFacture(facture);
 		
 		return facture;
 		

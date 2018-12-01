@@ -36,7 +36,7 @@ public class Facture extends Identifiant<Long> implements Serializable{
 
 	private static final long serialVersionUID = -5232771257316030940L;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_client", nullable=false)
 	private Client client;
 	 
@@ -46,7 +46,7 @@ public class Facture extends Identifiant<Long> implements Serializable{
 	@Transient
 	private Double taxeSejour;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_adresse_facturation", nullable=false)
 	private Adresse adresseFacturation;
 	

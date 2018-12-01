@@ -8,8 +8,10 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
+import com.ag2m.gestimmo.metier.dao.AppartementDao;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
@@ -27,7 +29,6 @@ import static org.hamcrest.Matchers.empty;
  */
 public class AppartementServiceImplTest extends AbstractCommonTest{
 
-	
 	@Test
 	public void testLoadAllAppartement() throws TechnicalException {
 		
@@ -36,6 +37,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -63,6 +65,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Keur Naby",adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto appartement = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -123,9 +126,9 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 
 		// Bien		
 		BienDto bien = createBien("Keur Dabakh", adresse);
+		bien = bienService.createBien(bien);
 		
 		// Check results
-		Long id = bien.getId();
 		assertThat(bien.getId(), is(notNullValue()));
 		
 		//Appartement
@@ -143,12 +146,6 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		entite = appartementService.findAppartementById(entite.getId());
 		//Check
 		assertThat(entite, is(nullValue()));
-		
-		//Call services
-		bienService.deleteBien(bien);
-		bien = bienService.findBienById(id);
-		//Check
-		assertThat(bien, is(nullValue()));
 	}	
 	
 	
@@ -167,6 +164,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -198,6 +196,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -270,6 +269,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T3.getType(), 50D);
@@ -304,6 +304,8 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
+		final Long idBien = bien.getId();
 		assertThat(bien.getId(), is(notNullValue()));
 		
 		//Appartements
@@ -321,7 +323,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 
 		result.forEach(app -> {
 			assertThat(app.getBien(), is(notNullValue()));
-			assertThat(app.getBien().getId(), is(bien.getId()));
+			assertThat(app.getBien().getId(), is(idBien));
 		});
 	}
 	
@@ -340,6 +342,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		assertThat(bien.getId(), is(notNullValue()));
 		
 		//Appartements
@@ -378,6 +381,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T3.getType(), 50D);
@@ -408,6 +412,7 @@ public class AppartementServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		createAppartement("Dalal Diam", bien, EnumTypeAppartement.T3.getType(), 50D);

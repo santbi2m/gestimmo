@@ -155,6 +155,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -275,6 +276,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -313,6 +315,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -352,6 +355,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -391,6 +395,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -429,6 +434,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -467,6 +473,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -504,6 +511,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -542,6 +550,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -583,6 +592,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -635,6 +645,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -696,6 +707,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -736,6 +748,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -795,6 +808,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -908,6 +922,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -1202,6 +1217,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -1648,7 +1664,8 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
-		
+		bien = bienService.createBien(bien);
+
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
 		
@@ -1685,6 +1702,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -1718,6 +1736,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -1757,6 +1776,7 @@ public class ReservationServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);

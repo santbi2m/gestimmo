@@ -41,14 +41,14 @@ public class Appartement extends Identifiant<Long> implements Serializable {
 	@Column(name="type_appart", nullable=false)
 	private String type;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_bien", nullable=false)
 	private Bien bien;
 	
 	@Column(name="prix", nullable=false)
 	private Double prix;
 
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinTable(name = "assoc_resa_appart", joinColumns = {
 			@JoinColumn(name = "id_appartement", nullable = false, updatable = false) },
 	inverseJoinColumns = { @JoinColumn(name = "id_reservation",

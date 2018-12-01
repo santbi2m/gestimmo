@@ -428,6 +428,7 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 		
 		// Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1 = createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -460,7 +461,7 @@ public class DevisServiceImplTest extends AbstractCommonTest{
 		appartementService.createAppartement(app3);
 		
 		facture.setReservations(Arrays.asList(reservation1, reservation2));
-		factureService.saveOrUpdate(facture);
+		factureService.createFacture(facture);
 		
 		return facture;
 	}

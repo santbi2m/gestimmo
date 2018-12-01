@@ -52,7 +52,7 @@ public class Client extends Identifiant<Long> implements Serializable {
 	@Column(name="telephone")
 	private String telephone;
 	
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_adresse", nullable=false)
 	private Adresse adresse;
 	

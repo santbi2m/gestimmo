@@ -307,9 +307,10 @@ public class ClientServiceImplTest extends AbstractCommonTest{
 		ClientCriteria clientCriteria = new ClientCriteria();
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
-		assertThat(adresse.getId(), is(notNullValue()));
 		// Client
-		createClient("Boubakh", "Wadji", "wadji@gmail.com", "145ZERT", "passeport", "0625986550", adresse);
+		ClientDto client = createClient("Boubakh", "Wadji", "wadji@gmail.com", "145ZERT", "passeport", "0625986550", adresse);
+		assertThat(client.getAdresse().getId(), is(notNullValue()));
+		assertThat(client.getAdresse().getAdresse(), is("12 cité Fadia"));
 
 
 

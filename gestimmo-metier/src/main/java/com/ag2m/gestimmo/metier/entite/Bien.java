@@ -37,7 +37,7 @@ public class Bien extends Identifiant<Long> implements Serializable{
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="bien")
 	private List<Appartement> appartements;
 	
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne (cascade = {CascadeType.MERGE, CascadeType.ALL})
 	@JoinColumn(name="id_adresse", nullable=false)
 	private Adresse adresse;
 	

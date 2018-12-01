@@ -2,6 +2,9 @@ package com.ag2m.gestimmo.metier.dao;
 
 import java.io.Serializable;
 import java.util.List;
+
+import org.hibernate.Session;
+
 import com.ag2m.gestimmo.metier.entite.Identifiant;
 
 
@@ -41,4 +44,10 @@ public interface CommonDao<ID extends Serializable, T extends Identifiant<ID>> {
 	 * @return true si l'entité a été supprimée et false autrement
 	 */
 	public boolean delete(T entite);
+	
+	/**
+	 * retourne la session courante
+	 * @return
+	 */
+	Session getCurrentSession();
 }

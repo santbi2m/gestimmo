@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
+import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
@@ -37,8 +38,11 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		AdresseDto adresse2 = createAdresse("150 avenue Malick Sy", null, 9900, "Point E", "Sénégal");
 		
 		//Bien
-		createBien("Dianna Firdawsi", adresse);
-		createBien("Dianna Mahwa", adresse2);
+		BienDto bien1 = createBien("Dianna Firdawsi", adresse);
+		BienDto bien2 = createBien("Dianna Mahwa", adresse2);
+		bienService.createBien(bien1);
+		bienService.createBien(bien2);
+
 		
 		//Call services
 		List<BienDto> biens = bienService.loadAllBien();
@@ -49,6 +53,9 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		
 		//Check cache
 		assertThat(cacheManager.getObject().getCache("gestimmo").getSize(), greaterThanOrEqualTo(2));
+		assertThat(biens.get(0).getAdresse().getId(), is(notNullValue()));
+		assertThat(biens.get(1).getAdresse().getId(), is(notNullValue()));
+
 		
 	}
 
@@ -62,6 +69,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Keur Dabakh", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Call service
 		bien = bienService.findBienById(bien.getId());
@@ -72,6 +80,8 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		//Check cache
 		int newSize = cacheManager.getObject().getCache("gestimmo").getSize();
 		assertThat(newSize, greaterThan(oldSize));
+		
+		assertThat(bien.getAdresse().getId(), is(notNullValue()));
 	}
 	
 	@Test
@@ -89,6 +99,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		//Check results ,65
 		assertThat(bien.getId(), is(1L));
 		assertThat(bien.getLibelle(), is("updated libelle"));
+		assertThat(bien.getAdresse().getId(), is(notNullValue()));
 	}
 	
 
@@ -101,9 +112,12 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		
 		//Bien
 		BienDto bien = createBien("Keur Dabakh", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Check result
 		assertThat(bien.getId(), is(notNullValue()));
+		
+		Long idAdresse = bien.getAdresse().getId();
 		
 		//Call service
 		BienDto entite = bienService.findBienById(bien.getId());
@@ -117,6 +131,10 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		//Check result
 		assertThat(entite, is(nullValue()));
 		
+		//Vérifier que l'adresse est bien supprimée
+		adresse = adresseService.findById(idAdresse);
+		assertThat(adresse, is(nullValue()));
+		
 	}	
 	
 	
@@ -128,6 +146,7 @@ public class BienServiceImplTest extends AbstractCommonTest{
 				
 		//Bien
 		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bien = bienService.createBien(bien);
 		
 		//Appartements
 		AppartementDto app1= createAppartement("Dalal Diam", bien, EnumTypeAppartement.T2.getType(), 50D);
@@ -164,10 +183,14 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 		
 		//Bien
-		createBien("Wakeur Meissa", adresse);
-		createBien("bien1", adresse);
-		createBien("bien2", adresse);
-		createBien("bien3", adresse);
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bienService.createBien(bien);
+		BienDto bien1 = createBien("bien1", adresse);
+		bienService.createBien(bien1);
+		BienDto bien2 = createBien("bien2", adresse);
+		bienService.createBien(bien2);
+		BienDto bien3 = createBien("bien3", adresse);
+		bienService.createBien(bien3);
 		
 		
 		
@@ -197,9 +220,12 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
 
 		// Bien
-		createBien("Wakeur Meissa", adresse);
-		createBien("bien1", adresse);
-		createBien("bien2", adresse);
+		BienDto bien = createBien("Wakeur Meissa", adresse);
+		bienService.createBien(bien);
+		BienDto bien1 = createBien("bien1", adresse);
+		bienService.createBien(bien1);
+		BienDto bien2 = createBien("bien2", adresse);
+		bienService.createBien(bien2);
 
 		/************
 		 * ************ Case parametter repected * *
@@ -265,10 +291,8 @@ public class BienServiceImplTest extends AbstractCommonTest{
 		BienCriteria bienCriteria = new BienCriteria();
 		// Adresse
 		AdresseDto adresse = createAdresse("12 cité Fadia", null, 9900, "Sacré coeur", "Sénégal");
-		assertThat(adresse.getId(), is(notNullValue()));
 		// Bien
 		createBien("Wakeur Meissa", adresse);
-
 
 		/************
 		 * ************ Case parametter repected * *

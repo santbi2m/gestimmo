@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
@@ -84,13 +85,12 @@ public class AppartementServiceImpl implements AppartementService{
 
 		log.debug("Service createAppartement");
 		
-		AppartementDto result = null;
 		//L'appartement à créer ne peut pas être null
 		Optional.ofNullable(entiteDto).orElseThrow(() 
 				-> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_CREATION_NULL));
 		
 		//map and save
-		return mapAndSave(entiteDto, result);
+		return mapAndSave(entiteDto);
 	}
 	
 	
@@ -99,7 +99,6 @@ public class AppartementServiceImpl implements AppartementService{
 
 		log.debug("Service updateAppartement");
 		
-		AppartementDto result = null;
 		//L'appartement à modifier doit exister en BDD
 		Optional.ofNullable(entiteDto)
 			.filter(dto -> dto.getId() != null)
@@ -107,7 +106,7 @@ public class AppartementServiceImpl implements AppartementService{
 				new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_MODIFICATION_NULL));
 		
 		//map and save
-		return mapAndSave(entiteDto, result);
+		return mapAndSave(entiteDto);
 	}
 
 
@@ -115,10 +114,9 @@ public class AppartementServiceImpl implements AppartementService{
 	 * Map le DTO en entité, puis le sauvegarde en BDD
 	 * 
 	 * @param entiteDto
-	 * @param result
 	 * @return
 	 */
-	private AppartementDto mapAndSave(AppartementDto entiteDto, AppartementDto result) {
+	private AppartementDto mapAndSave(AppartementDto entiteDto) {
 		//Transformation en entité Appartement
 		Appartement entite = mapper.appartementDtoToAppartement(entiteDto);
 		//Appel du service
