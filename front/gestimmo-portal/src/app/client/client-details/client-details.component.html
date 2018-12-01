@@ -1,5 +1,5 @@
 <div class="container-fluid justify-content-start">
-  <div class="row">
+  <div class="row mat-elevation-z8">
     <mat-card class="col-8 mx-auto card">
       <mat-tab-group class="groupe" (selectedTabChange)="log($event)" (focusChange)="log($event)" dynamicHeight mat-align-tabs = "center">
         <mat-tab label="Informations Client" >
@@ -31,12 +31,6 @@
                     <div class="row">
                         <p class="font-weight-bold">Pièce :</p>
                       <p class="col-8">{{ client.typePieceIdentite }} / {{ client.numeroPieceIdentite }}</p>
-                    </div>
-                    <hr>
-                    <div class="row mx-auto">
-                      <button type="button" class="btn btn-success button" [routerLink]="getUrl()">
-                        Editer le Client
-                      </button>
                     </div>
                   </div>
                 </mat-card>

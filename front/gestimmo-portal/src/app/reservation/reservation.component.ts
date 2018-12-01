@@ -12,33 +12,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ReservationComponent implements OnInit {
 
-public dataSource = new MatTableDataSource<Reservation>();
-public reservations: Reservation[];
-public displayedColumns = ['Date Check In', 'Date Check Out', 'Note', 'Prix', 'Client'];
-@ViewChild('paginator') public paginator: MatPaginator;
-@ViewChild(MatSort) public sort: MatSort;
 
-public client: Client;
-
-  constructor(private reservationService: ReservationService, private activedRoute: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit() {
-    this.reservationService.getReservations().subscribe(reservations => {
-      this.reservations = reservations;
-      this.dataSource = new MatTableDataSource(this.reservations);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    
     
   }
 
-  public updateFilter(filter: string): void{
-    filter = filter.trim().toLowerCase();
-    this.dataSource.filter = filter;
-  }
-
-  navigate(client: Client): string[]{
-    return ['/client', client.id.toString() ];
-  }
+ 
 
 }

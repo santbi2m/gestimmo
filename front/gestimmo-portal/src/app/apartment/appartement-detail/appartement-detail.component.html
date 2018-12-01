@@ -1,0 +1,58 @@
+<div class="container-fluid justify-content-start">
+    <div class="row mat-elevation-z8">
+      <mat-card class="col-8 mx-auto card">
+        
+            <div class="contenu">
+              <div class="container-fluid">
+                <div class="row">
+  
+                  <mat-card class="col-10 mx-auto cardResult">
+                    <div class="col-4 mx-auto">
+                      <mat-card-title>
+                        <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                        Appartement
+                      </mat-card-title>
+                    </div>
+                    <mat-card class="col-10 mx-auto card1 mat-elevation-z8" style="background-color: white">
+                    <div *ngIf="appartement">
+                        <hr>
+                      <div class="row">
+                        <p class="col-3 font-weight-bold">Libellé:</p>
+                        <p class="col-8">{{ appartement.libelle }} </p>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <p class="col-3 font-weight-bold">Type :</p>
+                        <p class="col-8">{{ appartement.type }}</p>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <p class="col-3 font-weight-bold">Prix :</p>
+                        <p class="col-8">{{ appartement.prix}}</p>
+                      </div>
+                      <hr>
+                      <div class="row">
+                        <p class="col-3 font-weight-bold">Bien :</p>
+                        <p class="col-8">{{ appartement.bien.libelle }} </p>
+                      </div>
+                      
+                      <hr>
+                    </div>
+                  </mat-card>
+                      <div class="col-4 mx-auto">
+                        <div class="row mx-auto">
+                          <button type="button" mat-raised-button color="primary" [routerLink]="getUrl()">
+                            Modifier
+                          </button>
+                        </div>
+                      </div>
+                    
+                  </mat-card>
+  
+                </div>
+              </div>
+            </div>
+          
+      </mat-card>
+    </div>
+  </div>

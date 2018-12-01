@@ -4,7 +4,7 @@ import { Appartement } from "./apartment.model";
 export class Bien{
     constructor(
         public libelle: string,
-        public appartement: Appartement[],
-        public adresse: Adresse
+        public adresse: Adresse,
+        public appartement?: Appartement[]
     ){}
 }

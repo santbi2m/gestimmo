@@ -16,7 +16,10 @@ import { MatCardModule,
         MatCheckboxModule,
         MAT_DATE_LOCALE,
         MatDialogModule,
-        MatButtonModule
+        MatButtonModule, 
+        MatSidenavModule,
+        MatAccordion,
+        MatExpansionModule
          } from '@angular/material';
 
   import { MatMomentDateModule } from '@angular/material-moment-adapter'
@@ -39,7 +42,9 @@ const Material = [
   MatMomentDateModule,
   MatDialogModule,
   MatButtonModule,
-  FlexLayoutModule
+  FlexLayoutModule,
+  MatSidenavModule,
+  MatExpansionModule
 ]
 
 @NgModule({
@@ -50,6 +55,7 @@ const Material = [
   declarations: [],
   providers:[
   MatIconRegistry,
+  MatAccordion,
   {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}   
   ],
   exports: Material

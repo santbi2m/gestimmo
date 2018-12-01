@@ -1,26 +1,8 @@
-<nav class="navbar navbar-expand-md navbar-light">
-  <a class="navbar-brand" href="#">GestImmo</a>
-  <button class="navbar-toggler navbar-toggler-right">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/accueil">Accueil</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/bien">Bien</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/appartement">Appartements</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/reservation">Reservations</a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/factures">Facturation</a>
-      </li>
-
-    </ul>
-  </div>
-</nav>
+<mat-toolbar color="primary" class="app-header">
+    <mat-toolbar-row>
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
+          <mat-icon fontSet="fa" aria-label="Side nav toggle icon" style="font-size: 24px;;color:white;" class="fas fa-bars"></mat-icon>
+        </button>
+        <span class="ml-auto"><img src="./assets/logo_reduit.png" ></span>
+      </mat-toolbar-row>
+</mat-toolbar>

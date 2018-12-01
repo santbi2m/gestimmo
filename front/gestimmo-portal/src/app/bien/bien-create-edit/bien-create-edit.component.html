@@ -1,3 +1,72 @@
-<p>
-  bien-create-edit works!
-</p>
+<div class="container-fluid">
+  <div class="row mat-elevation-z8">
+    <mat-card class="col-8 mx-auto card">
+
+            <mat-card class="col-8 mx-auto cardSearch">
+              <mat-card-title>
+                <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                Bien
+              </mat-card-title>
+
+              <div class="mat-elevation-z8 table-container " style="background-color: white">
+              <form class="example-form" *ngIf="bienForm" [formGroup]="bienForm">
+              <div class="mx-auto" fxLayoutAlign="center">
+                  <mat-form-field>
+                      <textarea matInput formControlName="libelle" placeholder="Libellé bien" required ></textarea>
+                  </mat-form-field>
+              </div>
+            </form>
+            <hr>
+            <form class="example-form" *ngIf="adresseForm" [formGroup]="adresseForm">
+              <div class="mx-auto" fxLayoutAlign="center">
+                  <table>
+                      <tr>
+                        <td>
+                          <mat-form-field>
+                            <input matInput formControlName="adresse" placeholder="Adresse bien" >
+                          </mat-form-field>
+                        </td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td>
+                          <mat-form-field>
+                            <textarea matInput formControlName="complementAdresse" placeholder="Complément Adresse" ></textarea>
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <mat-form-field>
+                            <input matInput formControlName="codePostal" placeholder="Code Postal" >
+                          </mat-form-field>
+                        </td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td>
+                          <mat-form-field>
+                            <input matInput formControlName="ville" placeholder="Ville" >
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <mat-form-field>
+                            <input matInput formControlName="pays" placeholder="Pays" >
+                          </mat-form-field>
+                        </td>
+    
+                      </tr>
+                    </table>
+              </div>
+            </form>
+          </div>
+          <hr>
+            <div class="mx-auto col-4 row">
+                <button mat-raised-button color="primary" (click)="resetForm()">Annuler</button>
+                &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="primary" (click)="valider()">Valider</button>
+              </div>
+            </mat-card>
+         
+       
+    </mat-card>
+  </div>
+</div>

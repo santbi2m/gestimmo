@@ -82,7 +82,6 @@ export class ReservationCreateEditComponent implements OnInit {
       this.appartements = appartements,
       error => alert(error);
       this.dataSourceAppart = new MatTableDataSource(this.appartements);
-
     });
     
     this.activatedRoute.params.subscribe((params: Params)=>{
@@ -91,13 +90,13 @@ export class ReservationCreateEditComponent implements OnInit {
         console.log('test1 '+params.index)
         this.resaService.getReservationbyId(params.index).subscribe( (reservation: Reservation) => {
           this.reservation = reservation;
-          //console.log('test0 '+reservation.appartements.length)
-           this.listeAppartement(params.index)
-          this.reservation.appartements = this.appartements2 
+          //
+           this.listeAppartement(params.index);
+           console.log('test1 '+this.reservation.appartements)
           
-          this.initResaForm(this.reservation);
+          //this.initResaForm(this.reservation);
          
-          console.log('test1111 '+this.resaForm.controls['dateCheckout'].value)
+          console.log('test1111 ', this.reservation.dateCheckout instanceof Date)
           this.initClientForm(this.reservation.client);
           this.initAdresseForm(this.reservation.client.adresse)
           
@@ -106,6 +105,7 @@ export class ReservationCreateEditComponent implements OnInit {
       }else{
        // this.edit = false;
        console.log('test2')
+
        this.initResaForm();
        this.initClientForm();
        this.initAdresseForm();
@@ -115,10 +115,11 @@ export class ReservationCreateEditComponent implements OnInit {
    
   }
 
-  initResaForm(reservation = { dateCheckin: '', dateCheckout: '', petitDej: false, prix: 0, statut: '', note: '', appartements: [] }) {
+  initResaForm(reservation = { dateCheckin: new Date(), dateCheckout: new Date(), petitDej: false, statut: '', prix: null, note: '', appartements: [] } ) {
+    
     this.resaForm = this.fb.group({
-      dateCheckin: [reservation.dateCheckin, Validators.required],
-      dateCheckout: [reservation.dateCheckout, Validators.required],
+      dateCheckin: [new Date(reservation.dateCheckin), Validators.required],
+      dateCheckout: [new Date(reservation.dateCheckout), Validators.required],
       petitDej: [reservation.petitDej],
       statut: [reservation.statut, Validators.required],
       prix: [reservation.prix],
@@ -126,6 +127,8 @@ export class ReservationCreateEditComponent implements OnInit {
       appartements: [reservation.appartements, Validators.required],
 
     });
+
+   
   }
 
   initAdresseForm(adresse = { adresse: '', complementAdresse: '', codePostal: 0, ville: '', pays: '' }) {
@@ -181,9 +184,6 @@ export class ReservationCreateEditComponent implements OnInit {
 
   }
 
-  
-
-
   public getErrorMessageDateIN() {
     if (this.resaForm.controls['dateCheckin'].hasError('required')) {
       return "La date de check in est requis";
@@ -226,10 +226,10 @@ export class ReservationCreateEditComponent implements OnInit {
     if (!this.resaForm.invalid && !this.clientForm.invalid && !this.adresseForm.invalid) {
       this.reservation = this.resaForm.value;
       console.log(moment(this.resaForm.controls['dateCheckin'].value).format(dateFormat));
-      this.reservation.dateCheckin = moment(this.resaForm.controls['dateCheckin'].value).format(dateFormat);
-      this.reservation.dateCheckout = moment(this.resaForm.controls['dateCheckout'].value).format(dateFormat);
+      this.reservation.dateCheckin = new Date (this.resaForm.controls['dateCheckin'].value);
+      this.reservation.dateCheckout = new Date (this.resaForm.controls['dateCheckout'].value);
 
-      this.reservation.appartements = this.resaForm.controls['appartements'].value;
+      this.reservation.appartements = this.resaForm.get('appartements').value.value;
 
       this.client = this.clientForm.value;
       this.adresse = this.adresseForm.value;
@@ -247,12 +247,12 @@ export class ReservationCreateEditComponent implements OnInit {
 
   public listeAppartement(id: number) {
     this.appartementService.getAppartementByReservation(id).subscribe(appartements1 => {
-      this.appartements2 = appartements1;
-      console.log(this.appartements2.length)
+     this.reservation.appartements = appartements1;
+     this.appartements2 = appartements1;
+     this.initResaForm(this.reservation);
     });
-
    
-   
+ 
   }
 
 }

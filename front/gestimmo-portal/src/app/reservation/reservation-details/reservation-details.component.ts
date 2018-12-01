@@ -56,13 +56,7 @@ export class ReservationDetailsComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       })
-
-
-
     });
-
-
-
   }
 
   public getUrl(): string[] {

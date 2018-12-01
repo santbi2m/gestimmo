@@ -11,7 +11,10 @@ const httpOptions = {
   export class BienService {
   
    
-      constructor(private http: HttpClient) {}
+      constructor(private http: HttpClient) {
+        httpOptions.headers.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+         httpOptions.headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+      }
     
       private bienUrl = 'http://localhost:8081/gestimmo/biens';
     
@@ -19,11 +22,11 @@ const httpOptions = {
         return this.http.get<Bien[]>(this.bienUrl, httpOptions);
       }
     
-     /* public deleteUser(user) {
-        return this.http.delete(this.userUrl + "/"+ user.id);
+      public getBienById(id: number) {
+        return this.http.get<Bien>(this.bienUrl + "/"+ id, httpOptions);
       }
     
-      public createUser(user) {
-        return this.http.post<User>(this.userUrl, user);
-      }*/
+      public createBien(bien: Bien) {
+        return this.http.post<Bien>(this.bienUrl+'/create', bien, httpOptions);
+      }
   }

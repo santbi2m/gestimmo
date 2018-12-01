@@ -76,3 +76,11 @@
  form button:hover {
     background: #ff5252;
  }
+ .cardSearch {
+    min-width: 70%;
+    min-height: 70%;
+    height: 80%; 
+    margin-bottom: 1%;
+    margin-top: 1%;
+    margin-left: 5%;
+  }

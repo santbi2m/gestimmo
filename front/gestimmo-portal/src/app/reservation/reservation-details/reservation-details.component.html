@@ -1,5 +1,5 @@
 <div class="container-fluid justify-content-start">
-  <div class="row">
+  <div class="row mat-elevation-z8">
     <mat-card class="col-8 mx-auto card">
       <mat-tab-group class="groupe" dynamicHeight mat-align-tabs="center">
         <mat-tab label="Informations Reservation">
@@ -7,13 +7,14 @@
             <div class="container-fluid">
               <div class="row">
 
-                <mat-card class="col-10 mx-auto card1">
+                <mat-card class="col-10 mx-auto cardResult">
                   <div class="col-4 mx-auto">
                     <mat-card-title>
-                      <mat-icon fontSet="fa" class="fas fa-user mx-auto"></mat-icon>
+                      <mat-icon fontSet="fa" class="fas fa-calendar mx-auto"></mat-icon>
                       Réservation
                     </mat-card-title>
                   </div>
+                  <mat-card class="col-10 mx-auto card1 mat-elevation-z8" style="background-color: white">
                   <div *ngIf="reservation">
                       <hr>
                     <div class="row">
@@ -46,6 +47,8 @@
                       <p class="col-8">{{ reservation.prix }} </p>
                     </div>
                     <hr>
+                  </div>
+                </mat-card>
                     <div class="col-4 mx-auto">
                       <div class="row mx-auto">
                         <button type="button" mat-raised-button color="primary" [routerLink]="getUrl()">
@@ -59,7 +62,7 @@
                         </button>
                       </div>
                     </div>
-                  </div>
+                  
                 </mat-card>
 
               </div>

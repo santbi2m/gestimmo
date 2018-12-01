@@ -4,9 +4,9 @@ import { Appartement } from "./apartment.model";
 
 export class Reservation{
     constructor(
-        public id: number,
-        public dateCheckin: string,  
-        public dateCheckout: string, 
+       
+        public dateCheckin: Date,  
+        public dateCheckout: Date, 
         public note: string,
         public petitDej: boolean,
         public statut: string,
@@ -14,6 +14,7 @@ export class Reservation{
         public appartements: Appartement[],
         public client?: Client,
         public facture?: Facture,
+        public id?: number
         
       ){ }
   }

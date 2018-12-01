@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Appartement } from '../shared/Models/apartment.model';
 
 const httpOptions = {
@@ -24,5 +24,19 @@ export class ApartmentService {
 
   public getAppartementByReservation(id: number) {
     return this.http.get<Appartement[]>(this.appartementUrl+"/reservation/"+id, httpOptions);
+  }
+
+  public getAppartementById(id: number) {
+    return this.http.get<Appartement>(this.appartementUrl+"/"+id, httpOptions);
+  }
+
+  public createAppartement(appartement: Appartement) {
+    return this.http.post<Appartement>(this.appartementUrl+"/create/", appartement, httpOptions);
+  }
+
+  public getAppartementCriteria(param: any) {
+     
+    const params = new HttpParams({ fromObject: param })
+    return this.http.get<Appartement[]>(this.appartementUrl+ "/recherche",  {headers: httpOptions.headers,  params: params});
   }
 }

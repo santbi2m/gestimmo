@@ -65,7 +65,7 @@ export class ReservationRechercheComponent implements OnInit {
   //selecte tab
   private selectedTab = 0;
 
-  constructor(fb: FormBuilder, private resaService: ReservationService, private appartService: ApartmentService) {
+  constructor(fb: FormBuilder, private resaService: ReservationService) {
     this.resaService.getReservations().subscribe(reservations => {
       this.reservations = reservations;
       this.dataSource = new MatTableDataSource(this.reservations);

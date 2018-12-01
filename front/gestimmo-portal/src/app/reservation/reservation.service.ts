@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams  } from '@angular/common/http';
 import { Reservation } from '../shared/Models/reservation.model';
-import { ReservationCriteria } from '../shared/Models/reservationCriteria.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:8081' })

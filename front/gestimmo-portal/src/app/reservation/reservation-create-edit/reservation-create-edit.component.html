@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row">
+  <div class="row mat-elevation-z8">
     <mat-card class="col-8 mx-auto card">
       
         <mat-tab-group class="groupe" dynamicHeight mat-align-tabs="center" [selectedIndex]="selectedTab">
@@ -11,12 +11,12 @@
                 Réservation
               </mat-card-title>
 
-              <div class="mx-auto" fxLayoutAlign="center">
+              <div class="mx-auto mat-elevation-z8" style="background-color: white" fxLayoutAlign="center">
                 <table>
                   <tr>
                     <td>
                       <mat-form-field>
-                        <input matInput [matDatepicker]="pickerIn"  formControlName="dateCheckin" placeholder="Choisir date CheckIn" >
+                        <input matInput [matDatepicker]="pickerIn"  formControlName="dateCheckin"  placeholder="Choisir date CheckIn" >
                         <mat-error *ngIf="resaForm.get('dateCheckin').invalid">{{ getErrorMessageDateIN() }}</mat-error>
                         <mat-datepicker-toggle matSuffix [for]="pickerIn"></mat-datepicker-toggle>
                         <mat-datepicker #pickerIn></mat-datepicker>
@@ -53,7 +53,7 @@
                   <tr>
                     <td>
                       <mat-form-field>
-                        <mat-select formControlName="appartements" placeholder="Appartements" multiple>
+                        <mat-select formControlName="appartements" placeholder="Appartements" multiple [(value)] = "appartements2" >
                           <mat-option>--</mat-option>
                           <mat-option *ngFor="let appartement of appartements" [value]="appartement.libelle" >
                             {{ appartement.libelle }}
@@ -68,7 +68,7 @@
                   </tr>
                 </table>
               </div>
-              <br>
+              <hr>
               <div class="mx-auto col-3">
                 <button mat-raised-button color="primary" (click)="suivantResa()">Suivant</button>
               </div>
@@ -84,7 +84,7 @@
                 Client
               </mat-card-title>
 
-              <div class="mx-auto" fxLayoutAlign="center">
+              <div class="mx-auto mat-elevation-z8" style="background-color: white" fxLayoutAlign="center">
                 <table>
                   <tr>
                     <td>
@@ -127,7 +127,7 @@
                   </tr>
                 </table>
               </div>
-              <br>
+              <hr>
               <div class="mx-auto col-5 row">
                 <button mat-raised-button color="primary" (click)="backTabClient()">Précédent</button>
                 &nbsp;&nbsp;&nbsp;
@@ -148,7 +148,7 @@
                     <mat-icon fontSet="fa" class="fas fa-address-card mx-auto"></mat-icon>
                     Adresse
                   </mat-card-title>
-              <div class="mx-auto" fxLayoutAlign="center">
+              <div class="mx-auto mat-elevation-z8" style="background-color: white" fxLayoutAlign="center">
                 <table>
                   <tr>
                     <td>
@@ -186,7 +186,7 @@
                   </tr>
                 </table>
               </div>
-              <br>
+              <hr>
               <div class="mx-auto col-5 row">
                 <button mat-raised-button color="primary" (click)="backTabAddress()">Précédent</button>
                 &nbsp;&nbsp;&nbsp;

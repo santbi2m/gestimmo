@@ -1,0 +1,37 @@
+.sidenav-container {
+  height: 100%;
+ 
+}
+
+.sidenav {
+  width: 170px;
+  color: blue;
+  min-height: 80%;
+ background-color: white;
+  height: 100%;
+  text-decoration: azure;
+  position: fixed;
+  margin-top: 5%
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+ 
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.app-header {
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+  background-color: rgb(4, 40, 93)
+}
+
+
+

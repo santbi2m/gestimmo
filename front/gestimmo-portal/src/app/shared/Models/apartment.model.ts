@@ -8,7 +8,7 @@ export class Appartement{
         public type: string,
         public bien: Bien,
         public prix: number,
-        public reservations: Reservation[],
+        public reservations?: Reservation[],
        // public anomalies: Anomalies[]
     ){}
 }

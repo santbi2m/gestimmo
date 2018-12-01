@@ -8,14 +8,17 @@
   min-width: 90%;
   min-height: 80%;
   height: 90%; 
+  margin-bottom: 3%;
+  margin-top: 2%;
 }
 
 .cardResult {
   min-width: 90%;
   min-height: 70%;
-  height: 60%; 
+  height: 70%; 
   margin-bottom: 1%;
   margin-top: 1%;
+  background-color: rgb(239, 245, 247)
 }
 
 .cardSearch {
@@ -25,6 +28,7 @@
   margin-bottom: 1%;
   margin-top: 1%;
   margin-left: 5%;
+  background-color: rgb(239, 245, 247)
 }
 
 .table-container {

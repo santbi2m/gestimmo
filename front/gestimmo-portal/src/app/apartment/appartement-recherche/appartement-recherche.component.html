@@ -1,0 +1,118 @@
+<div class="container-fluid">
+    <div class="row mat-elevation-z8">
+      <mat-card class="col-8 mx-auto card">
+        
+        <mat-tab-group class="groupe"  (focusChange)="changeTab()" dynamicHeight
+          mat-align-tabs="center" [selectedIndex]="selectedTab">
+          <mat-tab label="Recherche...">
+  
+            
+            <mat-card class="col-8 mx-auto cardSearch">
+              <mat-card-title >
+                <mat-icon fontSet="fa" class="fas fa-building mx-auto"></mat-icon>
+                Recherce Appartement
+              </mat-card-title>
+              <form class="example-form" [formGroup]="appartForm">
+                <div class="mx-auto mat-elevation-z8 table-container" fxLayoutAlign="center">
+                  <table>
+                    <tr>
+                      <td>
+                        <mat-form-field >
+                          <input matInput formControlName="libelle" placeholder="Libellé Appartement">
+                        </mat-form-field>
+                      </td>
+                      &nbsp;&nbsp;&nbsp;
+                      <td>
+                        <mat-form-field>
+                          <mat-select formControlName="type" placeholder="Type Appartement" >
+                            <mat-option>--</mat-option>
+                            <mat-option *ngFor="let type of types" [value]="type">
+                              {{ type }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                    </tr>
+                    <tr>
+                        <mat-form-field>
+                            <mat-select formControlName="idBien" placeholder="Choisir un bien" >
+                              <mat-option>--</mat-option>
+                              <mat-option *ngFor="let bien of biens" [value]="bien.id">
+                                {{ bien.libelle }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </tr>
+                  </table>
+                </div>
+              </form>
+              <hr>
+            <div class="mx-auto col-3">
+              <button mat-raised-button color="primary" (click)="rechercher()">Rechercher</button>
+            </div>
+            </mat-card>
+            
+          </mat-tab>
+  
+          <mat-tab id="resultat" label="Résultats...">
+              <div class="container-fluid">
+                  <div class="row">
+            <mat-card class="col-8 mx-auto cardResult" >
+              <mat-card-title >
+                <mat-icon fontSet="fa" class="fas fa-building mx-auto"></mat-icon>
+                Appatements
+              </mat-card-title>
+              
+              <div class="col-3 mx-auto" fxLayoutAlign="center">
+                  <mat-form-field>
+                    <input matInput (keyup)="updateFilter($event.target.value)" placeholder="Recherche un appartement">
+                  </mat-form-field>
+                </div>
+  
+              <mat-table #table [dataSource]="dataSourceAppart" matSort class="table-container mat-elevation-z8">
+  
+                <ng-container matColumnDef="libelle">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Libellé</mat-header-cell>
+                  <mat-cell *matCellDef="let appartement">{{ appartement.libelle }}</mat-cell>
+                </ng-container>
+  
+                <ng-container matColumnDef="type">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                  <mat-cell *matCellDef="let appartement">{{ appartement.type }}</mat-cell>
+                </ng-container>
+  
+               
+                <ng-container matColumnDef="prix">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Prix</mat-header-cell>
+                  <mat-cell *matCellDef="let appartement">{{ appartement.prix }}</mat-cell>
+                </ng-container>
+  
+                <ng-container matColumnDef="bien">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Bien</mat-header-cell>
+                  <mat-cell *matCellDef="let appartement">
+                   
+                      {{ appartement.bien.libelle }} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="details">
+                    <mat-header-cell *matHeaderCellDef><span class="mx-auto">Détails</span></mat-header-cell>
+                    <mat-cell *matCellDef="let appartement">
+                      <a [routerLink]="['/appartement/', appartement.id]" class="mx-auto"> 
+                        <mat-icon  style="font-size: 36px;color:darkblue" fontSet="fa" class="fas fa-info"></mat-icon> </a></mat-cell>
+                  </ng-container>
+  
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  
+                
+  
+              </mat-table>
+              <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]"></mat-paginator>
+            </mat-card>
+            </div></div>
+          </mat-tab>
+  
+        </mat-tab-group>
+      </mat-card>
+    </div>
+  </div>

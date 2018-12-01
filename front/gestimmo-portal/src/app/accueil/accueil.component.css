@@ -1,0 +1,13 @@
+image {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30%;
+}
+
+.card {
+    min-width: 80%;
+    min-height: 80%;
+    height: 90%; 
+    margin-bottom: 3%;
+    margin-top: 2%;
+  }
