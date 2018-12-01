@@ -6,6 +6,7 @@ package com.ag2m.gestimmo.metier.entite;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,7 +52,7 @@ public class Client extends Identifiant<Long> implements Serializable {
 	@Column(name="telephone")
 	private String telephone;
 	
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name="id_adresse", nullable=false)
 	private Adresse adresse;
 	

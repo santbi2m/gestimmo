@@ -6,6 +6,7 @@ package com.ag2m.gestimmo.metier.entite;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class Bien extends Identifiant<Long> implements Serializable{
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="bien")
 	private List<Appartement> appartements;
 	
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name="id_adresse", nullable=false)
 	private Adresse adresse;
 	

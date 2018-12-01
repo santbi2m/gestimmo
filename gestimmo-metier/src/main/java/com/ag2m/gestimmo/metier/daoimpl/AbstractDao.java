@@ -48,7 +48,7 @@ public abstract class AbstractDao<ID extends Serializable, T extends Identifiant
 	 * 
 	 * @return session
 	 */
-	protected Session getCurrentSession(){
+	public Session getCurrentSession(){
 		
 		return session.getCurrentSession();
 	}

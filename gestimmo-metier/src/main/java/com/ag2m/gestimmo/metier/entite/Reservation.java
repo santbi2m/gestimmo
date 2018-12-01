@@ -3,6 +3,7 @@ package com.ag2m.gestimmo.metier.entite;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -63,11 +64,11 @@ public class Reservation extends Identifiant<Long> implements Serializable {
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="reservations")
 	private List<Appartement> appartements;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_client", nullable=false)
 	private Client client;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_facture")
 	private Facture facture;
 }

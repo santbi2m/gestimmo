@@ -5,6 +5,7 @@ package com.ag2m.gestimmo.metier.entite;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -30,7 +31,7 @@ public class Role extends Identifiant<Long> implements Serializable {
 	@Column(name="role", nullable=false)
 	private String role;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="username", referencedColumnName="username", nullable=false)
 	private Utilisateur utilisateur;
 

@@ -41,7 +41,7 @@ public class Appartement extends Identifiant<Long> implements Serializable {
 	@Column(name="type_appart", nullable=false)
 	private String type;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_bien", nullable=false)
 	private Bien bien;
 	

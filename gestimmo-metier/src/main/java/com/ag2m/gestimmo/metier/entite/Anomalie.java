@@ -5,6 +5,7 @@ package com.ag2m.gestimmo.metier.entite;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -49,7 +50,7 @@ public class Anomalie extends Identifiant<Long> implements Serializable {
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	private LocalDateTime dateTraitement;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_appartement", nullable=false)
 	private Appartement appartement;
 	
