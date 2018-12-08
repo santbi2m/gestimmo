@@ -17,7 +17,7 @@ public class CustomDateJsonDeserializer extends JsonDeserializer<LocalDateTime> 
 	 * Default formatter
 	 */
 	private final DateTimeFormatter formatter 
-      = DateTimeFormat.forPattern("dd-MM-yyyy hh:mm:ss");
+      = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
  
  
      

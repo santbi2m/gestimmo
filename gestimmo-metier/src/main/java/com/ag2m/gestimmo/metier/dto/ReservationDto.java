@@ -8,8 +8,6 @@ import com.ag2m.gestimmo.metier.ioparam.IPeriode;
 import com.ag2m.gestimmo.metier.utils.CustomDateJsonDeserializer;
 import com.ag2m.gestimmo.metier.utils.CustomDateSerializer;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -40,7 +38,7 @@ public class ReservationDto extends IdentifiantDto implements IPeriode {
 	
 	private Boolean petitDej;
 	
-//	@JsonManagedReference
+	@JsonManagedReference
 	private List<AppartementDto> appartements;
 	
 	private String statut;
