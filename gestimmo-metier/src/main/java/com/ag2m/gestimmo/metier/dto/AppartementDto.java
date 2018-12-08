@@ -6,8 +6,8 @@ package com.ag2m.gestimmo.metier.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class AppartementDto extends IdentifiantDto implements Serializable {
 	
 	private Double prix;
 	
-	@JsonIgnore
+	@JsonManagedReference
 	private List<ReservationDto> reservations;
 	
 	@JsonIgnore
