@@ -510,6 +510,23 @@ public interface Mapper {
 	@Mapping(target = "appartements", ignore = true)
 	ReservationDto reservationToReservationDto(Reservation reservation);
 	
+	 @AfterMapping
+		default void processAppartementForReservation(@MappingTarget Reservation reservation) {
+		 //Mapping des appartements
+			
+			if(reservation.getAppartements() != null) {
+				
+				reservation.getAppartements().forEach(appart -> {
+					
+					if(appart.getReservations() != null) {
+						appart.getReservations().add(reservation);
+					}else {
+						appart.setReservations(Arrays.asList(reservation));
+					}
+				});
+			}
+		 }
+	
 	@AfterMapping
 	default void mapAppartIntoResaDto(@MappingTarget AppartementDto appartementDto) {
 		
@@ -534,7 +551,6 @@ public interface Mapper {
 	 * @param anomalieDto
 	 * @return
 	 */
-	@Mapping(target = "appartements", ignore = true)
 	Reservation reservationDtoToReservation(ReservationDto reservationDto);
 	
 	
