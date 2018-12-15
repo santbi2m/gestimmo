@@ -48,11 +48,7 @@ public class Appartement extends Identifiant<Long> implements Serializable {
 	@Column(name="prix", nullable=false)
 	private Double prix;
 
-	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
-	@JoinTable(name = "assoc_resa_appart", joinColumns = {
-			@JoinColumn(name = "id_appartement", nullable = false, updatable = false) },
-	inverseJoinColumns = { @JoinColumn(name = "id_reservation",
-	nullable = false, updatable = false) })
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="appartements", cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	private List<Reservation> reservations;
 	
 	@OneToMany(fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="appartement")

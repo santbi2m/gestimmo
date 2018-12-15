@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -61,7 +62,11 @@ public class Reservation extends Identifiant<Long> implements Serializable {
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	private LocalDateTime dateAnnulation;	
 	
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="reservations")
+	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "assoc_resa_appart", joinColumns = {
+			@JoinColumn(name = "id_reservation", nullable = false, updatable = false) },
+	inverseJoinColumns = { @JoinColumn(name = "id_appartement",
+	nullable = false, updatable = false) })
 	private List<Appartement> appartements;
 	
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.ALL})
