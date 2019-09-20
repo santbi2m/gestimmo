@@ -22,7 +22,6 @@ import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.exception.FunctionalException;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.ioparam.ReservationCriteria;
-import com.ag2m.gestimmo.metier.service.AppartementService;
 import com.ag2m.gestimmo.metier.service.ReservationService;
 
 import lombok.extern.log4j.Log4j;
@@ -31,9 +30,6 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @Log4j
 public class ReservationController {
-
-	@Autowired
-	private AppartementService appartementService;
 
 	@Autowired
 	private ReservationService reservationService;
@@ -121,7 +117,6 @@ public class ReservationController {
 
 		Optional.ofNullable(reservationDto).orElseThrow(() 
 				-> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_SUPP_NULL));
-		
 		
 		
 		return reservationService.createReservation(reservationDto);

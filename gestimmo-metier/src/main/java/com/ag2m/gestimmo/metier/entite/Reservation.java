@@ -62,7 +62,7 @@ public class Reservation extends Identifiant<Long> implements Serializable {
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
 	private LocalDateTime dateAnnulation;	
 	
-	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.ALL} )
 	@JoinTable(name = "assoc_resa_appart", joinColumns = {
 			@JoinColumn(name = "id_reservation", nullable = false, updatable = false) },
 	inverseJoinColumns = { @JoinColumn(name = "id_appartement",

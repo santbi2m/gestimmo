@@ -8,10 +8,8 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
-import com.ag2m.gestimmo.metier.dao.AppartementDao;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;

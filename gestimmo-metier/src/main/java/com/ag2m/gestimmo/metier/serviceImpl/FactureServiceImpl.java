@@ -1,6 +1,7 @@
 package com.ag2m.gestimmo.metier.serviceImpl;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +17,7 @@ import com.ag2m.gestimmo.metier.constants.FunctionalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.constants.TechnicalErrorMessageConstants;
 import com.ag2m.gestimmo.metier.dao.FactureDao;
 import com.ag2m.gestimmo.metier.dao.ReservationDao;
-import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.FactureDto;
-import com.ag2m.gestimmo.metier.dto.ReservationDto;
 import com.ag2m.gestimmo.metier.entite.Facture;
 import com.ag2m.gestimmo.metier.entite.Reservation;
 import com.ag2m.gestimmo.metier.enumeration.EnumStatutReservation;
@@ -28,20 +27,26 @@ import com.ag2m.gestimmo.metier.ioparam.FactureCriteria;
 import com.ag2m.gestimmo.metier.mapper.Mapper;
 import com.ag2m.gestimmo.metier.service.FactureService;
 import com.ag2m.gestimmo.metier.utils.CustomDateUtil;
+import com.ag2m.gestimmo.metier.utils.NumeroFactureUtil;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.GrayColor;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.ag2m.gestimmo.metier.utils.NumeroFactureUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -93,6 +98,7 @@ public class FactureServiceImpl implements FactureService {
 	 */
 	@Transactional(readOnly = true)
 	public List<FactureDto> loadAllFactures() {
+		
 		log.debug("Chargement de toutes les factures");
 
 		List<FactureDto> listeFactureDto = null;
@@ -130,9 +136,9 @@ public class FactureServiceImpl implements FactureService {
 		Optional.ofNullable(entiteDto)
 				.orElseThrow(() -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ID_NULL));
 
-		/*String numeroFacture = factureDao.findLastNumFacture();
+		String numeroFacture = factureDao.findLastNumFacture();
 		String nextNumFacture = NumeroFactureUtil.generateNextFactureNumberByActual(numeroFacture, NumeroFactureUtil.SUFFIXE_FT);
-		entite.setNumeroFacture(nextNumFacture);*/
+		entiteDto.setNumeroFacture(nextNumFacture);
 		// map and save
 		fDto = mapAndSave(entiteDto, fDto);
 
@@ -158,7 +164,7 @@ public class FactureServiceImpl implements FactureService {
 					reservationDto.setDateCheckout(reservationDto.getDateCheckout().plusHours(1));
 				}
 			} else if (reservationDto.getStatut().equals(EnumStatutReservation.EN_ATTENTE.getStatut())) {
-				// Mise � jour du statut de la r�servation � factur�
+				// Mise a jour du statut de la reservation a facturer
 				reservationDto.setStatut(EnumStatutReservation.EN_ATTENTE_FACTUREE.getStatut());
 
 				// V�rifier si la r�servation est un day-use c'est � dire moins
@@ -183,14 +189,20 @@ public class FactureServiceImpl implements FactureService {
 		return fDto;
 	}
 
+	/**
+	 * validation des réervations à facturer
+	 *  
+	 * @param factureDto
+	 * @param statutAutorisee
+	 * @throws TechnicalException
+	 */
 	private void validateFacture(FactureDto factureDto, List<String> statutAutorisee) throws TechnicalException {
 
 		// Facture ne doit pas �tre nulle
 		Optional.ofNullable(factureDto)
 				.orElseThrow(() -> new TechnicalException(TechnicalErrorMessageConstants.ERREUR_ENTREE_CREATION_NULL));
 
-		// statut de r�sa diff�rent de � Enregistr�e � , � Confirm�e � , � En
-		// attente � , � Annul�e �
+		// statut de résa différent de "Enregistrée", "Confirmée", "En attente" et "Annulée"
 
 		if (factureDto.getReservations() != null && !factureDto.getReservations().isEmpty()) {
 			factureDto.getReservations().forEach(reservationDto -> {
@@ -202,6 +214,15 @@ public class FactureServiceImpl implements FactureService {
 
 	}
 
+	/**
+	 * Effectue le mapping factureDto -> facture
+	 * puis sauvegarde la facture en BDD.
+	 * 
+	 * @param factureDto
+	 * @param fDto
+	 * @return
+	 * @throws TechnicalException
+	 */
 	private FactureDto mapAndSave(FactureDto factureDto, FactureDto fDto) throws TechnicalException {
 		// Transformation en entit� facture
 		Facture facture = mapper.factureDtoToFacture(factureDto);
@@ -235,97 +256,112 @@ public class FactureServiceImpl implements FactureService {
 
 		Document document = new Document(PageSize.A4);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-
 		try {
 
-			PdfPTable table = new PdfPTable(2);
-			PdfPTable table2 = new PdfPTable(2);
-			table2.setWidthPercentage(100);
-			table.setWidthPercentage(100);
-			// table.setWidths(new int[] { 1, 3 });
-
-			Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-
-			PdfPCell hcellC;
-			hcellC = new PdfPCell(new Phrase("Client", headFont));
-			hcellC.setHorizontalAlignment(Element.ALIGN_LEFT);
-			hcellC.setBorder(Rectangle.NO_BORDER);
-			table2.addCell(hcellC);
-
-			hcellC = new PdfPCell(new Phrase("Adresse Facturation", headFont));
-			hcellC.setHorizontalAlignment(Element.ALIGN_RIGHT);
-			hcellC.setBorder(Rectangle.NO_BORDER);
-			table2.addCell(hcellC);
-
-			PdfPCell cellC;
-			cellC = new PdfPCell(new Phrase(factureDto.getClient().getNom() + "\n" + factureDto.getClient().getPrenom()
-					+ "\n" + factureDto.getClient().getTelephone() + "\n" + factureDto.getClient().getAdresseEmail()));
-			cellC.setVerticalAlignment(Element.ALIGN_LEFT);
-			cellC.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cellC.setBorder(Rectangle.NO_BORDER);
-			table2.addCell(cellC);
-
-			cellC = new PdfPCell(new Phrase(factureDto.getAdresseFacturation().getAdresse() + "\n"
-					+ factureDto.getAdresseFacturation().getCodePostal() + "\n"
-					+ factureDto.getAdresseFacturation().getVille() + "/"
-					+ factureDto.getAdresseFacturation().getPays()));
-			cellC.setPaddingLeft(5);
-			cellC.setVerticalAlignment(Element.ALIGN_RIGHT);
-			cellC.setHorizontalAlignment(Element.ALIGN_RIGHT);
-			cellC.setBorder(Rectangle.NO_BORDER);
-			table2.addCell(cellC);
-
-			if (factureDto.getReservations() != null && !factureDto.getReservations().isEmpty()) {
-				for (ReservationDto reservationDto : factureDto.getReservations()) {
-					String libelleAppart = null;
-					StringBuilder builder = new StringBuilder();
-					if (reservationDto.getAppartements() != null) {
-						for (AppartementDto appartementDto : reservationDto.getAppartements()) {
-							builder.append(appartementDto.getLibelle()).append("\n");
-						}
-						libelleAppart = builder.toString();
-					}
-					PdfPCell hcell;
-					hcell = new PdfPCell(new Phrase("Libell� :", headFont));
-					hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					table.addCell(hcell);
-
-					hcell = new PdfPCell(new Phrase("Prix", headFont));
-					hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					table.addCell(hcell);
-
-					PdfPCell cell;
-					cell = new PdfPCell(new Phrase(libelleAppart));
-					cell.setVerticalAlignment(Element.ALIGN_CENTER);
-					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					table.addCell(cell);
-
-					cell = new PdfPCell(new Phrase(reservationDto.getPrix().toString()));
-					cell.setVerticalAlignment(Element.ALIGN_RIGHT);
-					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					table.addCell(cell);
-
-				}
-			}
-
-			PdfWriter.getInstance(document, out);
+			
+			PdfWriter writer = PdfWriter.getInstance(document, out);
 			document.open();
 			document.addTitle("FACTURE");
+			String location = "C:/DEV/workspace/gestimmo/gestimmo-metier/image/logo.png";
+			Image image = Image.getInstance(location);
+			image.setAbsolutePosition((PageSize.A4.getWidth() - image.getScaledWidth() - 20), (PageSize.A4.getHeight() - image.getScaledHeight() - 60));
+			writer.setCompressionLevel(0);
+			writer.getDirectContent().addImage(image);
+			
+			
+			PdfPTable table2 = new PdfPTable(1);
+			table2.setWidthPercentage(100);
 
-			Paragraph paragraph = new Paragraph("Facture N� 1",
-					FontFactory.getFont(FontFactory.COURIER, 15f, Font.BOLD));
-			paragraph.setAlignment(Element.ALIGN_CENTER);
-			document.add(paragraph);
+			Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+			Font adresseFont = FontFactory.getFont(FontFactory.COURIER);
+			adresseFont.setSize(11f);
+
+			PdfPCell hcellHeader;
+			hcellHeader = new PdfPCell(new Phrase("Groupe AG2m", headFont));
+			hcellHeader.setHorizontalAlignment(Element.ALIGN_LEFT);
+			hcellHeader.setBorder(Rectangle.NO_BORDER);
+			table2.addCell(hcellHeader);
+
+			StringBuilder adresse = new StringBuilder("11 avenue Lamine GUEYE");
+			adresse.append("\n99000 Dakar, Sénégal").append("\n\nTéléphone : +221 33 834 00 08")
+			.append("\nE-mail : gestimmo@ag2m.sn").append("\nSite Web : www.ag2m.sn/gestimmo");
+			PdfPCell hcellAdresse = new PdfPCell(new Phrase(adresse.toString(), adresseFont));
+			hcellAdresse.setHorizontalAlignment(Element.ALIGN_LEFT);
+			hcellAdresse.setVerticalAlignment(Element.ALIGN_JUSTIFIED);
+			hcellAdresse.setBorder(Rectangle.NO_BORDER);
+			table2.addCell(hcellAdresse);
+			
+			
+//			PdfPTable table = new PdfPTable(2);
+//			table.setWidthPercentage(100);
+//			PdfPCell cellC;
+//			cellC = new PdfPCell(new Phrase(factureDto.getClient().getNom() + "\n" + factureDto.getClient().getPrenom()
+//					+ "\n" + factureDto.getClient().getTelephone() + "\n" + factureDto.getClient().getAdresseEmail()));
+//			cellC.setVerticalAlignment(Element.ALIGN_LEFT);
+//			cellC.setHorizontalAlignment(Element.ALIGN_LEFT);
+//			cellC.setBorder(Rectangle.NO_BORDER);
+//			table2.addCell(cellC);
+//
+//			cellC = new PdfPCell(new Phrase(factureDto.getAdresseFacturation().getAdresse() + "\n"
+//					+ factureDto.getAdresseFacturation().getCodePostal() + "\n"
+//					+ factureDto.getAdresseFacturation().getVille() + "/"
+//					+ factureDto.getAdresseFacturation().getPays()));
+//			cellC.setPaddingLeft(5);
+//			cellC.setVerticalAlignment(Element.ALIGN_RIGHT);
+//			cellC.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//			cellC.setBorder(Rectangle.NO_BORDER);
+//			table2.addCell(cellC);
+//
+//			if (factureDto.getReservations() != null && !factureDto.getReservations().isEmpty()) {
+//				for (ReservationDto reservationDto : factureDto.getReservations()) {
+//					String libelleAppart = null;
+//					StringBuilder builder = new StringBuilder();
+//					if (reservationDto.getAppartements() != null) {
+//						for (AppartementDto appartementDto : reservationDto.getAppartements()) {
+//							builder.append(appartementDto.getLibelle()).append("\n");
+//						}
+//						libelleAppart = builder.toString();
+//					}
+//					PdfPCell hcell;
+//					hcell = new PdfPCell(new Phrase("Libell� :", headFont));
+//					hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//					table.addCell(hcell);
+//
+//					hcell = new PdfPCell(new Phrase("Prix", headFont));
+//					hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//					table.addCell(hcell);
+//
+//					PdfPCell cell;
+//					cell = new PdfPCell(new Phrase(libelleAppart));
+//					cell.setVerticalAlignment(Element.ALIGN_CENTER);
+//					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//					table.addCell(cell);
+//
+//					cell = new PdfPCell(new Phrase(reservationDto.getPrix().toString()));
+//					cell.setVerticalAlignment(Element.ALIGN_RIGHT);
+//					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//					table.addCell(cell);
+//
+//				}
+//			}
+//
+//			PdfWriter.getInstance(document, out);
+//			document.open();
+//			document.addTitle("FACTURE");
+//
+//			Paragraph paragraph = new Paragraph("Facture N� 1",
+//					FontFactory.getFont(FontFactory.COURIER, 15f, Font.BOLD));
+//			paragraph.setAlignment(Element.ALIGN_CENTER);
+//			document.add(paragraph);
+//			document.add(Chunk.NEWLINE);
+//			document.add(table2);
+//
 			document.add(Chunk.NEWLINE);
+//
 			document.add(table2);
 
-			document.add(Chunk.NEWLINE);
-
-			document.add(table);
-
 			document.close();
-
-		} catch (DocumentException ex) {
+		} catch (DocumentException | IOException ex) {
 
 			Logger.getLogger(FactureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
 		}

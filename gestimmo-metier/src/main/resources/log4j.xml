@@ -8,7 +8,7 @@
 		</layout>
 	</appender>
 	<appender name="Appender2" class="org.apache.log4j.FileAppender">
-		<param name="File" value="./gestimmo-metier/logs/gestimmo.log" />
+		<param name="File" value="C:/DEV/workspace/gestimmo/gestimmo-metier/logs/gestimmo.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-7p %d [%t] %c %x - %m%n" />
 		</layout>

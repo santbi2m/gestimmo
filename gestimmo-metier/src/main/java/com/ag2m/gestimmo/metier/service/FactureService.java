@@ -39,7 +39,7 @@ public interface FactureService {
 	public FactureDto createFacture(FactureDto entite) throws FunctionalException, TechnicalException;
 	
 	/**
-	 * Générer un fichier PDF
+	 * Permet de générer une facture au format PDF
 	 * 
 	 * @param entite
 	 * @return

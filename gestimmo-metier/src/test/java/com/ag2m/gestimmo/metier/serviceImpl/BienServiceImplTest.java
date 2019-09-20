@@ -12,7 +12,6 @@ import org.junit.Test;
 import com.ag2m.gestimmo.metier.dto.AdresseDto;
 import com.ag2m.gestimmo.metier.dto.AppartementDto;
 import com.ag2m.gestimmo.metier.dto.BienDto;
-import com.ag2m.gestimmo.metier.entite.Bien;
 import com.ag2m.gestimmo.metier.enumeration.EnumTypeAppartement;
 import com.ag2m.gestimmo.metier.exception.TechnicalException;
 import com.ag2m.gestimmo.metier.ioparam.BienCriteria;
