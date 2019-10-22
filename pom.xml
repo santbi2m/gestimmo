@@ -24,7 +24,7 @@
 		<dbcp-version>2.1.1</dbcp-version>
 		<joda-version>2.9.9</joda-version>
 		<userType-version>6.0.1.GA</userType-version>
-		<jackson-version>2.9.3</jackson-version>
+		<jackson-version>2.10.0</jackson-version>
 		<mapstruct-version>1.2.0.Final</mapstruct-version>
 		<ehcache-version>2.0.0</ehcache-version>
      <lombok-version>1.16.20</lombok-version>
